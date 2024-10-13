@@ -12,16 +12,14 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class User {
+public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int user_id;
-    String username;
-    String password;
-    String email;
+    int permission_id;
+    String permission_name;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
     Role role_id;
-}
 
+}

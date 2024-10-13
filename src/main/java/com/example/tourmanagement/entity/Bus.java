@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -12,16 +13,14 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class User {
+public class Bus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int user_id;
-    String username;
-    String password;
-    String email;
-
+    int bus_id;
+    int bus_no;
+    String bus_type;
+    int capacity;
     @ManyToOne
-    @JoinColumn(name = "role_id")
-    Role role_id;
+    @JoinColumn(name = "travel_id")
+    Travel travel_id;
 }
-

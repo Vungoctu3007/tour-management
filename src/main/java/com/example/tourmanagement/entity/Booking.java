@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
 import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -12,16 +14,20 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class User {
+public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int user_id;
-    String username;
-    String password;
-    String email;
+    int booking_id;
+    String booking_title, booking_type;
+    LocalDateTime date;
+    String description;
+    String status;
 
     @ManyToOne
-    @JoinColumn(name = "role_id")
-    Role role_id;
-}
+    @JoinColumn(name = "user_id")
+    User user_id;
+    @ManyToOne
+    @JoinColumn(name = "ticket_id")
+    Ticket ticket_id;
 
+}

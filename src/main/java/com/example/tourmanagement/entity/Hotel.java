@@ -1,10 +1,12 @@
 package com.example.tourmanagement.entity;
 
 import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -12,16 +14,18 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class User {
+public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int user_id;
-    String username;
-    String password;
-    String email;
-
+    int hotel_id;
+    String hotel_address;
+    String hotel_description;
+    String hotel_name;
+    String hotel_type;
+    int rent;
+    String status;
     @ManyToOne
-    @JoinColumn(name = "role_id")
-    Role role_id;
-}
+    @JoinColumn(name = "package_id")
+    Package package_id;
 
+}
