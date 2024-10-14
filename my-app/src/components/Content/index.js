@@ -12,7 +12,7 @@ function Content() {
         <CardMedia
           component="img"
           height="140"
-          image="/static/images/cards/contemplative-reptile.jpg"
+          image=""
           alt="green iguana"
         />
         <CardContent>
