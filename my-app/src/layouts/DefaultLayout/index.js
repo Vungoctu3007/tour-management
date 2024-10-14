@@ -1,12 +1,12 @@
 import Header from "../Header";
-import Component from "../Footer";
+import Footer from "../Footer";
 
 function DefaultLayout({ children }) {
   return (
     <>
       <Header />
       {children}
-      <Component />
+      <Footer />
     </>
   );
 }
