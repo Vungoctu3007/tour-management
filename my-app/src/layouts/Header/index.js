@@ -6,6 +6,20 @@ import { Link } from "react-router-dom";
 import { Fragment } from "react";
 
 const pages = ["Trang Chủ", "Đặt Tour", "Giới Thiệu"];
+const pages_items=[
+  {
+    title:"Trang Chủ",
+    to:"/"
+  },
+  {
+    title:"Đặt Tour",
+    to:"/tour"
+  },
+  {
+    title:"Giới Thiệu",
+    to:"/about_us"
+  },
+]
 const menu_items = [
   {
     icon: "",
@@ -35,12 +49,12 @@ function Header() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            {pages.map((page, index) => (
+            {pages_items.map((page, index) => (
               <Nav.Link
                 key={index}
-                href={`#${page.toLowerCase().replace(/\s+/g, "-")}`}
+                href={page.to}
               >
-                {page}
+                {page.title}
               </Nav.Link>
             ))}
           </Nav>
