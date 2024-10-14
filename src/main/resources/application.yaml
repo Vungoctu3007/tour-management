@@ -1,16 +1,13 @@
-server:
-  port: 8080
-  servlet:
-    context-path: /api
 spring:
   datasource:
-    url: "jdbc:mysql://localhost:3306/..."
+    url: "jdbc:mysql://localhost:3306/tour_management"
     username: root
-    password: root
+    password:
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     open-in-view: false
-jwt:
-  signerKey: "QCOGxKQiUbQ8hmsDIe251lAtmbaImiSaKevg6NLyquqKGUD7SPwYVD8DjTlzBrBW"
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect

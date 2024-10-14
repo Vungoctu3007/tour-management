@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
 import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -12,16 +14,14 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class User {
+public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int user_id;
-    String username;
-    String password;
-    String email;
-
+    int feedback_id;
+    Date date;
+    String feedback_string;
+    Double rating;
     @ManyToOne
-    @JoinColumn(name = "role_id")
-    Role role_id;
+    @JoinColumn(name = "user_id")
+    User user_id;
 }
-
