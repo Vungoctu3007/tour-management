@@ -1,4 +1,4 @@
-import { Title } from "@mui/icons-material";
+import Search from "../../../components/Search";
 import CategoryTitle from "../../../components/CategoryTitle";
 import { Link } from "react-router-dom";
 
@@ -60,9 +60,12 @@ function Tour() {
       <div>
         {/* Header  */}
         <div className="row">
-          <div className="col-12">
+          <div className="col-md-3">
             <h3>Tours</h3>
             <p>Khám phá trải nghiệm, tour du lịch và hơn thế nữa</p>
+          </div>
+          <div className="col-md-9">
+            <Search></Search>
           </div>
         </div>
         <div className="row">
