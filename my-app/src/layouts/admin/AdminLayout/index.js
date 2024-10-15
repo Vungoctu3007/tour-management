@@ -4,7 +4,7 @@ import AdminHeader from "../../../components/AdminHeader";
 function AdminLayout({ children }) {
   return (
     <div className="container-fluid">
-      <div className="row">
+      <div className="row">..,
         <AdminSidebar />
         <div className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
           <AdminHeader />
@@ -12,7 +12,6 @@ function AdminLayout({ children }) {
         </div>
       </div>
     </div>
-  
   );
 }
 
