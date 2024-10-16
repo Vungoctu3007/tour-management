@@ -1,7 +1,7 @@
 import Search from "../../../components/Search";
 import CategoryTitle from "../../../components/CategoryTitle";
 import { Link } from "react-router-dom";
-
+import styles from "./Tour.module.css"
 const tour_list = [
   {
     title: "DU LỊCH SINGAPORE - INDONESIA - MALAYSIA 6 NGÀY 5 ĐÊM",
@@ -72,7 +72,7 @@ function Tour() {
           {/* <!-- Sidebar Filters --> */}
           <div className="col-md-3">
             <div
-              className="p-2"
+              className={`p-2 ${styles.filte}`}
               style={{ background: "#f2f4f4", borderRadius: "16px" }}
             >
               <div className="mb-4">

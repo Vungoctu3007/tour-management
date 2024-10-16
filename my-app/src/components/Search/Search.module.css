@@ -3,4 +3,8 @@
         transform: rotate(90deg);
     
     }
+    .search{
+        display: none !important;
+        background-color: rebeccapurple;
+    }
 }

@@ -3,7 +3,7 @@ import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import styles from "./Search.module.css";
 function Search() {
   return (
-    <div className="row">
+    <div className={`row ${styles.search}`}>
       <div className="col-md-6">
         <div className="row border p-3 rounded d-flex align-items-center">
           <div className="col-md-4">
