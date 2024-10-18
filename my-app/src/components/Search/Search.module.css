@@ -8,3 +8,39 @@
         background-color: rebeccapurple;
     }
 }
+
+/* start searh input */
+.icon_search{
+    margin: 0 10px;
+}
+
+.search-container {
+    position: relative;
+  }
+  
+.search_item {
+    position: absolute;
+    top: 70px; 
+    left: 0;
+    right: 0;
+    z-index: 1000;
+
+  }
+.noborder{
+  border: none;
+}
+/* end search input */
+
+
+/* start seaach item */
+@media (max-width: 500px) {
+    .searchItemContainer {
+      max-height: 20vh;
+      overflow-y: auto; 
+    }
+    .searchItemList {
+        flex-direction: column; 
+      }
+  }
+  
+/* end seaach item */

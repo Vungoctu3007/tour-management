@@ -1,0 +1,17 @@
+/* Slider.module.css */
+
+.searchInput {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    width: 50%;
+    max-width: 600px;
+  }
+  
+  .carouselImage {
+    height: 500px; /* Chiều cao cho slider */
+    object-fit: cover; /* Giữ ảnh phù hợp mà không bị kéo dãn */
+  }
+  

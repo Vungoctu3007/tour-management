@@ -1,11 +1,9 @@
 import Avatar from "@mui/material/Avatar";
 import { Navbar, Nav, NavDropdown, Container, Button } from "react-bootstrap";
 
-import styles from "./Header.module.css";
 import { Link } from "react-router-dom";
 import { Fragment } from "react";
 
-const pages = ["Trang Chủ", "Đặt Tour", "Giới Thiệu"];
 const pages_items=[
   {
     title:"Trang Chủ",
@@ -28,7 +26,12 @@ const menu_items = [
   },
   {
     icon: "",
-    title: "Tài Khoản",
+    title: "Đơn Hàng",
+    to: "/profile",
+  },
+  {
+    icon: "",
+    title: "Khuyễn Mãi",
     to: "/profile",
   },
   {
@@ -43,9 +46,9 @@ function Header() {
   const currentUser = true;
 
   return (
-    <Navbar  className="bg-light text-white" expand="lg">
+    <Navbar style={{backgroundColor:"#259ed5"}} className="" expand="lg">
       <Container>
-        <Navbar.Brand href="#home">MyWebsite</Navbar.Brand>
+        <Navbar.Brand href="#home">TOUR</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
@@ -53,6 +56,7 @@ function Header() {
               <Nav.Link
                 key={index}
                 href={page.to}
+                className="text-white"
               >
                 {page.title}
               </Nav.Link>
@@ -60,7 +64,7 @@ function Header() {
           </Nav>
           {/* Dropdown Menu */}
           {currentUser ? (
-            <div className="btn-group ">
+            <div className="btn-group " style={{marginRight:"40px"}}>
               <Avatar
                 className=" btn-danger "
                 data-bs-toggle="dropdown"
@@ -68,7 +72,7 @@ function Header() {
                 style={{ cursor: "pointer" }}
               />
 
-              <ul className="dropdown-menu">
+              <ul className="dropdown-menu "  >
                 {menu_items.map((item, index) => (
                   <Fragment key={index}>
                     {index === menu_items.length - 1 && (

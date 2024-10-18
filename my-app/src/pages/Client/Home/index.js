@@ -1,6 +1,5 @@
 import Slider from "../../../layouts/Slider";
 import Content from "../../../components/Content";
-const contentArray = Array.from({ length: 6 });
 
 function Home() {
   return (
@@ -9,11 +8,11 @@ function Home() {
       Home
       <div className="container ">
         <div className="row">
-          {contentArray.map((_, index) => (
-            <div className="col-12 col-sm-6 col-md-4 mb-4" key={index}>
+         
+            <div className="">
               <Content />
             </div>
-          ))}
+      
         </div>
       </div>
     </div>
