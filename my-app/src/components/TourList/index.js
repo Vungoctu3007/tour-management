@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import Images from "../../assets/images/item.jpg"
 const tour_lists = [
   {
+    id:1,
     title: "DU LỊCH SINGAPORE - MALAYSIA 6 NGÀY 5 ĐÊM",
     departure: "Hồ Chí Minh",
     views: 122,
@@ -10,9 +12,10 @@ const tour_lists = [
     duration: "6 ngày 5 đêm",
     price: "12.990.000 đ / Khách",
     availableSeats: 10,
-    imageUrl: "https://via.placeholder.com/300x200",
+    imageUrl: Images,
   },
   {
+    id:2,
     title: "DU LỊCH HÀ NỘI - HẠ LONG 3 NGÀY 2 ĐÊM",
     departure: "Hà Nội",
     views: 200,
@@ -22,9 +25,10 @@ const tour_lists = [
     duration: "3 ngày 2 đêm",
     price: "6.500.000 đ / Khách",
     availableSeats: 5,
-    imageUrl: "https://via.placeholder.com/300x200",
+    imageUrl: Images,
   },
   {
+    id:3,
     title: "DU LỊCH ĐÀ NẴNG - HỘI AN 4 NGÀY 3 ĐÊM",
     departure: "Đà Nẵng",
     views: 300,
@@ -34,9 +38,10 @@ const tour_lists = [
     duration: "4 ngày 3 đêm",
     price: "7.800.000 đ / Khách",
     availableSeats: 8,
-    imageUrl: "https://via.placeholder.com/300x200",
+    imageUrl: Images,
   },
   {
+    id:4,
     title: "DU LỊCH PHÚ QUỐC TAM ĐẢO 2 NGÀY 1 ĐÊM",
     departure: "Hồ Chí Minh",
     views: 180,
@@ -46,9 +51,10 @@ const tour_lists = [
     duration: "2 ngày 1 đêm",
     price: "5.000.000 đ / Khách",
     availableSeats: 3,
-    imageUrl: "https://via.placeholder.com/300x200",
+    imageUrl: Images,
   },
   {
+    id:5,
     title: "DU LỊCH PHÚ QUỐC TAM ĐẢO 2 NGÀY 1 ĐÊM",
     departure: "Hồ Chí Minh",
     views: 180,
@@ -58,9 +64,10 @@ const tour_lists = [
     duration: "2 ngày 1 đêm",
     price: "5.000.000 đ / Khách",
     availableSeats: 3,
-    imageUrl: "https://via.placeholder.com/300x200",
+    imageUrl: Images,
   },
   {
+    id:6,
     title: "DU LỊCH PHÚ QUỐC TAM ĐẢO 2 NGÀY 1 ĐÊM",
     departure: "Hồ Chí Minh",
     views: 180,
@@ -70,21 +77,24 @@ const tour_lists = [
     duration: "2 ngày 1 đêm",
     price: "5.000.000 đ / Khách",
     availableSeats: 3,
-    imageUrl: "https://via.placeholder.com/300x200",
+    imageUrl: Images,
   },
 ];
 
-function TourList({ isInsideCol }) {
+function TourList({ isInsideCol,selectedId }) {
   const colClass = isInsideCol ? "col-md-6" : "col-md-4";
+  const filteredTours=selectedId ? tour_lists.filter((tour) => tour.id === selectedId) : tour_lists
+  console.log(filteredTours);
   return (
     <div className="row">
-      {tour_lists.map((tour, index) => (
+      {filteredTours.map((tour, index) => (
         <div key={index} className={colClass + " mb-4"}>
           <div className="card">
             <img
               src={tour.imageUrl}
               className="card-img-top"
               alt={tour.title}
+              style={{ height:"270px"}}
             />
             <div className="card-body">
               <h5 className="card-title">{tour.title}</h5>

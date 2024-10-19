@@ -1,147 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Search Box</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    /* Giấu danh sách địa điểm ban đầu */
-    #search-list {
-      display: none;
-    }
-  </style>
-</head>
-<body>
-
-<div class="container my-5">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <!-- Search Box -->
-      <div class="card p-4">
-        <!-- Search Input -->
-        <div class="input-group mb-3">
-          <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-          <input id="search-input" type="text" class="form-control" placeholder="Bạn muốn đi đâu?" aria-label="Bạn muốn đi đâu?" onfocus="showSearchList()" onblur="hideSearchList()" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Grid</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .img-container img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-4">
+      <div class="row">
+        <!-- Large Image on the Left -->
+        <div class="col-md-7">
+          <div class="img-container">
+            <img
+              src="../../../assets/images/item.jpg"
+              alt="Large Image"
+              class="img-fluid"
+            />
+          </div>
         </div>
 
-        <!-- Hot Destinations (ẩn lúc đầu) -->
-        <div id="search-list">
-          <h5 class="mb-3">Địa điểm đang HOT nhất</h5>
+        <!-- Smaller Images on the Right -->
+        <div class="col-md-5">
           <div class="row">
-            <!-- Destination Item 1 -->
-            <div class="col-6 col-md-4 mb-3">
-              <div class="card">
-                <img src="dalat.jpg" class="card-img-top" alt="Đà Lạt">
-                <div class="card-body text-center">
-                  <h6 class="card-title mb-1">Đà Lạt</h6>
-                  <small>836 KS</small>
-                </div>
+            <div class="col-12 mb-3">
+              <div class="img-container">
+                <img
+                  src="../../../assets/images/item.jpg"
+                  alt="Image 1"
+                  class="img-fluid"
+                />
               </div>
             </div>
-            <!-- Destination Item 2 -->
-            <div class="col-6 col-md-4 mb-3">
-              <div class="card">
-                <img src="phuquoc.jpg" class="card-img-top" alt="Phú Quốc">
-                <div class="card-body text-center">
-                  <h6 class="card-title mb-1">Phú Quốc</h6>
-                  <small>724 KS</small>
-                </div>
+          </div>
+          <div class="row">
+            <div class="col-6 mb-3">
+              <div class="img-container">
+                <img
+                  src="../../../assets/images/item.jpg"
+                  alt="Image 1"
+                  class="img-fluid"
+                />
               </div>
             </div>
-            <!-- Destination Item 3 -->
-            <div class="col-6 col-md-4 mb-3">
-              <div class="card">
-                <img src="quynhon.jpg" class="card-img-top" alt="Quy Nhơn">
-                <div class="card-body text-center">
-                  <h6 class="card-title mb-1">Quy Nhơn</h6>
-                  <small>84 KS</small>
-                </div>
-              </div>
-            </div>
-            <!-- Destination Item 4 -->
-            <div class="col-6 col-md-4 mb-3">
-              <div class="card">
-                <img src="phanthiet.jpg" class="card-img-top" alt="Phan Thiết">
-                <div class="card-body text-center">
-                  <h6 class="card-title mb-1">Phan Thiết</h6>
-                  <small>341 KS</small>
-                </div>
-              </div>
-            </div>
-            <!-- Destination Item 5 -->
-            <div class="col-6 col-md-4 mb-3">
-              <div class="card">
-                <img src="danang.jpg" class="card-img-top" alt="Đà Nẵng">
-                <div class="card-body text-center">
-                  <h6 class="card-title mb-1">Đà Nẵng</h6>
-                  <small>1136 KS</small>
-                </div>
-              </div>
-            </div>
-            <!-- Destination Item 6 -->
-            <div class="col-6 col-md-4 mb-3">
-              <div class="card">
-                <img src="vinhhalong.jpg" class="card-img-top" alt="Vịnh Hạ Long">
-                <div class="card-body text-center">
-                  <h6 class="card-title mb-1">Vịnh Hạ Long</h6>
-                  <small>556 KS</small>
-                </div>
-              </div>
-            </div>
-            <!-- Destination Item 7 -->
-            <div class="col-6 col-md-4 mb-3">
-              <div class="card">
-                <img src="nhatrang.jpg" class="card-img-top" alt="Nha Trang">
-                <div class="card-body text-center">
-                  <h6 class="card-title mb-1">Nha Trang</h6>
-                  <small>853 KS</small>
-                </div>
-              </div>
-            </div>
-            <!-- Destination Item 8 -->
-            <div class="col-6 col-md-4 mb-3">
-              <div class="card">
-                <img src="vungtau.jpg" class="card-img-top" alt="Vũng Tàu">
-                <div class="card-body text-center">
-                  <h6 class="card-title mb-1">Vũng Tàu</h6>
-                  <small>677 KS</small>
-                </div>
-              </div>
-            </div>
-            <!-- Destination Item 9 -->
-            <div class="col-6 col-md-4 mb-3">
-              <div class="card">
-                <img src="hoian.jpg" class="card-img-top" alt="Hội An">
-                <div class="card-body text-center">
-                  <h6 class="card-title mb-1">Hội An</h6>
-                  <small>734 KS</small>
-                </div>
+            <div class="col-6 mb-3">
+              <div class="img-container">
+                <img
+                  src="../../../assets/images/item.jpg"
+                  alt="Image 1"
+                  class="img-fluid"
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- JavaScript to Show/Hide the Search List -->
-<script>
-  function showSearchList() {
-    document.getElementById('search-list').style.display = 'block';
-  }
-
-  function hideSearchList() {
-    setTimeout(() => {
-      document.getElementById('search-list').style.display = 'none';
-    }, 200); // Đợi 200ms trước khi ẩn, để tránh việc blur nhanh khi nhấn vào mục tìm kiếm
-  }
-</script>
-
-</body>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
 </html>

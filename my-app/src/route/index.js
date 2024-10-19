@@ -10,15 +10,16 @@ import About from "../pages/Client/AboutUs"
 import DashBoard from "../pages/Admin/Dashboard"
 import User from "../pages/Admin/User"
 const publicRoutes=[
+    // client routes
     {path:routes.home,component:Home,layout:DefaultLayout},
     {path:routes.tour,component:Tour,layout:DefaultLayout},
     {path:routes.about_us,component:About,layout:DefaultLayout},
 
     {path:routes.login,component:Login,layout:null},
     {path:routes.profile,component:Profile,layout:null},
-    {path:routes.resgister,component:Register,layout:null},
+    {path:routes.register,component:Register,layout:null},
 
-    // admin
+    // admin routes
     {path:routes.dashboard,component:DashBoard,layout:AdminLayout},
     {path:routes.users,component:User,layout:AdminLayout},
 

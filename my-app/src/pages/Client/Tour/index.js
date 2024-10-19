@@ -117,7 +117,7 @@ function Tour() {
               <span>Showing 1-10 of 36 results</span>
             </div>
             {/* Tour List */}
-            <TourList isInsideCol={true} />
+            <TourList isInsideCol={true}/>
           </div>
         </div>
       </div>

@@ -27,7 +27,7 @@
 
   }
 .noborder{
-  border: none;
+  border: none !important;
 }
 /* end search input */
 
