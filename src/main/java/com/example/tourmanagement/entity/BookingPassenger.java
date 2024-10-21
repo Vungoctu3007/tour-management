@@ -22,7 +22,7 @@ public class BookingPassenger {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "booking_id", nullable = false)
-    private com.example.tourmanagement.Booking booking;
+    private Booking booking;
 
     @Column(name = "name", nullable = false)
     private String name;

@@ -21,12 +21,12 @@ public class TourDestination {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "tour_id", nullable = false)
-    private com.example.tourmanagement.Tour tour;
+    private Tour tour;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "destination_id", nullable = false)
-    private com.example.tourmanagement.Destination destination;
+    private Destination destination;
 
     @ColumnDefault("current_timestamp()")
     @Column(name = "created_at", nullable = false)

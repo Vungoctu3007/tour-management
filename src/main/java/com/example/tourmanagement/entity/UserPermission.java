@@ -21,12 +21,12 @@ public class UserPermission {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    private com.example.tourmanagement.User user;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "permission_id", nullable = false)
-    private com.example.tourmanagement.Permission permission;
+    private Permission permission;
 
     @ColumnDefault("current_timestamp()")
     @Column(name = "created_at", nullable = false)

@@ -22,12 +22,12 @@ public class Booking {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    private com.example.tourmanagement.User user;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "tour_id", nullable = false)
-    private com.example.tourmanagement.Tour tour;
+    private Tour tour;
 
     @ColumnDefault("0")
     @Column(name = "total_adults")

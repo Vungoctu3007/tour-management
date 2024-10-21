@@ -21,12 +21,12 @@ public class RoleUser {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    private com.example.tourmanagement.User user;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "role_id", nullable = false)
-    private com.example.tourmanagement.Role role;
+    private Role role;
 
     @ColumnDefault("current_timestamp()")
     @Column(name = "created_at", nullable = false)

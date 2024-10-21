@@ -21,12 +21,12 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "tour_id", nullable = false)
-    private com.example.tourmanagement.Tour tour;
+    private Tour tour;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    private com.example.tourmanagement.User user;
+    private User user;
 
     @Column(name = "rating", nullable = false)
     private Integer rating;

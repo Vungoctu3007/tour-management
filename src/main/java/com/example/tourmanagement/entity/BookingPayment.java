@@ -22,7 +22,7 @@ public class BookingPayment {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "booking_id", nullable = false)
-    private com.example.tourmanagement.Booking booking;
+    private Booking booking;
 
     @Lob
     @Column(name = "payment_method", nullable = false)

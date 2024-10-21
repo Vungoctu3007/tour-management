@@ -21,7 +21,7 @@ public class Transportation {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "tour_id", nullable = false)
-    private com.example.tourmanagement.Tour tour;
+    private Tour tour;
 
     @Lob
     @Column(name = "transport_type", nullable = false)
