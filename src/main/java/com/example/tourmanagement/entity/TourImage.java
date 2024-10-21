@@ -4,24 +4,27 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "permissions")
-public class Permission {
+@Table(name = "tour_images")
+public class TourImage {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "tour_id", nullable = false)
+    private com.example.tourmanagement.Tour tour;
 
-    @Lob
-    @Column(name = "description")
-    private String description;
+    @Column(name = "image_url", nullable = false)
+    private String imageUrl;
 
     @ColumnDefault("current_timestamp()")
     @Column(name = "created_at", nullable = false)

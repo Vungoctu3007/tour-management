@@ -10,8 +10,8 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "permissions")
-public class Permission {
+@Table(name = "destinations")
+public class Destination {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -22,6 +22,12 @@ public class Permission {
     @Lob
     @Column(name = "description")
     private String description;
+
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "city")
+    private String city;
 
     @ColumnDefault("current_timestamp()")
     @Column(name = "created_at", nullable = false)

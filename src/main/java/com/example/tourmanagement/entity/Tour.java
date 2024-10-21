@@ -5,13 +5,15 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "permissions")
-public class Permission {
+@Table(name = "tours")
+public class Tour {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -22,6 +24,15 @@ public class Permission {
     @Lob
     @Column(name = "description")
     private String description;
+
+    @Column(name = "price", nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
+
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
     @ColumnDefault("current_timestamp()")
     @Column(name = "created_at", nullable = false)

@@ -7,14 +7,13 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "bookings")
-public class Booking {
+@Table(name = "role_users")
+public class RoleUser {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -26,32 +25,8 @@ public class Booking {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "tour_id", nullable = false)
-    private com.example.tourmanagement.Tour tour;
-
-    @ColumnDefault("0")
-    @Column(name = "total_adults")
-    private Integer totalAdults;
-
-    @ColumnDefault("0")
-    @Column(name = "total_children")
-    private Integer totalChildren;
-
-    @ColumnDefault("0")
-    @Column(name = "total_seniors")
-    private Integer totalSeniors;
-
-    @ColumnDefault("`total_adults` + `total_children` + `total_seniors`")
-    @Column(name = "total_passengers")
-    private Integer totalPassengers;
-
-    @Column(name = "total_price", precision = 10, scale = 2)
-    private BigDecimal totalPrice;
-
-    @ColumnDefault("'pending'")
-    @Lob
-    @Column(name = "status")
-    private String status;
+    @JoinColumn(name = "role_id", nullable = false)
+    private com.example.tourmanagement.Role role;
 
     @ColumnDefault("current_timestamp()")
     @Column(name = "created_at", nullable = false)
