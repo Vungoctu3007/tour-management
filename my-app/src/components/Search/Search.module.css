@@ -17,7 +17,10 @@
 .search-container {
     position: relative;
   }
-  
+  /* translate(0.45455px, 57.7273px) */
+.menu{
+  transform: translate3d(0.6364px, 56px, 0px) !important;
+}
 .search_item {
     position: absolute;
     top: 70px; 
@@ -26,8 +29,19 @@
     z-index: 1000;
 
   }
-.noborder{
+
+.datepicker{
   border: none !important;
+  width: 100% !important;
+  /* transform: translate(0.54545px, 57.7273px) !important; */
+}
+.custom{
+  width: 280px !important;
+  /* width: 100% !important; */
+}
+.react_datepicker_wrapper {
+  width: 100% !important;
+
 }
 /* end search input */
 
@@ -35,7 +49,7 @@
 /* start seaach item */
 @media (max-width: 500px) {
     .searchItemContainer {
-      max-height: 20vh;
+      max-height: 30vh;
       overflow-y: auto; 
     }
     .searchItemList {

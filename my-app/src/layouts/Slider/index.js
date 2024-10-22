@@ -13,11 +13,13 @@ function Slider() {
         backgroundSize: "cover",
       }}
     >
-      <div className="w-100 d-flex justify-content-center ">
-        <SearchInput className="" a={true} b={true}/>
+      <div
+        style={{ marginTop: "200px" }}
+        className="w-100 d-flex justify-content-center "
+      >
+        <SearchInput className="" a={true} b={true} c={true} />
       </div>
     </div>
-  
   );
 }
 

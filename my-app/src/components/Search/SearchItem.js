@@ -23,10 +23,11 @@ const searchItem = [
     holteCount: 20,
   },
 ];
+
 function SearchItem({ ia }) {
   const co = ia ? "" : "col-sm-6 col-md-3 ";
   // width:'340px',
-  const withd=ia ? {width:'340px',  maxHeight: '60vh',overflowY:'auto' } : {};
+  const withd=ia ? {width:'385px',  maxHeight: '40vh',overflowY:'auto' } : {};
   return (
     <div
       className={styles.searchItemContainer + " bg-white border rounded p-2 "}

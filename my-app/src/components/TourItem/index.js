@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import Images from "../../assets/images/item.jpg"
+import Images from "../../assets/images/item.jpg";
 const tour_lists = [
   {
-    id:1,
+    id: 1,
     title: "DU LỊCH SINGAPORE - MALAYSIA 6 NGÀY 5 ĐÊM",
     departure: "Hồ Chí Minh",
     views: 122,
@@ -15,7 +15,7 @@ const tour_lists = [
     imageUrl: Images,
   },
   {
-    id:2,
+    id: 2,
     title: "DU LỊCH HÀ NỘI - HẠ LONG 3 NGÀY 2 ĐÊM",
     departure: "Hà Nội",
     views: 200,
@@ -28,7 +28,7 @@ const tour_lists = [
     imageUrl: Images,
   },
   {
-    id:3,
+    id: 3,
     title: "DU LỊCH ĐÀ NẴNG - HỘI AN 4 NGÀY 3 ĐÊM",
     departure: "Đà Nẵng",
     views: 300,
@@ -41,7 +41,7 @@ const tour_lists = [
     imageUrl: Images,
   },
   {
-    id:4,
+    id: 4,
     title: "DU LỊCH PHÚ QUỐC TAM ĐẢO 2 NGÀY 1 ĐÊM",
     departure: "Hồ Chí Minh",
     views: 180,
@@ -54,7 +54,7 @@ const tour_lists = [
     imageUrl: Images,
   },
   {
-    id:5,
+    id: 5,
     title: "DU LỊCH PHÚ QUỐC TAM ĐẢO 2 NGÀY 1 ĐÊM",
     departure: "Hồ Chí Minh",
     views: 180,
@@ -67,7 +67,7 @@ const tour_lists = [
     imageUrl: Images,
   },
   {
-    id:6,
+    id: 6,
     title: "DU LỊCH PHÚ QUỐC TAM ĐẢO 2 NGÀY 1 ĐÊM",
     departure: "Hồ Chí Minh",
     views: 180,
@@ -80,41 +80,48 @@ const tour_lists = [
     imageUrl: Images,
   },
 ];
+function TourItem({ isInsideCol, isHorizontal,selectedId }) {
+  const colClass = isInsideCol ? "" : "col-md-4";
+  const cardRowClass = isHorizontal ? "row" : "row flex-column";
 
-function TourList({ isInsideCol,selectedId }) {
-  const colClass = isInsideCol ? "col-md-6" : "col-md-4";
-  const filteredTours=selectedId ? tour_lists.filter((tour) => tour.id === selectedId) : tour_lists
-  console.log(filteredTours);
+  const filteredTours=selectedId ? tour_lists.filter((tour)=>tour.id === selectedId) : tour_lists
+
   return (
     <div className="row">
       {filteredTours.map((tour, index) => (
         <div key={index} className={colClass + " mb-4"}>
           <div className="card">
-            <img
-              src={tour.imageUrl}
-              className="card-img-top"
-              alt={tour.title}
-              style={{ height:"270px"}}
-            />
-            <div className="card-body">
-              <h5 className="card-title">{tour.title}</h5>
-              <p className="card-text">
-                <small>KH từ: {tour.departure}</small>
-                <br />
-                Lượt xem: {tour.views} | Đánh giá: {tour.rating}/5 | Đặt chỗ:{" "}
-                {tour.bookings}
-                <br />
-                Khởi hành: {tour.departureDate}
-                <br />
-                Thời gian: {tour.duration}
-                <br />
-                Giá từ: <span className="text-danger">{tour.price}</span>
-                <br />
-                Còn lại {tour.availableSeats} chỗ
-              </p>
-              <Link to="#" className="btn btn-primary w-100">
-                Đặt ngay
-              </Link>
+            <div className={cardRowClass}>
+              <div className={isHorizontal ? "col-md-4" : "col-md-12"}>
+                <img
+                  src={tour.imageUrl}
+                  className="img-fluid rounded w-100"
+                  alt={tour.title}
+                  style={{ height: "280px", objectFit: "cover" }}
+                />
+              </div>
+              <div className={isHorizontal ? "col-md-8" : "col-md-12"}>
+                <div className="card-body">
+                  <h5 className="card-title">{tour.title}</h5>
+                  <p className="card-text">
+                    <small>KH từ: {tour.departure}</small>
+                    <br />
+                    Lượt xem: {tour.views} | Đánh giá: {tour.rating}/5 | Đặt chỗ:{" "}
+                    {tour.bookings}
+                    <br />
+                    Khởi hành: {tour.departureDate}
+                    <br />
+                    Thời gian: {tour.duration}
+                    <br />
+                    Giá từ: <span className="text-danger">{tour.price}</span>
+                    <br />
+                    Còn lại {tour.availableSeats} chỗ
+                  </p>
+                  <Link to="#" className="btn btn-primary">
+                    Đặt ngay
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -123,4 +130,4 @@ function TourList({ isInsideCol,selectedId }) {
   );
 }
 
-export default TourList;
+export default TourItem;

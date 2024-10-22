@@ -1,7 +1,18 @@
-function CategoryTitle() {
-    return ( <div>
-        <h1>Trang Chủ/ danh sách tour</h1>
-    </div> );
-}
+import { Link } from "react-router-dom";
 
-export default CategoryTitle;
+function CategoryTitle() {
+    return (
+      <div>
+        <ul className="d-flex list-unstyled">
+          <li className="me-2">
+            <Link to="/" className="text-decoration-none">Trang Chủ</Link>
+          </li>
+          <li className="me-2">/</li>
+          <li>Đặt Tour</li>
+        </ul>
+      </div>
+    );
+  }
+  
+  export default CategoryTitle;
+  
