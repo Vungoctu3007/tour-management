@@ -1,62 +1,32 @@
 import Avatar from "@mui/material/Avatar";
-import { Navbar, Nav, NavDropdown, Container, Button } from "react-bootstrap";
-
+import { Navbar, Nav, Container } from "react-bootstrap";
+import pages_items from "../../constants/pageItems";
 import { Link } from "react-router-dom";
-import { Fragment } from "react";
-
-const pages_items=[
-  {
-    title:"Trang Chủ",
-    to:"/"
-  },
-  {
-    title:"Đặt Tour",
-    to:"/tour"
-  },
-  {
-    title:"Giới Thiệu",
-    to:"/about_us"
-  },
-]
-const menu_items = [
-  {
-    icon: "",
-    title: "Hồ Sơ",
-    to: "/profile",
-  },
-  {
-    icon: "",
-    title: "Đơn Hàng",
-    to: "/profile",
-  },
-  {
-    icon: "",
-    title: "Khuyễn Mãi",
-    to: "/profile",
-  },
-  {
-    icon: "",
-    title: "Đăng Xuất",
-    to: "/login",
-    divider: true,
-  },
-];
-
+import Logo from "../../assets/images/logo.png";
+import ProfileItem from "../../components/ProfileItem";
 function Header() {
   const currentUser = true;
-
   return (
-    <Navbar style={{backgroundColor:"#259ed5"}} className="" expand="lg">
+    <Navbar style={{ backgroundColor: "#259ed5" }} className="" expand="lg">
       <Container>
-        <Navbar.Brand href="#home">TOUR</Navbar.Brand>
+        <Navbar.Brand href="/">
+          <img
+            src={Logo}
+            alt="Logo"
+            style={{ height: "60px", width: "100px" }}
+          />
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Collapse
+          id="basic-navbar-nav"
+          className="justify-content-center"
+        >
           <Nav className="me-auto">
             {pages_items.map((page, index) => (
               <Nav.Link
                 key={index}
                 href={page.to}
-                className="text-white"
+                className="text-white fw-bold"
               >
                 {page.title}
               </Nav.Link>
@@ -64,35 +34,23 @@ function Header() {
           </Nav>
           {/* Dropdown Menu */}
           {currentUser ? (
-            <div className="btn-group " style={{marginRight:"40px"}}>
+            <div className="btn-group " style={{ marginRight: "40px" }}>
               <Avatar
                 className=" btn-danger "
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
                 style={{ cursor: "pointer" }}
               />
-
-              <ul className="dropdown-menu "  >
-                {menu_items.map((item, index) => (
-                  <Fragment key={index}>
-                    {index === menu_items.length - 1 && (
-                      <li>
-                        <hr className="dropdown-divider" />
-                      </li>
-                    )}
-                    <li>
-                      <Link className="dropdown-item" to={item.to}>
-                        {item.title}
-                      </Link>
-                    </li>
-                  </Fragment>
-                ))}
-              </ul>
+              <div className="dropdown-menu ">
+                <ProfileItem width="250px" />
+              </div>
             </div>
           ) : (
-            <Button variant="outline-primary" href="/login">
-              Đăng Nhập{" "}
-            </Button>
+            <Nav>
+              <Link to="/login" className="text-white fw-bold">
+                Đăng Nhập
+              </Link>
+            </Nav>
           )}
         </Navbar.Collapse>
       </Container>

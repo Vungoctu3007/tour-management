@@ -7,6 +7,7 @@ import { vi } from "date-fns/locale";
 import DatePicker from "react-datepicker";
 import styles from "./Search.module.css";
 import SearchItem from "./SearchItem";
+import 'react-datepicker/dist/react-datepicker.css';
 const listCity = [
   "Hồ Chí Minh",
   "Hà Nội",
@@ -19,7 +20,7 @@ const listCity = [
   "Paris",
   "Sydney",
 ];
-function SearchInput({ a, b, ia }) {
+function SearchInput({ a, b, ia, c }) {
   const [showSearchItem, setShowSearchItem] = useState(false);
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -55,8 +56,12 @@ function SearchInput({ a, b, ia }) {
   // true is the default
   const col = a ? "col-md-12" : "col-md-3";
   const coll = b ? "col-md-12" : "col-md-9";
+  const maxWidth = c ? { maxWidth: "750px" } : {};
   return (
-    <div className="container rounded border p-2 position-relative">
+    <div
+      style={maxWidth}
+      className="container rounded border z-100 p-2 position-relative "
+    >
       <div className="row">
         {/* Input tìm kiếm */}
         <div className={col + " mb-3"}>
@@ -66,7 +71,7 @@ function SearchInput({ a, b, ia }) {
             </span>
             <input
               type="text"
-              className="form-control"
+              className="form-control "
               placeholder="Bạn muốn đi đâu?"
               aria-label="Search"
               aria-describedby="basic-addon1"
@@ -94,29 +99,28 @@ function SearchInput({ a, b, ia }) {
                     selected={selectedDate}
                     onChange={(date) => setSelectedDate(date)}
                     dateFormat="eeee, dd-MM-yyyy"
-                    locale={vi}   
-                    className={`${styles.noborder} form-control`}
+                    locale={vi}
+                    className={`${styles.datepicker} form-control `}
                     id="datePickerInput"
                     showMonthDropdown
                     showYearDropdown
                     dropdownMode="select"
-                    
+                    popperClassName={styles.custom}
+                    wrapperClassName={styles.react_datepicker_wrapper}
+                 
                   />
                 </div>
               </div>
             </div>
 
             {/* Khởi hành từ */}
-            <div className="col-12 col-md-4">
-              <div
-                className="card p-1 d-flex dropdown"
-                style={{ height: "60px" }}
-              >
+            <div className="col-12 col-md-4 dropdown">
+              <div className="card p-1 d-flex " style={{ height: "60px" }}>
                 <div className="d-flex align-items-center h-100">
                   <CiLocationArrow1 size={24} className={styles.icon_search} />
                   <input
                     type="text"
-                    className="form-control dropdown-toggle"
+                    className="form-control "
                     placeholder="Khởi hành từ"
                     style={{ border: "none", outline: "none", height: "100%" }}
                     data-bs-toggle="dropdown"
@@ -125,8 +129,12 @@ function SearchInput({ a, b, ia }) {
                   />
 
                   <ul
-                    className="dropdown-menu "
-                    style={{ maxHeight: "200px", overflowY: "auto" }}
+                    className={`${styles.menu} dropdown-menu menu w-100`}
+                    style={{
+                      maxHeight: "200px",
+                      overflowY: "auto",
+                      transform: "none",
+                    }}
                   >
                     {listCity.map((city, index) => (
                       <li key={index}>

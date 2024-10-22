@@ -12,7 +12,6 @@ function Home() {
             <div className="">
               <Content />
             </div>
-      
         </div>
       </div>
     </div>

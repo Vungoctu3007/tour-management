@@ -1,0 +1,29 @@
+/* TourList.module.css */
+.horizontalLayout {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap; /* Không xuống dòng */
+  align-items: center;
+}
+
+.verticalLayout {
+  display: flex;
+  flex-direction: column;
+}
+
+.horizontalImage {
+  width: 200px;
+  height: auto;
+  object-fit: cover;
+}
+
+.verticalImage {
+  width: 100%;
+  height: 270px;
+  object-fit: cover;
+}
+
+.cardBodyHorizontal {
+  padding-left: 15px;
+  flex: 1; /* Để card-body mở rộng */
+}
