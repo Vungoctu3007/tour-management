@@ -1,6 +1,6 @@
 
-import AdminSidebar from "../../../components/AdminSidebar";
-import AdminHeader from "../../../components/AdminHeader";
+import AdminSidebar from "../../components/AdminSidebar";
+import AdminHeader from "../../components/AdminHeader";
 function AdminLayout({ children }) {
   return (
     <div className="container-fluid">

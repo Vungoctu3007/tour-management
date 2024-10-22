@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import Logo from "../../assets/images/logo.png";
 function Footer() {
   return (
     <footer className="  py-4 text-white" style={{backgroundColor:"#259ed5"}}>

@@ -31,14 +31,14 @@ function ProfileItem({ isClass, width = "310px" }) {
             )}
 
             <li
-              className={`${isClass ? "p-3" : ""} fw-bold`}
+              className=" fw-bold"
               onClick={() => handleClickActiveIndex(index)}
               style={{
                 backgroundColor: activeIndex === index ? "#ccc" : "transparent",
                 color: activeIndex === index ? "#fff" : "inherit", 
               }}
             >
-              <Link className="dropdown-item fw-bold" to={item.to}>
+              <Link className={`dropdown-item fw-bold ${isClass ? "p-3":""}`} to={item.to}>
                 <span className="me-3" style={{ color: "#259ed5" }}>
                   {item.icon}
                 </span>
