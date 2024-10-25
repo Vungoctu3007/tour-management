@@ -7,14 +7,12 @@ import org.hibernate.annotations.ColumnDefault;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
-
 @Getter
 @Setter
 @Entity
-@Builder
+@Table(name = "tours")
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tours")
 public class Tour {
     @Id
     @Column(name = "id", nullable = false)
