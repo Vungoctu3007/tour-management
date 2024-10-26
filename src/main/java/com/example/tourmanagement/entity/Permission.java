@@ -13,7 +13,7 @@ import java.time.Instant;
 @Table(name = "permissions")
 public class Permission {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "permission_id", nullable = false)
     private Integer id;
 
     @Column(name = "name", nullable = false)

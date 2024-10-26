@@ -13,3 +13,5 @@ public interface TourMapper {
     //@@MappingTarget có tác dụng để cập nhật mà không tạo mới
     void updateTour(@MappingTarget Tour tour, TourRequest request);
 }
+
+
