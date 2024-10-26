@@ -9,8 +9,8 @@ public enum ErrorCode {
     TOUR_NOT_EXITED(1001, "Tour not existed", HttpStatus.NOT_FOUND),
     //HttpStatus.FORBIDDEN là lỗi 403 không có quyền truy cập
     UNAUTHENTICATED(1002, "You do no have permission", HttpStatus.FORBIDDEN),
-    USER_NOT_EXISTED(1003, "User not exited", HttpStatus.NOT_FOUND)
-
+    USER_NOT_EXISTED(1003, "User not exited", HttpStatus.NOT_FOUND),
+    USER_EXITS(1004,"User exited", HttpStatus.BAD_REQUEST)
     ;
 
 
