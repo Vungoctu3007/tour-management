@@ -1,12 +1,22 @@
-.submenu {
-  /* max-height: 0;  */
-  /* opacity: 0;  */
-  /* overflow: hidden;  */
-  transition: max-height 0.5s ease-in-out, opacity 1s ease-in-out; 
-  background-color: aqua;
-}
+
 
 .submenu-open {
-  max-height: 500px;  
-  opacity: 1; 
+  /* max-height: 500px;  
+  opacity: 1;  */
+}
+.sidebar {
+  font-size: 14px; /* Smaller text for the entire sidebar */
+}
+
+.menuLink {
+  font-size: 14px; /* Adjust the font size for the main menu */
+}
+
+.submenu {
+  font-size: 12px; 
+}
+
+
+.submenuLink {
+  font-size: 12px; /* Smaller font size for the submenu links */
 }
