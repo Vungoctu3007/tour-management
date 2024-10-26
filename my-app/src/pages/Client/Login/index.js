@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
 const Login = () => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState(""); // Thêm state để lưu thông báo lỗi
+    const [username, setUsername] = useState("lytruong");
+    const [password, setPassword] = useState("password123");
     const navigate = useNavigate();
-
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        setError(""); // Reset lỗi trước khi gửi yêu cầu
-
+    const handleLogin = async () => {
         try {
             const response = await axios.post("http://localhost:8080/auth/login", {
                 username,
@@ -27,23 +21,11 @@ const Login = () => {
                 navigate("/home");
             }
         } catch (error) {
-            if (error.response) {
-                // Lỗi do server trả về
-                setError("Login failed: " + error.response.data.message);
-            } else if (error.request) {
-                // Lỗi do không nhận được phản hồi từ server
-                setError("Login failed: No response from server");
-            } else {
-                // Lỗi khác
-                setError("Login failed: " + error.message);
-            }
             console.error("Login failed", error);
         }
     };
-
     return (
-        <form onSubmit={handleLogin}>
-            {error && <div style={{ color: 'red' }}>{error}</div>} {/* Hiển thị thông báo lỗi */}
+        <div >
             <div>
                 <label>Username:</label>
                 <input
@@ -62,8 +44,8 @@ const Login = () => {
                     required
                 />
             </div>
-            <button type="submit">Login</button>
-        </form>
+            <button onClick={()=>handleLogin()}>Login</button>
+        </div>
     );
 };
 

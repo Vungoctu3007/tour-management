@@ -1,8 +1,9 @@
 import LineChartComponent from "./LineChartComponent";
+import PieChartComponent from "./PieChartComponent";
 
 function DashBoard() {
   return (
-    <div className="p-4 border rounded">
+    <div className=" ">
       <div className="d-flex justify-content-between">
         <h6 className="text-lg mb-0">Doanh Thu</h6>
         <select className="form-select form-select-sm w-auto">
@@ -12,13 +13,12 @@ function DashBoard() {
           <option>Ngày</option>
         </select>
       </div>
-      <div className="mt-4" >
-      {/* <LineChartComponent /> */}
-        <div className="row">
-          <div className="col-7" style={{ height: "300px" }}>
-            <LineChartComponent />
-          </div>
-          <div className="col-5"></div>
+      <div className="row mt-2 g-3">
+        <div className="col-lg-7 border p-2 mb-3" style={{ height: "300px" }}>
+          <LineChartComponent />
+        </div>
+        <div className="col-lg-5 border p-2 mb-3" style={{ height: "300px" }}>
+          <PieChartComponent />
         </div>
       </div>
     </div>
