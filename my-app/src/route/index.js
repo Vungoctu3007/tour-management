@@ -6,6 +6,7 @@ import Register from "../pages/Client/Register";
 import About from "../pages/Client/AboutUs";
 import Payment from "../pages/Client/Payment";
 import DetailTour from "../pages/Client/DetailTour";
+import Tour from "../pages/Client/Tour"
 // client profile
 import Profile from "../pages/Client/Profile";
 import Score from "../pages/Client/Profile/score";
@@ -29,6 +30,7 @@ import AddTour from "../pages/Admin/Tour/AddTour";
 const publicRoutes = [
   // client routes
   { path: routes.home, component: Home, layout: DefaultLayout },
+  { path: routes.tour, component: Tour, layout: DefaultLayout },
   { path: routes.about_us, component: About, layout: DefaultLayout },
   { path: routes.detail_tour, component: DetailTour, layout: null },
   { path: routes.login, component: Login, layout: null },

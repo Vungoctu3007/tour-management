@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { getUsers } from "../../../services/userService";
+import { getUsers,getTour } from "../../../services/userService";
 function Profile() {
   const [users, setUsers] = useState([]);
+  const [tours, setTours] = useState([]);
+
   useEffect(() => {
     const fetUsers = async () => {
       const result = await getUsers();

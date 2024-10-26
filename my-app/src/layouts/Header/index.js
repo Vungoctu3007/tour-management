@@ -41,8 +41,8 @@ function Header() {
                 aria-expanded="false"
                 style={{ cursor: "pointer" }}
               />
-              <div className="dropdown-menu ">
-                <ProfileItem width="250px" />
+              <div className="dropdown-menu dropdown-menu-end"  style={{ right: 0 }} >
+                <ProfileItem width="200px"/>
               </div>
             </div>
           ) : (

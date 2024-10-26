@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import profile_items from "../../constants/profileItems";
-function ProfileItem({ isClass, width = "310px" }) {
+function ProfileItem({ isClass, width = "260px" }) {
   const [activeIndex, setActiveIndex] = useState(isClass ? 0 :-1);
   const handleClickActiveIndex = (index) => {
     if(isClass){
