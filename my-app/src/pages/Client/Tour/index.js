@@ -2,10 +2,11 @@ import CategoryTitle from "../../../components/CategoryTitle";
 import SearchInput from "../../../components/Search/searchInput";
 import styles from "./Tour.module.css";
 import TourItem from "../../../components/TourItem";
-
+import Pagination from "../../../components/Pagination";
 function Tour() {
   return (
     <div className="container">
+      {/* <TourBookingCalendar/> */}
       <div>
         {/* Search start */}
         <div className="row">
@@ -78,6 +79,7 @@ function Tour() {
             </div>
             {/* Tour List */}
             <TourItem isInsideCol={true} isHorizontal={true} />
+            <Pagination/>
           </div>
         </div>
       </div>

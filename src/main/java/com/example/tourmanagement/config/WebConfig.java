@@ -11,6 +11,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**") // Cho phép tất cả các đường dẫn
                 .allowedOrigins("http://localhost:3000") // Thay đổi miền nếu cần
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Các phương thức HTTP được phép
-                .allowedHeaders("*");
+                .allowedHeaders("*"); // Các header được phép
     }
 }

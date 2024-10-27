@@ -7,7 +7,8 @@ function Profile() {
   useEffect(() => {
     const fetUsers = async () => {
       const result = await getUsers();
-      setUsers(result);
+      setUsers(result.result);
+      // console.log(result.result);
     };
     fetUsers();
   },[]);
@@ -17,9 +18,10 @@ function Profile() {
       <h1>Profile</h1>
       <ul>
         {
+          
           users.map((item,index)=>(
             <li key={index}>
-              {item.name}
+              {item.username}
             </li>
           ))
         }

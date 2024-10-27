@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link,useLocation  } from "react-router-dom";
 
 function CategoryTitle() {
+  const location = useLocation();
+  const pathSegments = location.pathname.split('/').filter(segment => segment);
     return (
       <div>
         <ul className="d-flex list-unstyled">
@@ -8,7 +10,9 @@ function CategoryTitle() {
             <Link to="/" className="text-decoration-none">Trang Chủ</Link>
           </li>
           <li className="me-2">/</li>
-          <li>Đặt Tour</li>
+          <li>
+            {pathSegments}
+          </li>
         </ul>
       </div>
     );

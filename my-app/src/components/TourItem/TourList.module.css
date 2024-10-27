@@ -1,0 +1,7 @@
+.discount{
+    top: 10px;
+    right: -10px;
+    background-color: #f24c60;
+    /* background-color: #ffc107; */
+    clip-path:   polygon(0 50%, 15% 0, 100% 0, 100% 100%, 15% 100%);
+}
