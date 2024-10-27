@@ -1,21 +1,21 @@
 package com.example.tourmanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "user")
 public class User {
     @Id
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @Column(name = "username", nullable = false)
@@ -26,10 +26,10 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ManyToOne(fetch = FetchType.EAGER) // Đã sửa thành ManyToOne
-    @JoinColumn(name = "role_id") // Khóa ngoại
-    private Role role; // Mỗi user chỉ có một Role
-
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 
     @ColumnDefault("current_timestamp()")
     @Column(name = "created_at", nullable = false)
@@ -38,4 +38,5 @@ public class User {
     @ColumnDefault("current_timestamp()")
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
 }

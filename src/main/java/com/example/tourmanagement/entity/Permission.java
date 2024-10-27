@@ -10,10 +10,10 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "permissions")
+@Table(name = "permission")
 public class Permission {
     @Id
-    @Column(name = "permission_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @Column(name = "name", nullable = false)

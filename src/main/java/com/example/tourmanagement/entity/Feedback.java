@@ -7,31 +7,33 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "booking_passengers")
-public class BookingPassenger {
+@Table(name = "feedback")
+public class Feedback {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "booking_id", nullable = false)
-    private Booking booking;
+    @JoinColumn(name = "tour_id", nullable = false)
+    private Tour tour;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    @Column(name = "age", nullable = false)
-    private Integer age;
+    @Column(name = "rating", nullable = false)
+    private Integer rating;
 
-    @Column(name = "price", nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
+    @Lob
+    @Column(name = "review")
+    private String review;
 
     @ColumnDefault("current_timestamp()")
     @Column(name = "created_at", nullable = false)

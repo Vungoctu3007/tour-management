@@ -3,18 +3,16 @@ package com.example.tourmanagement.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "booking_payments")
-public class BookingPayment {
+@Table(name = "payment")
+public class Payment {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -24,20 +22,13 @@ public class BookingPayment {
     @JoinColumn(name = "booking_id", nullable = false)
     private Booking booking;
 
-    @Lob
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;
 
-    @ColumnDefault("'pending'")
-    @Lob
-    @Column(name = "payment_status")
-    private String paymentStatus;
+    @Column(name = "amount", nullable = false)
+    private Integer amount;
 
-    @Column(name = "amount", nullable = false, precision = 10, scale = 2)
-    private BigDecimal amount;
-
-    @ColumnDefault("current_timestamp()")
     @Column(name = "payment_date", nullable = false)
-    private Instant paymentDate;
+    private LocalDate paymentDate;
 
 }
