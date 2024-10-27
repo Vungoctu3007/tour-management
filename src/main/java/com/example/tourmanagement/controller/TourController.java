@@ -31,11 +31,17 @@ public class TourController {
     }
     //get tour by id
     @GetMapping("/{tourId}")
-    ApiResponse<TourResponse> getTour(@PathVariable("tourId") Integer tourId) {
+    ApiResponse<TourResponse> getTourById(@PathVariable("tourId") Integer tourId) {
         return ApiResponse.<TourResponse>builder()
                 .result(tourService.getTour(tourId))
                 .build();
     }
+    //add tour
+    @PostMapping()
+    ApiResponse<TourResponse> addTour(@RequestBody TourRequest tourRequest) {
+        return ApiResponse.<TourResponse>builder().build();
+    }
+
     //update tour by id
     @PutMapping("/tourId")
     ApiResponse<TourResponse> updateUser(@PathVariable Integer tourId, @RequestBody TourRequest request) {
