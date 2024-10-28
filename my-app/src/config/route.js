@@ -6,7 +6,7 @@ const routes = {
   tour: "/tour",
   about_us: "/about-us",
   payment: "/payment",
-  detail_tour: "/detail-tour/:id",
+  detail_tour: "/tour/detail/:id",
   // profile
   profile: "/profile",
   score: "/profile/score",

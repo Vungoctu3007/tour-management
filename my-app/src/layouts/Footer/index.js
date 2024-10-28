@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 function Footer() {
   return (
-    <footer className="  py-4 text-white" style={{backgroundColor:"#259ed5"}}>
+    <footer className="mt-4  py-4 text-white" style={{backgroundColor:"#259ed5"}}>
       <div className="container">
         <div className="row">
           <div className="col-12 col-md-3 mb-4">

@@ -1,38 +1,31 @@
-import { Link } from "react-router-dom";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-function Pagination() {
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+
+function PaginationComponent({ count, page, onChange, variant="outlined", color,shape="rounded" }) {
   return (
-    <nav className="d-flex justify-content-center" aria-label="Page navigation example">
-      <ul className="pagination">
-        <li className="page-item">
-          <Link className="page-link" href="#" aria-label="Previous">
-          <ArrowBackIosIcon/>
-          </Link>
-        </li>
-        <li className="page-item">
-          <Link className="page-link" href="#">
-            1
-          </Link>
-        </li>
-        <li className="page-item">
-          <Link className="page-link" href="#">
-            2
-          </Link>
-        </li>
-        <li className="page-item">
-          <Link className="page-link" href="#">
-            3
-          </Link>
-        </li>
-        <li className="page-item">
-          <Link className="page-link" href="#" aria-label="Next">
-           <ArrowForwardIosIcon/>
-          </Link>
-        </li>
-      </ul>
-    </nav>
+    <div className="d-flex justify-content-center">
+      <Stack spacing={2}>
+        <Pagination
+          count={count}
+          page={page}
+          onChange={onChange}
+          variant={variant}
+          color={color}
+          sx={{
+            "& .MuiPaginationItem-root": {
+              fontSize: "1.5rem", 
+              padding: "20px", 
+              minWidth: "48px", 
+              minHeight: "48px", 
+            },
+            "& .MuiPaginationItem-icon": {
+              fontSize: "2rem",
+            },
+          }}
+        />
+      </Stack>
+    </div>
   );
 }
 
-export default Pagination;
+export default PaginationComponent;

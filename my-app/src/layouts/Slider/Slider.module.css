@@ -10,8 +10,13 @@
     max-width: 600px;
   }
   
-  .carouselImage {
-    height: 500px; /* Chiều cao cho slider */
-    object-fit: cover; /* Giữ ảnh phù hợp mà không bị kéo dãn */
-  }
+.carouselImage {
+  height: 500px; /* Chiều cao cho slider */
+  object-fit: cover; /* Giữ ảnh phù hợp mà không bị kéo dãn */
+}
+.searchcarousel{
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
   
+

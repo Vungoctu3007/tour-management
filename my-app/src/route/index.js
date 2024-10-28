@@ -32,7 +32,7 @@ const publicRoutes = [
   { path: routes.home, component: Home, layout: DefaultLayout },
   { path: routes.tour, component: Tour, layout: DefaultLayout },
   { path: routes.about_us, component: About, layout: DefaultLayout },
-  { path: routes.detail_tour, component: DetailTour, layout: null },
+  { path: routes.detail_tour, component: DetailTour, layout: DefaultLayout },
   { path: routes.login, component: Login, layout: null },
   { path: routes.register, component: Register, layout: null },
   { path: routes.payment, component: Payment, layout: null },

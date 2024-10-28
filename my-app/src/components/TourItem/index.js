@@ -148,7 +148,7 @@ function TourItem({ isInsideCol, isHorizontal, selectedId }) {
                         <span className="fw-bold">VND</span>
                       </div>
 
-                      <Link to="#" className="btn btn-primary fw-bold ">
+                      <Link to={`/tour/detail/${tour.id}`} className="btn btn-primary fw-bold ">
                         Xem Tour
                       </Link>
                     </div>

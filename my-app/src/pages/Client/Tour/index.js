@@ -2,7 +2,7 @@ import CategoryTitle from "../../../components/CategoryTitle";
 import SearchInput from "../../../components/Search/searchInput";
 import styles from "./Tour.module.css";
 import TourItem from "../../../components/TourItem";
-import Pagination from "../../../components/Pagination";
+import PaginationComponent from "../../../components/Pagination";
 function Tour() {
   return (
     <div className="container">
@@ -28,7 +28,7 @@ function Tour() {
               </div>
               <div className="card-body">
                 <form>
-                  <div className="form-check">
+                  <div className="form-check mt-2">
                     <input
                       className="form-check-input"
                       type="checkbox"
@@ -40,7 +40,7 @@ function Tour() {
                       Giá: Thấp đến cao
                     </label>
                   </div>
-                  <div className="form-check">
+                  <div className="form-check mt-2">
                     <input
                       className="form-check-input"
                       type="checkbox"
@@ -52,7 +52,7 @@ function Tour() {
                       Giá: Cao đến thấp
                     </label>
                   </div>
-                  <div className="form-check">
+                  <div className="form-check mt-2">
                     <input
                       className="form-check-input"
                       type="checkbox"
@@ -65,8 +65,26 @@ function Tour() {
                       Đánh giá tốt nhất
                     </label>
                   </div>
+                  <div className="form-check mt-2">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="sortOptions"
+                      id="bestRating"
+                      value="bestRating"
+                      checked
+                    />
+                    <label className="form-check-label" for="bestRating">
+                      Ưu đãi tốt nhất
+                    </label>
+                  </div>
                 </form>
               </div>
+            </div>
+
+            {/*  */}
+            <div className={`${styles.filte} card`}>
+                dgdsg
             </div>
           </div>
           {/* sidebar Filters end */}
@@ -79,7 +97,7 @@ function Tour() {
             </div>
             {/* Tour List */}
             <TourItem isInsideCol={true} isHorizontal={true} />
-            <Pagination/>
+            <PaginationComponent count={10}/>
           </div>
         </div>
       </div>
