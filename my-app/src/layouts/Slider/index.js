@@ -36,7 +36,7 @@ function Slider() {
       </Carousel>
    
       <div
-        className={`position-absolute top-50 start-50  ${styles.searchcarousel}`}
+        className={`position-absolute top-50 start-50 w-100 ${styles.searchcarousel}`}
       >
         
         <SearchInput className=""  c={false} />

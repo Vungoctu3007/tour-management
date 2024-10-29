@@ -11,8 +11,8 @@
   }
   
 .carouselImage {
-  height: 500px; /* Chiều cao cho slider */
-  object-fit: cover; /* Giữ ảnh phù hợp mà không bị kéo dãn */
+  height: 500px; 
+  object-fit: cover; 
 }
 .searchcarousel{
   transform: translate(-50%, -50%);
