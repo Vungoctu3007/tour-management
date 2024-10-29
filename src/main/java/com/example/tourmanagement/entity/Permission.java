@@ -1,34 +1,24 @@
 package com.example.tourmanagement.entity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.*;
 
-import java.time.Instant;
-
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "permission")
+@Table(name = "permissions")
 public class Permission {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "permission_id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Lob
-    @Column(name = "description")
-    private String description;
-
-    @ColumnDefault("current_timestamp()")
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
-
-    @ColumnDefault("current_timestamp()")
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
+    @Column(name = "permission_name", nullable = false)
+    private String permissionName;
 
 }

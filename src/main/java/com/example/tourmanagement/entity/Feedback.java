@@ -1,46 +1,32 @@
 package com.example.tourmanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.*;
 
-import java.time.Instant;
-
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "feedback")
 public class Feedback {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "feedback_id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "tour_id", nullable = false)
-    private Tour tour;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "booking_id")
+    private Booking booking;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "detail_route_id")
+    private Detailroute detailRoute;
+
+    @Column(name = "text", nullable = false)
+    private String text;
 
     @Column(name = "rating", nullable = false)
-    private Integer rating;
-
-    @Lob
-    @Column(name = "review")
-    private String review;
-
-    @ColumnDefault("current_timestamp()")
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
-
-    @ColumnDefault("current_timestamp()")
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
+    private Float rating;
 
 }

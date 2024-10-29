@@ -39,7 +39,7 @@ function Slider() {
         className={`position-absolute top-50 start-50  ${styles.searchcarousel}`}
       >
         
-        <SearchInput className="" a={false} b={false} c={false} />
+        <SearchInput className=""  c={false} />
       </div>
     </div>
   );

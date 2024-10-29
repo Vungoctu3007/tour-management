@@ -12,13 +12,13 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "payments")
-public class Payment {
+@Table(name = "employees")
+public class Employee {
     @Id
-    @Column(name = "payment_id", nullable = false)
-    private Integer id;
+    @Column(name = "employee_id", nullable = false)
+    private String employeeId;
 
-    @Column(name = "payment_name")
-    private String paymentName;
+    @Column(name = "employee_email", nullable = false)
+    private String employeeEmail;
 
 }

@@ -10,7 +10,7 @@ function Tour() {
       <div>
         {/* Search start */}
         <div className="row">
-          <SearchInput ia={true} a={false} b={false} c={false}></SearchInput>
+          <SearchInput ia={true}  c={false}></SearchInput>
         </div>
         <div className="row mt-4">
           <CategoryTitle />

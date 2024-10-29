@@ -7,7 +7,7 @@ import { vi } from "date-fns/locale";
 import DatePicker from "react-datepicker";
 import styles from "./Search.module.css";
 import SearchItem from "./SearchItem";
-import 'react-datepicker/dist/react-datepicker.css';
+import "react-datepicker/dist/react-datepicker.css";
 const listCity = [
   "Hồ Chí Minh",
   "Hà Nội",
@@ -20,7 +20,7 @@ const listCity = [
   "Paris",
   "Sydney",
 ];
-function SearchInput({ a, b, ia, c }) {
+function SearchInput({ ia, c }) {
   const [showSearchItem, setShowSearchItem] = useState(false);
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -53,9 +53,6 @@ function SearchInput({ a, b, ia, c }) {
     };
   }, []);
 
-  // true is the default
-  const col = a ? "col-md-12" : "col-md-3";
-  const coll = b ? "col-md-12" : "col-md-9";
   const maxWidth = c ? { maxWidth: "750px" } : {};
   return (
     <div
@@ -63,34 +60,35 @@ function SearchInput({ a, b, ia, c }) {
       className="container rounded border z-100 p-2 position-relative "
     >
       <div className="row">
-        {/* Input tìm kiếm */}
-        <div className={col + " mb-3"}>
-          <div className="input-group">
-            <span className="input-group-text">
-              <CiLocationOn size={24} />
-            </span>
-            <input
-              type="text"
-              className="form-control "
-              placeholder="Bạn muốn đi đâu?"
-              aria-label="Search"
-              aria-describedby="basic-addon1"
-              style={{ height: "60px" }}
-              onFocus={handFocused}
-              ref={inputRef}
-            />
-          </div>
-        </div>
-        {showSearchItem && (
+        {/* Tùy chọn tìm kiếm */}
+        <div className="col-md-12">
+          <div className="row g-2">
+            {/* ô tìm kiếm */}
+            <div className="col-12 col-md-3">
+              <div className="input-group">
+                <span className="input-group-text">
+                  <CiLocationOn size={24} />
+                </span>
+                <input
+                  type="text"
+                  className="form-control "
+                  placeholder="Bạn muốn đi đâu?"
+                  aria-label="Search"
+                  aria-describedby="basic-addon1"
+                  style={{ height: "60px" }}
+                  onFocus={handFocused}
+                  ref={inputRef}
+                />
+              </div>
+            </div>
+            {/* show search item */}
+            {showSearchItem && (
           <div ref={searchItemRef} className={styles.search_item}>
             <SearchItem a={false} ia={ia} />
           </div>
         )}
-        {/* Tùy chọn tìm kiếm */}
-        <div className={coll}>
-          <div className="row g-2">
             {/* Ngày khởi hành */}
-            <div className="col-12 col-md-4">
+            <div className="col-12 col-md-3">
               <div className="card p-1 d-flex" style={{ height: "60px" }}>
                 <div className="d-flex align-items-center h-100">
                   <CiCalendar size={24} className={styles.icon_search} />
@@ -107,14 +105,13 @@ function SearchInput({ a, b, ia, c }) {
                     dropdownMode="select"
                     popperClassName={styles.custom}
                     wrapperClassName={styles.react_datepicker_wrapper}
-                 
                   />
                 </div>
               </div>
             </div>
 
             {/* Khởi hành từ */}
-            <div className="col-12 col-md-4 dropdown">
+            <div className="col-12 col-md-3 dropdown">
               <div className="card p-1 d-flex " style={{ height: "60px" }}>
                 <div className="d-flex align-items-center h-100">
                   <CiLocationArrow1 size={24} className={styles.icon_search} />
@@ -156,7 +153,7 @@ function SearchInput({ a, b, ia, c }) {
             </div>
 
             {/* Nút Tìm */}
-            <div className="col-12 col-md-4">
+            <div className="col-12 col-md-3">
               <button
                 className="btn btn-warning w-100"
                 style={{ height: "60px" }}

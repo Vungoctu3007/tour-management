@@ -1,33 +1,32 @@
 package com.example.tourmanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.*;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "ticket")
+@Table(name = "tickets")
 public class Ticket {
-    @Id
-    @Column(name = "id", nullable = false)
-    private Integer id;
+    @EmbeddedId
+    private TicketId id;
 
+    @MapsId("bookingId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "booking_id", nullable = false)
     private Booking booking;
 
+    @MapsId("detailRouteId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "detail_route_id", nullable = false)
+    private Detailroute detailRoute;
+
+    @MapsId("passengerId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "passenger_id", nullable = false)
     private Passenger passenger;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "ticket_type_id", nullable = false)
-    private TicketType ticketType;
 
 }

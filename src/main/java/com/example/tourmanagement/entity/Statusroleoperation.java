@@ -4,19 +4,21 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "vehicle")
-public class Vehicle {
+@Table(name = "statusroleoperation")
+public class Statusroleoperation {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "status_id", nullable = false)
     private Integer id;
 
-    @Column(name = "description", nullable = false, length = 11)
+    @Column(name = "description", nullable = false)
     private String description;
 
 }

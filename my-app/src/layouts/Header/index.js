@@ -7,7 +7,8 @@ import ProfileItem from "../../components/ProfileItem";
 function Header() {
   const currentUser = true;
   return (
-    <Navbar style={{ backgroundColor: "#259ed5" }} className="" expand="lg">
+    // #259ed5
+    <Navbar  className="" expand="lg">
       <Container>
         <Navbar.Brand href="/">
           <img

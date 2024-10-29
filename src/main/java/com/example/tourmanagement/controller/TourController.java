@@ -22,38 +22,6 @@ import java.util.List;
 public class TourController {
     TourService tourService;
 
-    //get all list
-    @GetMapping()
-    ApiResponse<List<TourResponse>> getListTour(){
-        return  ApiResponse.<List<TourResponse>>builder()
-                .result(tourService.getAllTour())
-                .build();
-    }
-    //get tour by id
-    @GetMapping("/{tourId}")
-    ApiResponse<TourResponse> getTourById(@PathVariable("tourId") Integer tourId) {
-        return ApiResponse.<TourResponse>builder()
-                .result(tourService.getTour(tourId))
-                .build();
-    }
-    //add tour
-    @PostMapping()
-    ApiResponse<TourResponse> addTour(@RequestBody TourRequest tourRequest) {
-        return ApiResponse.<TourResponse>builder().build();
-    }
 
-    //update tour by id
-    @PutMapping("/tourId")
-    ApiResponse<TourResponse> updateUser(@PathVariable Integer tourId, @RequestBody TourRequest request) {
-        return ApiResponse.<TourResponse>builder()
-                .result(tourService.updateTour(tourId, request))
-                .build();
-    }
-    //delete tour by id
-    @DeleteMapping("/{tourId}")
-    ApiResponse<String> deleteUser(@PathVariable Integer tourId) {
-        tourService.deleteTour(tourId);
-        return ApiResponse.<String>builder()
-                .result("Tour has been deleted").build();
-    }
+
 }

@@ -35,15 +35,14 @@ public class UserService {
 
 //    @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getUsers() {
-        log.info("In method get Users");
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    public UserResponse getUser(Integer id) {
-        return userMapper.toUserResponse(
-                userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)));
-    }
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public UserResponse getUser(Integer id) {
+//        return userMapper.toUserResponse(
+//                userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)));
+//    }
 
     //create user
     public UserResponse createUser(UserRequest request) {

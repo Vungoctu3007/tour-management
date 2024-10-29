@@ -12,7 +12,5 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
-    String id;
     String username;
-    RoleResponse role;
 }

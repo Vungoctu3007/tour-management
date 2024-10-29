@@ -1,31 +1,32 @@
 package com.example.tourmanagement.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
+import java.time.LocalDate;
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "passenger")
+@Table(name = "passengers")
 public class Passenger {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "passenger_id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "object_id")
+    private Object object;
 
-    @Column(name = "email", nullable = false)
-    private String email;
+    @Column(name = "passenger_name", nullable = false)
+    private String passengerName;
 
-    @Column(name = "phone", nullable = false)
-    private Integer phone;
+    @Column(name = "gender", nullable = false)
+    private String gender;
 
-    @Column(name = "request", nullable = false)
-    private String request;
+    @Column(name = "date_birth", nullable = false)
+    private LocalDate dateBirth;
 
 }
