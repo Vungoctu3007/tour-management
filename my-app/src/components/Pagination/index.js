@@ -1,14 +1,14 @@
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
-function PaginationComponent({ count, page, onChange, variant="outlined", color,shape="rounded" }) {
+function PaginationComponent({ totalPages, currentPage, onPageChange, variant="outlined", color,shape="rounded" }) {
   return (
     <div className="d-flex justify-content-center">
       <Stack spacing={2}>
         <Pagination
-          count={count}
-          page={page}
-          onChange={onChange}
+          count={totalPages}
+          page={currentPage}
+          onChange={(event,page) =>onPageChange(page)}
           variant={variant}
           color={color}
           sx={{

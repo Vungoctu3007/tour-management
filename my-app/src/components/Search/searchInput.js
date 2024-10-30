@@ -7,7 +7,8 @@ import { vi } from "date-fns/locale";
 import DatePicker from "react-datepicker";
 import styles from "./Search.module.css";
 import SearchItem from "./SearchItem";
-import "react-datepicker/dist/react-datepicker.css";
+import { getAllDeparture } from "../../services/departureService";
+
 const listCity = [
   "Hồ Chí Minh",
   "Hà Nội",
@@ -20,10 +21,22 @@ const listCity = [
   "Paris",
   "Sydney",
 ];
-function SearchInput({ ia, c }) {
+function SearchInput() {
+  const [departures, setDepartures] = useState([]);
   const [showSearchItem, setShowSearchItem] = useState(false);
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
+  useEffect(() => {
+    const fetchDeparture = async () => {
+      try {
+        const fetchDeparture = await getAllDeparture();
+        setDepartures(fetchDeparture.result)
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchDeparture();
+  },[]);
 
   const handCitySelect = (city) => {
     setSelectedCity(city);
@@ -53,12 +66,8 @@ function SearchInput({ ia, c }) {
     };
   }, []);
 
-  const maxWidth = c ? { maxWidth: "750px" } : {};
   return (
-    <div
-      style={maxWidth}
-      className="container rounded border z-100 p-2 position-relative "
-    >
+    <div className="container rounded border z-100 p-2 position-relative ">
       <div className="row">
         {/* Tùy chọn tìm kiếm */}
         <div className="col-md-12">
@@ -83,10 +92,10 @@ function SearchInput({ ia, c }) {
             </div>
             {/* show search item */}
             {showSearchItem && (
-          <div ref={searchItemRef} className={styles.search_item}>
-            <SearchItem a={false} ia={ia} />
-          </div>
-        )}
+              <div ref={searchItemRef} className={styles.search_item}>
+                <SearchItem />
+              </div>
+            )}
             {/* Ngày khởi hành */}
             <div className="col-12 col-md-3">
               <div className="card p-1 d-flex" style={{ height: "60px" }}>
@@ -133,14 +142,14 @@ function SearchInput({ ia, c }) {
                       transform: "none",
                     }}
                   >
-                    {listCity.map((city, index) => (
+                    {departures.map((item, index) => (
                       <li key={index}>
                         <button
                           className="dropdown-item"
                           type="button"
-                          onClick={() => handCitySelect(city)}
+                          onClick={() => handCitySelect(item.departureName)}
                         >
-                          {city}
+                          {item.departureName}
                         </button>
                       </li>
                     ))}
@@ -169,10 +178,3 @@ function SearchInput({ ia, c }) {
 }
 
 export default SearchInput;
-// {/* {listCity.map((city, index) => (
-//                     <li key={index}>
-//                       <button className="dropdown-item" type="button">
-//                         {city}
-//                       </button>
-//                     </li>
-//                   ))} */}

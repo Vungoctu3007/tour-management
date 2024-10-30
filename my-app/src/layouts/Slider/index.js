@@ -39,27 +39,10 @@ function Slider() {
         className={`position-absolute top-50 start-50 w-100 ${styles.searchcarousel}`}
       >
         
-        <SearchInput className=""  c={false} />
+        <SearchInput />
       </div>
     </div>
   );
 }
 
 export default Slider;
- // <div
-    //   className="d-block w-100 img-fluid d-flex justify-content-center align-items-center"
-    //   style={{
-    //     height: "475px",
-    //     backgroundImage: `url(${ImageSlider})`,
-    //     backgroundRepeat: "no-repeat",
-    //     backgroundPosition: "center",
-    //     backgroundSize: "cover",
-    //   }}
-    // >
-    //   <div
-    //     style={{ marginTop: "200px" }}
-    //     className="w-100 d-flex justify-content-center "
-    //   >
-    //     <SearchInput className="" a={true} b={true} c={true} />
-    //   </div>
-    // </div>

@@ -1,6 +1,6 @@
 import Slider from "../../../layouts/Slider";
-import Content from "../../../components/Content";
-
+import Favourite from "../../../components/Favourite";
+import TourList from "../../../components/Tour/TourList";
 function Home() {
   return (
     <div className="">
@@ -8,10 +8,12 @@ function Home() {
       Home
       <div className="container ">
         <div className="row">
-         
-            <div className="">
-              <Content />
+          <div className="">
+            <TourList isShowPagination={false}/>
+            <div className="mt-4">
+              <Favourite />
             </div>
+          </div>
         </div>
       </div>
     </div>
