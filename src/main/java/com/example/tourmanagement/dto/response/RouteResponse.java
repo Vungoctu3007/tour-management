@@ -19,4 +19,5 @@ public class RouteResponse {
     LocalDate timeToFinish;
     Integer imageId;
     String textImage;
+    Float rating;
 }

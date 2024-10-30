@@ -28,6 +28,19 @@ function Tour() {
               </div>
               <div className="card-body">
                 <form>
+                <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="sortOptions"
+                      id="priceLowToHigh"
+                      value="priceLowToHigh"
+                      checked
+                    />
+                    <label className="form-check-label" for="priceLowToHigh">
+                      Mặc định
+                    </label>
+                  </div>
                   <div className="form-check mt-2">
                     <input
                       className="form-check-input"
@@ -59,7 +72,7 @@ function Tour() {
                       name="sortOptions"
                       id="bestRating"
                       value="bestRating"
-                      checked
+                      
                     />
                     <label className="form-check-label" for="bestRating">
                       Đánh giá tốt nhất
@@ -72,7 +85,7 @@ function Tour() {
                       name="sortOptions"
                       id="bestRating"
                       value="bestRating"
-                      checked
+                      
                     />
                     <label className="form-check-label" for="bestRating">
                       Ưu đãi tốt nhất

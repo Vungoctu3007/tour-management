@@ -9,10 +9,11 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
 
     @Query("SELECT new com.example.tourmanagement.dto.response.RouteResponse(" +
             "de.id, ro.id, de.detailRouteName, de.description, de.stock, " +
-            "de.timeToDeparture, de.timeToFinish, img.id, img.textImage) " +
+            "de.timeToDeparture, de.timeToFinish, img.id, img.textImage, fe.rating) " +
             "FROM Detailroute de " +
             "JOIN Image img ON img.id = de.id " +
-            "JOIN Route ro ON de.id = ro.id "
+            "JOIN Route ro ON de.id = ro.id " +
+            "LEFT JOIN Feedback fe ON de.id = fe.id "
            )
     List<RouteResponse> getDetailRoute();
 }
