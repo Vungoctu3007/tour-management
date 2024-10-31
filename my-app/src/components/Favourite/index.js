@@ -78,7 +78,7 @@ function Favourite() {
             </div>
             <div className="row flex-grow-1">
               {list.slice(2).map((item, index) => (
-                <div className="col-lg-6 mb-3">
+                <div className="col-lg-6 mb-3" key={index}>
                   {renderImageWithText(
                     item.image,
                     item.image,

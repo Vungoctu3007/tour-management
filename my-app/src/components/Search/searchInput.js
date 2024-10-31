@@ -8,19 +8,6 @@ import DatePicker from "react-datepicker";
 import styles from "./Search.module.css";
 import SearchItem from "./SearchItem";
 import { getAllDeparture } from "../../services/departureService";
-
-const listCity = [
-  "Hồ Chí Minh",
-  "Hà Nội",
-  "Đà Nẵng",
-  "Singapore",
-  "Bangkok",
-  "Tokyo",
-  "New York",
-  "London",
-  "Paris",
-  "Sydney",
-];
 function SearchInput() {
   const [departures, setDepartures] = useState([]);
   const [showSearchItem, setShowSearchItem] = useState(false);

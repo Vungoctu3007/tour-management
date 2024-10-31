@@ -11,4 +11,6 @@ import lombok.experimental.FieldDefaults;
 public class ArrivalResponse {
     Integer id;
     String arrivalName;
+    String textImage;
+    Long countRoute;
 }

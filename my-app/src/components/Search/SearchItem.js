@@ -1,56 +1,43 @@
 import styles from "./Search.module.css";
-import Images from "../../assets/images/item_search.jpg";
-
-const searchItem = [
-  {
-    imageUrl: Images,
-    title: "Đà Lạt",
-    holteCount: 20,
-  },
-  {
-    imageUrl: Images,
-    title: "Đà Lạt",
-    holteCount: 20,
-  },
-  {
-    imageUrl: Images,
-    title: "Đà Lạt",
-    holteCount: 20,
-  },
-  {
-    imageUrl: Images,
-    title: "Đà Lạt",
-    holteCount: 20,
-  },
-];
-
-function SearchItem({ ia }) {
-  const co = ia ? "" : "col-sm-6 col-md-3 ";
-  // width:'340px',
-  const withd=ia ? {width:'385px',  maxHeight: '40vh',overflowY:'auto' } : {};
+import { useEffect, useState } from "react";
+import { getAllArrival } from "../../services/arrivalService";
+function SearchItem() {
+ const [searchItem,setSearchItem]=useState([])
+ useEffect(()=>{
+  const fetItem=async()=>{
+    try {
+      const result=await getAllArrival();
+      setSearchItem(result.result)
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  fetItem();
+ },[])
   return (
     <div
       className={styles.searchItemContainer + " bg-white border rounded p-2 "}
-      style={withd}
+     
     >
-      <h5 class="mb-3">Địa điểm đang HOT nhất</h5>
+      <h5 className="mb-3">Địa điểm đang HOT nhất</h5>
       <div className={`row ${styles.searchItemList}`}>
         {searchItem.map((item, index) => (
           //
-          <div className={co + "col-12 mb-3"} >
+          <div className= "col-12 mb-3 col-sm-6 col-md-3" >
             <div
               className="card h-100 d-flex flex-row align-items-center"
               key={index}
             >
+              {/*  src={require(`../../assets/images/Tour/${route.textImage}`)} */}
               <img
-                src={item.imageUrl}
+                src={require(`../../assets/images/Tour/${item.textImage}`)}
                 className="card-img-top img-fluid ms-2"
-                alt={item.imageUrl}
+                alt={item.textImage}
                 style={{ height: "50px", width: "50px", objectFit: "cover"}}
               />
               <div className="card-body ">
-                <h6 className="card-title mb-1">{item.title}</h6>
-                <small>{item.holteCount} Tour</small>
+                <h6 className="card-title mb-1">{item.arrivalName}</h6>
+                <small>{item.countRoute} Tour</small>
               </div>
             </div>
           </div>

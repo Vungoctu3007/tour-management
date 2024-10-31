@@ -19,6 +19,6 @@ public class ArrivalService {
     ArrivalRepository arrivalRepository;
     ArrivalMapper arrivalMapper;
     public List<ArrivalResponse> getAllArrivals() {
-        return arrivalRepository.findAll().stream().map(arrivalMapper::toArrivalResponse).toList();
+        return arrivalRepository.getAllArrivals();
     }
 }
