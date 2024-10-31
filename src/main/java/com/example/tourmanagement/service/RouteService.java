@@ -20,7 +20,6 @@ public class RouteService {
     RouteRepository routeRepository;
     public RouteResponseWrapper getAllRoutes(Pageable pageable) {
         long totalItem = routeRepository.getCountRoute();
-
         long totalPages =(long) Math.ceil((double) totalItem / pageable.getPageSize());
         List<RouteResponse> routes = routeRepository.getDetailRoute(pageable);
         log.info("Total item count: " + totalItem);
