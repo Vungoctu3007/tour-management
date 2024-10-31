@@ -2,14 +2,13 @@ package com.example.tourmanagement.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import java.io.Serializable;
 import java.util.Objects;
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Getter
 @Setter
 @Embeddable
@@ -33,10 +32,10 @@ public class TicketId implements Serializable {
 //                Objects.equals(this.detailRouteId, entity.detailRouteId) &&
 //                Objects.equals(this.bookingId, entity.bookingId);
 //    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(passengerId, detailRouteId, bookingId);
-    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(passengerId, detailRouteId, bookingId);
+//    }
 
 }

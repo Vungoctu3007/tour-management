@@ -1,14 +1,13 @@
 package com.example.tourmanagement.entity;
+
 import jakarta.persistence.*;
-import lombok.*;
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+import lombok.Getter;
+import lombok.Setter;
+
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "users", schema = "tour_management")
 public class User {
     @Id
     @Column(name = "user_id", nullable = false)
@@ -16,9 +15,6 @@ public class User {
 
     @Column(name = "username", nullable = false)
     private String username;
-
-    @Column(name = "email", nullable = false)
-    private String email;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -29,4 +25,5 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
+
 }

@@ -13,6 +13,7 @@ function TourList({ isHorizontal, isInsideCol, isShowPagination }) {
         const data = await getAllRoutes(currentPage, pageSize);
         setRoutes(data.result.routes);
         setTotalPages(data.result.totalPages);
+        console.log(data.result.routes)
       } catch (error) {
         console.error("Error fetching routes", error);
       }

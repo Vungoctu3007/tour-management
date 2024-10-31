@@ -55,7 +55,7 @@ public class UserService {
 //                .orElseThrow(() -> new RuntimeException("Role không tồn tại"));
 
         user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
+//        user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
         user = userRepository.save(user);
         return userMapper.toUserResponse(user);

@@ -1,16 +1,15 @@
 package com.example.tourmanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Getter
 @Setter
 @Entity
-@Table(name = "passengers")
+@Table(name = "passengers", schema = "tour_management")
 public class Passenger {
     @Id
     @Column(name = "passenger_id", nullable = false)

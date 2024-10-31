@@ -1,15 +1,13 @@
 package com.example.tourmanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "routes")
+@Table(name = "routes", schema = "tour_management")
 public class Route {
     @Id
     @Column(name = "route_id", nullable = false)

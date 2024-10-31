@@ -1,4 +1,0 @@
-SELECT   detail.*, image.text_image,image.image_id
-FROM  detailroutes detail
-JOIN images image ON image.detail_tour_id=detail.detail_route_id
-left JOIN feedback fe ON detail.detail_route_id=fe.detail_route_id

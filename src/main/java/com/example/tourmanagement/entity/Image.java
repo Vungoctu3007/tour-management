@@ -1,16 +1,15 @@
 package com.example.tourmanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Getter
 @Setter
 @Entity
-@Table(name = "images")
+@Table(name = "images", schema = "tour_management")
 public class Image {
     @Id
     @Column(name = "image_id", nullable = false)
@@ -22,7 +21,10 @@ public class Image {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "detail_tour_id", nullable = false)
-    private Detailroute detailTour;
+    @JoinColumn(name = "detail_route_id", nullable = false)
+    private Detailroute detailRoute;
+
+    @Column(name = "is_primary")
+    private Integer isPrimary;
 
 }

@@ -1,19 +1,18 @@
 package com.example.tourmanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Getter
 @Setter
 @Entity
-@Table(name = "bookings")
+@Table(name = "bookings", schema = "tour_management")
 public class Booking {
     @Id
     @Column(name = "booking_id", nullable = false)

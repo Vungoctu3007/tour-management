@@ -1,15 +1,13 @@
 package com.example.tourmanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "objects")
+@Table(name = "objects", schema = "tour_management")
 public class Object {
     @Id
     @Column(name = "object_id", nullable = false)
