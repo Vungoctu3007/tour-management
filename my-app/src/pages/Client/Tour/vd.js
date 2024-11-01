@@ -24,3 +24,12 @@
 // };
 
 // export default TourBookingCalendar;
+
+
+
+// SELECT ar.arrival_id,ar.arrival_name,COUNT(ro.route_id) FROM arrivals ar
+// JOIN routes ro ON ar.arrival_id=ro.arrival_id
+// JOIN detailroutes de ON ro.route_id=de.route_id
+// JOIN images im ON de.detail_route_id=im.detail_route_id
+// WHERE im.is_primary=1
+// GROUP BY ar.arrival_id

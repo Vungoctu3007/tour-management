@@ -3,8 +3,22 @@ import CategoryTitle from "../../../components/CategoryTitle";
 import TourCarousel from "./TourCarousel";
 import Schedule from "./Schedule";
 import StartDatePriceTour from "./StartDatePriceTour";
+import { useEffect, useState } from "react";
+import { getRouteDetailById } from "../../../services/routeService";
 function DetailTour() {
   const { id } = useParams();
+  const [detailRoute, setDetailRoute] = useState({});
+  useEffect(() => {
+    const fetchDetailRoute = async () => {
+      try {
+        const data = await getRouteDetailById(id);
+        setDetailRoute(data.result || {});
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchDetailRoute();
+  }, [id]);
   return (
     <div className="container">
       <div className="mt-4">
@@ -33,7 +47,7 @@ function DetailTour() {
       </div>
       <div className="row">
         <div className="col-8">
-          <Schedule />
+          {Object.keys(detailRoute).length > 0 &&   <Schedule detailRoute={detailRoute} />}
           <StartDatePriceTour />
         </div>
         <div className="col-4"></div>

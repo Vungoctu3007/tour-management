@@ -11,8 +11,10 @@ import { getAllDeparture } from "../../services/departureService";
 function SearchInput() {
   const [departures, setDepartures] = useState([]);
   const [showSearchItem, setShowSearchItem] = useState(false);
-  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedDeparture, setSelectedDeparture] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedArrival,setSelectedArrival] = useState(""); 
+  // api departure
   useEffect(() => {
     const fetchDeparture = async () => {
       try {
@@ -24,14 +26,19 @@ function SearchInput() {
     };
     fetchDeparture();
   },[]);
-
-  const handCitySelect = (city) => {
-    setSelectedCity(city);
+  // select departuer
+  const handleSelectedDeparture = (departure) => {
+    setSelectedDeparture(departure);
   };
+  // slect arival
+  const handleSelectedArrival = (arrival) => {
+    setSelectedArrival(arrival);
+    setShowSearchItem(false);
+  }
   const searchItemRef = useRef(null);
   const inputRef = useRef(null);
-  // handle click in input search
-  const handFocused = () => {
+  // show arival
+  const handleArrivalSelect  = () => {
     setShowSearchItem(true);
   };
 
@@ -56,10 +63,8 @@ function SearchInput() {
   return (
     <div className="container rounded border z-100 p-2 position-relative ">
       <div className="row">
-        {/* Tùy chọn tìm kiếm */}
         <div className="col-md-12">
           <div className="row g-2">
-            {/* ô tìm kiếm */}
             <div className="col-12 col-md-3">
               <div className="input-group">
                 <span className="input-group-text">
@@ -72,18 +77,18 @@ function SearchInput() {
                   aria-label="Search"
                   aria-describedby="basic-addon1"
                   style={{ height: "60px" }}
-                  onFocus={handFocused}
+                  onFocus={handleArrivalSelect}
                   ref={inputRef}
+                  value={selectedArrival}
+                  onChange={(e)=>setSelectedArrival(e.target.value)}
                 />
               </div>
             </div>
-            {/* show search item */}
             {showSearchItem && (
               <div ref={searchItemRef} className={styles.search_item}>
-                <SearchItem />
+                <SearchItem handleSelectedArrival={handleSelectedArrival}/>
               </div>
             )}
-            {/* Ngày khởi hành */}
             <div className="col-12 col-md-3">
               <div className="card p-1 d-flex" style={{ height: "60px" }}>
                 <div className="d-flex align-items-center h-100">
@@ -105,8 +110,6 @@ function SearchInput() {
                 </div>
               </div>
             </div>
-
-            {/* Khởi hành từ */}
             <div className="col-12 col-md-3 dropdown">
               <div className="card p-1 d-flex " style={{ height: "60px" }}>
                 <div className="d-flex align-items-center h-100">
@@ -117,10 +120,9 @@ function SearchInput() {
                     placeholder="Khởi hành từ"
                     style={{ border: "none", outline: "none", height: "100%" }}
                     data-bs-toggle="dropdown"
-                    value={selectedCity}
-                    onChange={(e) => setSelectedCity(e.target.value)}
+                    value={selectedDeparture}
+                    onChange={(e) => setSelectedDeparture(e.target.value)}
                   />
-
                   <ul
                     className={`${styles.menu} dropdown-menu menu w-100`}
                     style={{
@@ -134,7 +136,7 @@ function SearchInput() {
                         <button
                           className="dropdown-item"
                           type="button"
-                          onClick={() => handCitySelect(item.departureName)}
+                          onClick={() => handleSelectedDeparture(item.departureName)}
                         >
                           {item.departureName}
                         </button>
@@ -142,13 +144,8 @@ function SearchInput() {
                     ))}
                   </ul>
                 </div>
-                {/* is Start Form */}
-
-                {/* is End Form */}
               </div>
             </div>
-
-            {/* Nút Tìm */}
             <div className="col-12 col-md-3">
               <button
                 className="btn btn-warning w-100"

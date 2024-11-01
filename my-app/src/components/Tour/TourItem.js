@@ -81,7 +81,7 @@ function TourItem({ isInsideCol, isHorizontal, selectedId ,routes}) {
                       </div>
 
                       <Link
-                        to={`/tour/detail/${route.detailRouteId}`}
+                        to={`/route/detail/${route.detailRouteId}`}
                         className="btn btn-primary fw-bold "
                       >
                         Xem Tour

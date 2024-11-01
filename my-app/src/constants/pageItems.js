@@ -5,7 +5,7 @@ const pages_items = [
   },
   {
     title: "Đặt Tour",
-    to: "/tour",
+    to: "/route",
   },
   {
     title: "Giới Thiệu",

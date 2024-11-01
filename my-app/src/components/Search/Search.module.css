@@ -41,7 +41,6 @@
 }
 .react_datepicker_wrapper {
   width: 100% !important;
-
 }
 /* end search input */
 
@@ -56,5 +55,7 @@
         flex-direction: column; 
       }
   }
-  
+.searchItemContainer{
+
+}
 /* end seaach item */

@@ -29,13 +29,14 @@ const schedule_items = [
     description: "Quý khách tập trung tại sân bay Tân Sơn Nhất, ",
   },
 ];
-function Schedule() {
+function Schedule({detailRoute}) {
+  console.log(detailRoute);
   return (
     <div className="border rounded p-2">
       <h2>Chương trình tour</h2>
       <div className="accordion accordion-flush" id="accordionFlushExample">
-        {schedule_items.map((item, index) => (
-          <div className="accordion-item border rounded mt-4" key={item.id}>
+        {detailRoute.legs.map((item, index) => (
+          <div className="accordion-item border rounded mt-4" key={index}>
             <div className="accordion-header">
               <div
                 className="accordion-button collapsed"
@@ -50,13 +51,13 @@ function Schedule() {
                     <div className="row">
                       <div className="col-3">
                         <img
-                          src={item.image}
-                          alt=""
+                          src={require(`../../../assets/images/Tour/${item.textImage}`)}
                           style={{
                             width: "150px",
                             height: "100px",
                             objectFit: "cover",
                           }}
+                          alt={item.textImage}
                         />
                       </div>
                       <div className="col-9">
@@ -74,15 +75,14 @@ function Schedule() {
               data-bs-parent="#accordionFlushExample"
             >
               <div className="accordion-body">
-                Placeholder content for this accordion, which is intended to
-                demonstrate the <code>.accordion-flush</code> class. This is the
-                first item's accordion body.
+               {item.description}
               </div>
             </div>
           </div>
         ))}
       </div>
     </div>
+    
   );
 }
 
