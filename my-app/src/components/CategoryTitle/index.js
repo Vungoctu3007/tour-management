@@ -1,6 +1,6 @@
 import { Link,useLocation  } from "react-router-dom";
 
-function CategoryTitle() {
+function CategoryTitle({title}) {
   const location = useLocation();
   const pathSegments = location.pathname.split('/').filter(segment => segment);
     return (
@@ -11,7 +11,7 @@ function CategoryTitle() {
           </li>
           <li className="me-2">/</li>
           <li>
-            {pathSegments}
+            {title}
           </li>
         </ul>
       </div>

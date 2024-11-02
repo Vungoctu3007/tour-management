@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +25,6 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
             "GROUP BY de.id"
     )
     List<RouteResponse> getDetailRoute(Pageable pageable);
-
     // get quantity detail route
     @Query("SELECT COUNT(*) FROM Detailroute")
     long getCountRoute();
@@ -38,6 +38,22 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
             "WHERE de.id = :id "
     )
     RouteResponseDetail getDetailRouteById(Integer id);
+    // get route by arrival name
+    @Query("SELECT new com.example.tourmanagement.dto.response.RouteResponse(" +
+            "detail.id, detail.route.id, detail.detailRouteName, detail.description, detail.stock, " +
+            "detail.timeToDeparture, detail.timeToFinish, img.id, img.textImage, AVG(fe.rating), arrival.id, arrival.arrivalName)" +
+            "FROM Detailroute detail " +
+            "JOIN Image img ON detail.id = img.detailRoute.id " +
+            "JOIN Route route ON route.id = detail.route.id " +
+            "JOIN Arrival arrival ON arrival.id = route.arrival.id " +
+            "LEFT JOIN Feedback fe ON fe.detailRoute.id = detail.id " +
+            "LEFT JOIN Departure departure ON route.departure.id = departure.id " +
+            "WHERE arrival.arrivalName = :arrivalName AND departure.departureName = :departureName " +
+            "AND detail.timeToDeparture >= :timeToDeparture AND detail.timeToDeparture > CURRENT DATE " +
+            "GROUP BY detail.id "
+    )
+    // ngày trong tour phải lớn hơn ngày tìm kiếm
+    List<RouteResponse> getRoutesByArrivalName(String arrivalName, String departureName, LocalDate timeToDeparture);
 
 }
 

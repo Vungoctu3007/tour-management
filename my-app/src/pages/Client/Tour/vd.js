@@ -33,3 +33,29 @@
 // JOIN images im ON de.detail_route_id=im.detail_route_id
 // WHERE im.is_primary=1
 // GROUP BY ar.arrival_id
+
+
+// SELECT ar.arrival_id,ar.arrival_name,im.text_image,COUNT(ro.route_id) FROM arrivals ar
+// JOIN routes ro ON ar.arrival_id=ro.arrival_id
+// JOIN detailroutes de ON ro.route_id=de.route_id
+// JOIN images im ON de.detail_route_id=im.detail_route_id
+// WHERE im.is_primary=1
+// GROUP BY ar.arrival_id
+
+
+// SELECT detail.*,image.image_id,image.text_image,arrival.arrival_id,arrival.arrival_name FROM detailroutes detail
+// JOIN images image ON detail.detail_route_id=image.detail_route_id
+// JOIN routes route ON detail.route_id=route.route_id
+// JOIN arrivals arrival ON route.arrival_id=arrival.arrival_id
+// WHERE arrival.arrival_name="Hồ Chí Minh"
+// GROUP BY detail.detail_route_id
+
+
+
+// SELECT detail.*,image.image_id,image.text_image,arrival.arrival_id,arrival.arrival_name FROM detailroutes detail
+// JOIN images image ON detail.detail_route_id=image.detail_route_id
+// JOIN routes route ON detail.route_id=route.route_id
+// JOIN arrivals arrival ON route.arrival_id=arrival.arrival_id
+// JOIN departures departure ON route.departure_id=departure.departure_id
+// WHERE arrival.arrival_name="Hồ Chí Minh" AND departure.departure_name="Hà Nội" 
+// GROUP BY detail.detail_route_id

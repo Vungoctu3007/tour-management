@@ -16,3 +16,17 @@ export const getRouteDetailById = async (id) => {
     console.error("Error fetching route");
   }
 };
+export const getRouteByAllSearch = async (
+  arrivalName,
+  departureName,
+  timeToDeparture
+) => {
+  try {
+    const response = await httpRequest.get(
+      `/route/search?arrivalName=${arrivalName}&departureName=${departureName}&timeToDeparture=${timeToDeparture}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching route");
+  }
+};

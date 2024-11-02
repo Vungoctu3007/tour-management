@@ -8,11 +8,13 @@ import { getRouteDetailById } from "../../../services/routeService";
 function DetailTour() {
   const { id } = useParams();
   const [detailRoute, setDetailRoute] = useState({});
+  const [title,setTitle]=useState("");
   useEffect(() => {
     const fetchDetailRoute = async () => {
       try {
         const data = await getRouteDetailById(id);
         setDetailRoute(data.result || {});
+        setTitle(data.result.detailRouteName)
       } catch (error) {
         console.log(error);
       }
@@ -22,7 +24,7 @@ function DetailTour() {
   return (
     <div className="container">
       <div className="mt-4">
-        <CategoryTitle />
+        <CategoryTitle title={title}/>
       </div>
       <div className="row">
         <div className="col-8">

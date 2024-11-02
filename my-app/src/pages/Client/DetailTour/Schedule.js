@@ -1,34 +1,3 @@
-import Image from "../../../assets/images/item.jpg";
-const schedule_items = [
-  {
-    id: 1,
-    image: Image,
-    sequence: "Ngày 1",
-    title: "TP.HỒ CHÍ MINH - GIALAI",
-    description: "Quý khách tập trung tại sân bay Tân Sơn Nhất, ",
-  },
-  {
-    id: 2,
-    image: Image,
-    sequence: "Ngày 2",
-    title: "TP.HỒ CHÍ MINH - GIALAI",
-    description: "Quý khách tập trung tại sân bay Tân Sơn Nhất, ",
-  },
-  {
-    id: 3,
-    image: Image,
-    sequence: "Ngày 3",
-    title: "TP.HỒ CHÍ MINH - GIALAI",
-    description: "Quý khách tập trung tại sân bay Tân Sơn Nhất, ",
-  },
-  {
-    id: 4,
-    image: Image,
-    sequence: "Ngày 4",
-    title: "TP.HỒ CHÍ MINH - GIALAI",
-    description: "Quý khách tập trung tại sân bay Tân Sơn Nhất, ",
-  },
-];
 function Schedule({detailRoute}) {
   console.log(detailRoute);
   return (
@@ -85,5 +54,4 @@ function Schedule({detailRoute}) {
     
   );
 }
-
 export default Schedule;
