@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,5 +39,12 @@ public class RouteService {
         routeResponseDetail.setTextImageList(images);
         routeResponseDetail.setLegs(legs);
         return  routeResponseDetail;
+    }
+    // get route by arrival name
+    public RouteResponseWrapper getRouteByArrivalName(String arrivalName, String departureName, LocalDate timeToDeparture) {
+        List<RouteResponse> routeResponse = routeRepository.getRoutesByArrivalName(arrivalName,departureName,timeToDeparture);
+        RouteResponseWrapper routeResponseWrapper = new RouteResponseWrapper();
+        routeResponseWrapper.setRoutes(routeResponse);
+        return routeResponseWrapper;
     }
 }

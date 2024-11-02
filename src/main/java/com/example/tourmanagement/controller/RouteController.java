@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -34,6 +35,13 @@ public class RouteController {
     public ApiResponse<RouteResponseDetail> getRouteById(@PathVariable Integer id) {
         return ApiResponse.<RouteResponseDetail>builder()
                 .result(routeService.getRouteById(id))
+                .build();
+    }
+    // get route by arrival name
+    @GetMapping("/search")
+    public ApiResponse<RouteResponseWrapper> searchRouteByArrivalName(@RequestParam String arrivalName, @RequestParam String departureName, @RequestParam LocalDate timeToDeparture) {
+        return ApiResponse.<RouteResponseWrapper>builder()
+                .result(routeService.getRouteByArrivalName(arrivalName, departureName, timeToDeparture))
                 .build();
     }
 }

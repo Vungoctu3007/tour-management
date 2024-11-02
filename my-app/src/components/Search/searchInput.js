@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import styles from "./Search.module.css";
 import SearchItem from "./SearchItem";
 import { getAllDeparture } from "../../services/departureService";
+import { getRouteByAllSearch } from "../../services/routeService";
 function SearchInput() {
   const [departures, setDepartures] = useState([]);
   const [showSearchItem, setShowSearchItem] = useState(false);
@@ -59,7 +60,8 @@ function SearchInput() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+  const handleSearch=()=>{
+  }
   return (
     <div className="container rounded border z-100 p-2 position-relative ">
       <div className="row">
@@ -120,7 +122,7 @@ function SearchInput() {
                     placeholder="Khởi hành từ"
                     style={{ border: "none", outline: "none", height: "100%" }}
                     data-bs-toggle="dropdown"
-                    value={selectedDeparture}
+                    value={selectedDeparture || "Hồ Chí Minh"}
                     onChange={(e) => setSelectedDeparture(e.target.value)}
                   />
                   <ul
@@ -150,6 +152,7 @@ function SearchInput() {
               <button
                 className="btn btn-warning w-100"
                 style={{ height: "60px" }}
+                onClick={()=>handleSearch()}
               >
                 Tìm
               </button>
