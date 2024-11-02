@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tickets", schema = "tour_management")
+@Table(name = "tickets")
 public class Ticket {
     @EmbeddedId
     private TicketId id;

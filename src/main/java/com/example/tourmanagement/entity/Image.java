@@ -9,7 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @Setter
 @Entity
-@Table(name = "images", schema = "tour_management")
+@Table(name = "images")
 public class Image {
     @Id
     @Column(name = "image_id", nullable = false)

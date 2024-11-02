@@ -3,52 +3,41 @@ import ReceiptIcon from "@mui/icons-material/Receipt";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 const sidebar_items = [
+  
     {
       icon: <DashboardCustomizeIcon />,
       title: "Tổng Quan",
       to: "/admin/dashboard",
     },
     {
-      icon: <DashboardCustomizeIcon />,
-      title: "Tổng Quan",
-      to: "/admin/dashboard",
-    },
-    {
-      icon: <DashboardCustomizeIcon />,
-      title: "Tổng Quan",
-      to: "/admin/dashboard",
-    },
-    {
-      icon: <DashboardCustomizeIcon />,
-      title: "Tổng Quan",
-      to: "/admin/dashboard",
-    },
-    {
-      icon: <DashboardCustomizeIcon />,
-      title: "Tổng Quan",
-      to: "/admin/dashboard",
-    },
-    {
-      icon: <DashboardCustomizeIcon />,
-      title: "Tổng Quan",
-      to: "/admin/dashboard",
-    },
-    {
-      icon: <DashboardCustomizeIcon />,
-      title: "Tổng Quan",
-      to: "/admin/dashboard",
-    },
-    {
-      icon: <DashboardCustomizeIcon />,
-      title: "Tổng Quan",
-      to: "/admin/dashboard",
+      icon: <AccountCircleIcon />,
+      title: "Tài Khoản",
+      iconUp: <KeyboardArrowDownIcon />,
+      item: [
+        {
+          title: "Người Dùng",
+          to: "/admin/user/list-user",
+        },
+        {
+          title: "Phân Quyền",
+          to: "/admin/tour/role",
+        },
+      ],
     },
     {
       icon: <ReceiptIcon />,
       title: "Đơn Hàng",
       to: "/admin/receipt",
     },
+    {
+      icon: <DashboardCustomizeIcon />,
+      title: "Tổng Qua",
+      to: "/admin/dashboard",
+    },
+  
+   
     {
       icon: <SupervisedUserCircleIcon />,
       title: "Người Dùng",

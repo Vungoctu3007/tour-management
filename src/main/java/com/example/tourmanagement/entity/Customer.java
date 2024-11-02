@@ -1,18 +1,16 @@
 package com.example.tourmanagement.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "customers", schema = "tour_management")
+@Table(name = "customers")
 public class Customer {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id", nullable = false)
     private Integer id;
 
@@ -25,4 +23,7 @@ public class Customer {
     @Column(name = "customer_address", nullable = false)
     private String customerAddress;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id") // Đảm bảo tên cột phù hợp với cơ sở dữ liệu
+    private User user;
 }
