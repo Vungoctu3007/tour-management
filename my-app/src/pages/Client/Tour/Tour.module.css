@@ -4,3 +4,6 @@
         display: none !important;;
     }
 }
+.pointer{
+    cursor: pointer !important;
+}
