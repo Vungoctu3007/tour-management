@@ -1,10 +1,19 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import profile_items from "../../constants/profileItems";
 
-function ProfileItem({ isClass, width = "px", username = "User" }) {
+function ProfileItem({ isClass, width = "px" }) {
     const [activeIndex, setActiveIndex] = useState(isClass ? 0 : -1);
+    const [username, setUsername] = useState(""); // Khởi tạo state cho username
     const navigate = useNavigate(); // Sử dụng hook navigate để điều hướng
+
+    useEffect(() => {
+        // Tải username từ localStorage khi component được mount
+        const storedUsername = localStorage.getItem("username");
+        if (storedUsername) {
+            setUsername(storedUsername); // Cập nhật state với username từ localStorage
+        }
+    }, []);
 
     const handleClickActiveIndex = (index) => {
         if (isClass) {
@@ -38,7 +47,7 @@ function ProfileItem({ isClass, width = "px", username = "User" }) {
                     borderRadius: "4px 4px 0 0",
                 }}
             >
-                {username} {/* Display the username */}
+                {username || "User"} {/* Hiển thị tên người dùng hoặc "User" nếu không có */}
             </span>
             <ul className="list-unstyled">
                 {profile_items.map((item, index) => (

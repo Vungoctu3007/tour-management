@@ -12,4 +12,5 @@ public class UserCreateRequest {
     String username;
     String password;
     String email;
+    int roleId;
 }

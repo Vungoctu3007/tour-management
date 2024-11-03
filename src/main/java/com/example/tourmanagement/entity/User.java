@@ -27,4 +27,7 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @Column(name = "status", nullable = false)
+    private int status;
+
 }
