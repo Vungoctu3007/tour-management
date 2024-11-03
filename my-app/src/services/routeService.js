@@ -19,11 +19,13 @@ export const getRouteDetailById = async (id) => {
 export const getRouteByAllSearch = async (
   arrivalName,
   departureName,
-  timeToDeparture
+  timeToDeparture,
+  page,
+  size,
 ) => {
   try {
     const response = await httpRequest.get(
-      `/route/search?arrivalName=${arrivalName}&departureName=${departureName}&timeToDeparture=${timeToDeparture}`
+      `/route/search?arrivalName=${arrivalName}&departureName=${departureName}&timeToDeparture=${timeToDeparture}&page=${page}&size=${size}`
     );
     return response.data;
   } catch (error) {

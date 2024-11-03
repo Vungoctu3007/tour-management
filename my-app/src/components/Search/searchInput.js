@@ -8,38 +8,52 @@ import DatePicker from "react-datepicker";
 import styles from "./Search.module.css";
 import SearchItem from "./SearchItem";
 import { getAllDeparture } from "../../services/departureService";
-import { getRouteByAllSearch } from "../../services/routeService";
-function SearchInput() {
+function SearchInput({ onSearchResults, currentPage, pageSize }) {
   const [departures, setDepartures] = useState([]);
   const [showSearchItem, setShowSearchItem] = useState(false);
-  const [selectedDeparture, setSelectedDeparture] = useState("");
+  const [departureName, setDepartureName] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedArrival,setSelectedArrival] = useState(""); 
+  const [arrivalName, setArrivalName] = useState("");
+  const [timeToDeparture, setTimeToDeparture] = useState("2024-10-29");
+  const handleSearchClick = () => {
+    if (arrivalName && departureName) {
+      const searchData = {
+        arrivalName,
+        departureName,
+        timeToDeparture,
+        currentPage,
+        pageSize,
+      };
+      onSearchResults(searchData);
+    } else {
+      alert("Please select");
+    }
+  };
   // api departure
   useEffect(() => {
     const fetchDeparture = async () => {
       try {
         const fetchDeparture = await getAllDeparture();
-        setDepartures(fetchDeparture.result)
+        setDepartures(fetchDeparture.result);
       } catch (error) {
         console.error(error);
       }
     };
     fetchDeparture();
-  },[]);
+  }, []);
   // select departuer
   const handleSelectedDeparture = (departure) => {
-    setSelectedDeparture(departure);
+    setDepartureName(departure);
   };
   // slect arival
   const handleSelectedArrival = (arrival) => {
-    setSelectedArrival(arrival);
+    setArrivalName(arrival);
     setShowSearchItem(false);
-  }
+  };
   const searchItemRef = useRef(null);
   const inputRef = useRef(null);
   // show arival
-  const handleArrivalSelect  = () => {
+  const handleArrivalSelect = () => {
     setShowSearchItem(true);
   };
 
@@ -60,8 +74,7 @@ function SearchInput() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  const handleSearch=()=>{
-  }
+
   return (
     <div className="container rounded border z-100 p-2 position-relative ">
       <div className="row">
@@ -81,14 +94,14 @@ function SearchInput() {
                   style={{ height: "60px" }}
                   onFocus={handleArrivalSelect}
                   ref={inputRef}
-                  value={selectedArrival}
-                  onChange={(e)=>setSelectedArrival(e.target.value)}
+                  value={arrivalName}
+                  onChange={(e) => setArrivalName(e.target.value)}
                 />
               </div>
             </div>
             {showSearchItem && (
               <div ref={searchItemRef} className={styles.search_item}>
-                <SearchItem handleSelectedArrival={handleSelectedArrival}/>
+                <SearchItem handleSelectedArrival={handleSelectedArrival} />
               </div>
             )}
             <div className="col-12 col-md-3">
@@ -122,8 +135,8 @@ function SearchInput() {
                     placeholder="Khởi hành từ"
                     style={{ border: "none", outline: "none", height: "100%" }}
                     data-bs-toggle="dropdown"
-                    value={selectedDeparture || "Hồ Chí Minh"}
-                    onChange={(e) => setSelectedDeparture(e.target.value)}
+                    value={departureName}
+                    onChange={(e) => setDepartureName(e.target.value)}
                   />
                   <ul
                     className={`${styles.menu} dropdown-menu menu w-100`}
@@ -138,7 +151,9 @@ function SearchInput() {
                         <button
                           className="dropdown-item"
                           type="button"
-                          onClick={() => handleSelectedDeparture(item.departureName)}
+                          onClick={() =>
+                            handleSelectedDeparture(item.departureName)
+                          }
                         >
                           {item.departureName}
                         </button>
@@ -152,7 +167,7 @@ function SearchInput() {
               <button
                 className="btn btn-warning w-100"
                 style={{ height: "60px" }}
-                onClick={()=>handleSearch()}
+                onClick={() => handleSearchClick()}
               >
                 Tìm
               </button>

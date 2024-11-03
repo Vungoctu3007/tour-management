@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +26,8 @@ public class RouteService {
     LegRepository legRepository;
     //    get all route
     public RouteResponseWrapper getAllRoutes(Pageable pageable) {
-        long totalItem = routeRepository.getCountRoute();
-        long totalPages =(long) Math.ceil((double) totalItem / pageable.getPageSize());
-        List<RouteResponse> routes = routeRepository.getDetailRoute(pageable);
-        log.info("Total item count: " + totalItem);
-        return new RouteResponseWrapper(totalPages, routes);
+        Page<RouteResponse> routes = routeRepository.getDetailRoute(pageable);
+        return new RouteResponseWrapper(routes.getTotalPages(), routes.getContent());
     }
     //    get route by id
     public RouteResponseDetail getRouteById(Integer id) {;
@@ -40,11 +38,12 @@ public class RouteService {
         routeResponseDetail.setLegs(legs);
         return  routeResponseDetail;
     }
-    // get route by arrival name
-    public RouteResponseWrapper getRouteByArrivalName(String arrivalName, String departureName, LocalDate timeToDeparture) {
-        List<RouteResponse> routeResponse = routeRepository.getRoutesByArrivalName(arrivalName,departureName,timeToDeparture);
+    // find Routes By Arrival Departure And Date
+    public RouteResponseWrapper findRoutesByArrivalDepartureAndDate(String arrivalName, String departureName, LocalDate timeToDeparture,Pageable pageable) {
+        Page<RouteResponse> routeResponse = routeRepository.findRoutesByArrivalDepartureAndDate(arrivalName,departureName,timeToDeparture,pageable);
         RouteResponseWrapper routeResponseWrapper = new RouteResponseWrapper();
-        routeResponseWrapper.setRoutes(routeResponse);
+        routeResponseWrapper.setRoutes(routeResponse.getContent());
+        routeResponseWrapper.setTotalPages(routeResponse.getTotalPages());
         return routeResponseWrapper;
     }
 }
