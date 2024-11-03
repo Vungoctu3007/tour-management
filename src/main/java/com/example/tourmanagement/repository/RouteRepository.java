@@ -62,6 +62,22 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
                                                             LocalDate timeToDeparture,
                                                             Pageable pageable);
 
+    @Query("SELECT new com.example.tourmanagement.dto.response.RouteResponse(" +
+            "detail.id, detail.route.id, detail.detailRouteName, detail.description, detail.stock, " +
+            "detail.timeToDeparture, detail.timeToFinish, img.id, img.textImage, AVG(fe.rating), arrival.id, arrival.arrivalName)" +
+            "FROM Detailroute detail " +
+            "JOIN Image img ON detail.id = img.detailRoute.id " +
+            "JOIN Route route ON route.id = detail.route.id " +
+            "JOIN Arrival arrival ON arrival.id = route.arrival.id " +
+            "LEFT JOIN Feedback fe ON fe.detailRoute.id = detail.id " +
+            "LEFT JOIN Departure departure ON route.departure.id = departure.id " +
+            "WHERE arrival.arrivalName = :arrivalName " +
+            "AND detail.timeToDeparture > CURRENT DATE  " +
+            "GROUP BY detail.id "
+    )
+        // ngày trong tour phải lớn hơn ngày tìm kiếm
+    Page<RouteResponse> findRoutesByArrival(String arrivalName,
+                                            Pageable pageable);
 }
 
 

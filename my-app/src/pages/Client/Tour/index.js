@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import SearchInput from "../../../components/Search/searchInput";
 import styles from "./Tour.module.css";
 import SortForm from "./SortForm";
+import SearchSideBar from "./SearchSideBar";
 import PaginationComponent from "../../../components/Pagination";
 import {
   getAllRoutes,
   getRouteByAllSearch,
+  getRouteFilter,
 } from "../../../services/routeService";
 import TourItem from "../../../components/Tour/TourItem";
 function Tour() {
@@ -15,39 +17,53 @@ function Tour() {
   const pageSize = 2;
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchParams, setSearchParams] = useState([]);
+  const [searchParams, setSearchParams] = useState({});
+  // search sidebar
+  const [selectArrivalName, setSelectArrivalName] = useState("");
   // lấy ra danh sách route
   useEffect(() => {
     const fetchRoute = async () => {
       try {
         let data;
-        if (isSearching) {
+        const hasSearchParamsData =
+          searchParams.arrivalName ||
+          searchParams.departureName ||
+          searchParams.timeToDeparture;
+        if (hasSearchParamsData) {
           const { arrivalName, departureName, timeToDeparture } = searchParams;
-           data = await getRouteByAllSearch(
+          data = await getRouteByAllSearch(
             arrivalName,
             departureName,
             timeToDeparture,
             currentPage,
-            1
+            pageSize
           );
+        } else if (selectArrivalName) {
+          data = await getRouteFilter(selectArrivalName, currentPage, 1);
+        
         } else {
-          data =await getAllRoutes(currentPage, pageSize);
+          data = await getAllRoutes(currentPage, pageSize);
         }
         setRoutes(data.result.routes);
         setTotalPages(data.result.totalPages);
+        
       } catch (error) {
         console.error("Error fetching routes", error);
       }
     };
     fetchRoute();
-  }, [currentPage, pageSize, isSearching,searchParams]);
-
-  // lọc
+  }, [currentPage, searchParams, selectArrivalName]);
+  //  lọc chỉ the tên bên side bar
+  const handleArrivalSelect = (arrival) => {
+    setSelectArrivalName(arrival);
+    setCurrentPage(1);
+    setSearchParams({});
+  };
+  // lọc theo tìm kiếm có đủ 3 tham số
   const onSearchResults = async (searchData) => {
     setSearchParams(searchData);
+    setSelectArrivalName("")
     setCurrentPage(1);
-    setIsSearching(true);
   };
 
   const handlePageChange = (page) => {
@@ -70,14 +86,21 @@ function Tour() {
         <div className="row mt-4">
           <div className="col-md-3">
             <div className={`${styles.filte} card`}>
-              <div className="card-header bg-light">
+              <div className="card-header bg-light fw-bold fs-5">
                 <SwapVertIcon /> Sắp xếp
               </div>
               <div className="card-body">
                 <SortForm />
               </div>
             </div>
-            <div className={`${styles.filte} card`}>dgdsg</div>
+            <div className={`${styles.filte} card mt-2`}>
+              <div className="card-header bg-light fw-bold fs-5">
+                Danh Sách Tour
+              </div>
+              <div className="card-body">
+                <SearchSideBar selectArrivalName={handleArrivalSelect} />
+              </div>
+            </div>
           </div>
           <div className="col-md-9">
             <div

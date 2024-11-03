@@ -39,14 +39,23 @@ public class RouteController {
     }
     // find Routes By Arrival Departure And Date
     @GetMapping("/search")
-    public ApiResponse<RouteResponseWrapper> searchRouteByArrivalName(@RequestParam String arrivalName,
-                                                                      @RequestParam String departureName,
+    public ApiResponse<RouteResponseWrapper> searchRouteByArrivalDepartureDate(@RequestParam String arrivalName,
+                                                                      @RequestParam(defaultValue = "") String departureName,
                                                                       @RequestParam LocalDate timeToDeparture,
                                                                       @RequestParam(defaultValue = "1") int page,
                                                                       @RequestParam int size) {
         Pageable pageable= PageRequest.of(page-1, size);
         return ApiResponse.<RouteResponseWrapper>builder()
                 .result(routeService.findRoutesByArrivalDepartureAndDate(arrivalName, departureName, timeToDeparture,pageable))
+                .build();
+    }
+    @GetMapping("/filter-arrivalName")
+    public ApiResponse<RouteResponseWrapper> searchRouteByArrivalName(@RequestParam String arrivalName,
+                                                                      @RequestParam(defaultValue = "1") int page,
+                                                                      @RequestParam int size) {
+        Pageable pageable= PageRequest.of(page-1, size);
+        return ApiResponse.<RouteResponseWrapper>builder()
+                .result(routeService.findRouteByArrivalName(arrivalName,pageable))
                 .build();
     }
 }

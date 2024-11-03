@@ -12,5 +12,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RouteResponseWrapper {
     long totalPages;
+    long totalElements;
     List<RouteResponse> routes;
 }

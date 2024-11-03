@@ -32,3 +32,17 @@ export const getRouteByAllSearch = async (
     console.error("Error fetching route");
   }
 };
+export const getRouteFilter = async (
+  arrivalName,
+  page,
+  size,
+) => {
+  try {
+    const response = await httpRequest.get(
+      `/route/filter-arrivalName?arrivalName=${arrivalName}&page=${page}&size=${size}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching route");
+  }
+};

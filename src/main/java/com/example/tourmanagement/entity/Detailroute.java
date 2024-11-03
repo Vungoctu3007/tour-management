@@ -21,7 +21,8 @@ public class Detailroute {
 
     @Column(name = "detail_route_name")
     private String detailRouteName;
-
+    @Column(name="price")
+    private Double price;
     @Lob
     @Column(name = "description")
     private String description;

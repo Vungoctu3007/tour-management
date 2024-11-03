@@ -16,7 +16,9 @@ function SearchInput({ onSearchResults, currentPage, pageSize }) {
   const [arrivalName, setArrivalName] = useState("");
   const [timeToDeparture, setTimeToDeparture] = useState("2024-10-29");
   const handleSearchClick = () => {
-    if (arrivalName && departureName) {
+    if (arrivalName.trim() === "" && departureName.trim() === "") {
+      alert("Vui lòng chọn cả điểm khởi hành và điểm đến.");
+    } else {
       const searchData = {
         arrivalName,
         departureName,
@@ -25,8 +27,8 @@ function SearchInput({ onSearchResults, currentPage, pageSize }) {
         pageSize,
       };
       onSearchResults(searchData);
-    } else {
-      alert("Please select");
+      setArrivalName("");
+      setDepartureName("");
     }
   };
   // api departure
@@ -135,7 +137,7 @@ function SearchInput({ onSearchResults, currentPage, pageSize }) {
                     placeholder="Khởi hành từ"
                     style={{ border: "none", outline: "none", height: "100%" }}
                     data-bs-toggle="dropdown"
-                    value={departureName}
+                    value={departureName }
                     onChange={(e) => setDepartureName(e.target.value)}
                   />
                   <ul

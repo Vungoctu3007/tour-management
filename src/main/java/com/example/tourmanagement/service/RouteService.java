@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,7 +28,7 @@ public class RouteService {
     //    get all route
     public RouteResponseWrapper getAllRoutes(Pageable pageable) {
         Page<RouteResponse> routes = routeRepository.getDetailRoute(pageable);
-        return new RouteResponseWrapper(routes.getTotalPages(), routes.getContent());
+        return new RouteResponseWrapper(routes.getTotalPages(),routes.getTotalElements(), routes.getContent());
     }
     //    get route by id
     public RouteResponseDetail getRouteById(Integer id) {;
@@ -40,10 +41,20 @@ public class RouteService {
     }
     // find Routes By Arrival Departure And Date
     public RouteResponseWrapper findRoutesByArrivalDepartureAndDate(String arrivalName, String departureName, LocalDate timeToDeparture,Pageable pageable) {
-        Page<RouteResponse> routeResponse = routeRepository.findRoutesByArrivalDepartureAndDate(arrivalName,departureName,timeToDeparture,pageable);
+        Page<RouteResponse> routeResponse= routeRepository.findRoutesByArrivalDepartureAndDate(arrivalName,departureName,timeToDeparture,pageable);
         RouteResponseWrapper routeResponseWrapper = new RouteResponseWrapper();
         routeResponseWrapper.setRoutes(routeResponse.getContent());
         routeResponseWrapper.setTotalPages(routeResponse.getTotalPages());
+        routeResponseWrapper.setTotalElements(routeResponse.getTotalElements());
+        return routeResponseWrapper;
+    }
+    // find routes by arrival name
+    public RouteResponseWrapper findRouteByArrivalName(String arrivalName, Pageable pageable) {
+        Page<RouteResponse> routeResponses=routeRepository.findRoutesByArrival(arrivalName,pageable);
+        RouteResponseWrapper routeResponseWrapper = new RouteResponseWrapper();
+        routeResponseWrapper.setRoutes(routeResponses.getContent());
+        routeResponseWrapper.setTotalPages(routeResponses.getTotalPages());
+        routeResponseWrapper.setTotalElements(routeResponses.getTotalElements());
         return routeResponseWrapper;
     }
 }

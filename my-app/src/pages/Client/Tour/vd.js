@@ -59,3 +59,29 @@
 // JOIN departures departure ON route.departure_id=departure.departure_id
 // WHERE arrival.arrival_name="Hồ Chí Minh" AND departure.departure_name="Hà Nội" 
 // GROUP BY detail.detail_route_id
+
+
+// useEffect(() => {
+//     const fetchRoute = async () => {
+//       try {
+//         let data;
+//         if (isSearching || selectArrivalName) {
+//           const { arrivalName, departureName, timeToDeparture } = searchParams;
+//           data = await getRouteByAllSearch(
+//             arrivalName || selectArrivalName,
+//             departureName,
+//             timeToDeparture || "2024-10-29",
+//             currentPage,
+//             1
+//           );
+//         } else {
+//           data = await getAllRoutes(currentPage, pageSize);
+//         }
+//         setRoutes(data.result.routes);
+//         setTotalPages(data.result.totalPages);
+//       } catch (error) {
+//         console.error("Error fetching routes", error);
+//       }
+//     };
+//     fetchRoute();
+//   }, [currentPage, pageSize, isSearching, searchParams, selectArrivalName]);
