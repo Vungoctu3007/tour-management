@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "detailroutes", schema = "tour_management")
+@Table(name = "detailroutes")
 public class Detailroute {
     @Id
     @Column(name = "detail_route_id", nullable = false)

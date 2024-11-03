@@ -3,10 +3,10 @@ const routes = {
   home: "/",
   login: "/login",
   register: "/register",
-  route: "/route",
+  tour: "/tour",
   about_us: "/about-us",
   payment: "/payment",
-  detail_route: "/route/detail/:id",
+  detail_tour: "/tour/detail/:id",
   // profile
   profile: "/profile",
   score: "/profile/score",
@@ -20,6 +20,7 @@ const routes = {
   // admin user
   list_user:"/admin/user/list-user",
   add_user:"/admin/user/add-user",
+  
   // admin tour
   list_tour:"/admin/tour/list-tour",
   add_tour:"/admin/tour/add-tour"

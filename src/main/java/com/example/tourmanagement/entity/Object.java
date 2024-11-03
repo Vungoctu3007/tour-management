@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "objects", schema = "tour_management")
+@Table(name = "objects")
 public class Object {
     @Id
     @Column(name = "object_id", nullable = false)

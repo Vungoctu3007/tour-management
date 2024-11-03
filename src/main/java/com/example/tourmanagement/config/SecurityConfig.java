@@ -21,41 +21,28 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfig  {
-    private final String[] PUBLIC_ENDPOINTS = {
-            "/users", "/auth/login", "/auth/introspect", "/auth/logout", "/auth/refresh"
-    };
+public class SecurityConfig {
 
     @Autowired
     private CustomJwtDecoder customJwtDecoder;
-//
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS)
-//                .permitAll()
-//                .anyRequest()
-//                .authenticated());
-//
-//        httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer
-//                        .decoder(customJwtDecoder)
-//                        .jwtAuthenticationConverter(jwtAuthenticationConverter()))
-//                .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
-//        httpSecurity.csrf(AbstractHttpConfigurer::disable);
-//
-//        return httpSecurity.build();
-//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        // Cho phép tất cả các endpoint mà không yêu cầu xác thực
         httpSecurity.authorizeHttpRequests(request -> request
                 .anyRequest()
-                .permitAll());  // Allow all requests without authentication
+                .permitAll()); // Allow access to all requests
 
-        httpSecurity.csrf(AbstractHttpConfigurer::disable);  // Disable CSRF for simplicity (optional)
+        // Nếu không sử dụng OAuth2, có thể bỏ phần cấu hình OAuth2
+        httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer
+                .decoder(customJwtDecoder)
+                .jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
+
+        httpSecurity.csrf(AbstractHttpConfigurer::disable); // Disable CSRF if you're using JWT
 
         return httpSecurity.build();
     }
-
 
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilter() {

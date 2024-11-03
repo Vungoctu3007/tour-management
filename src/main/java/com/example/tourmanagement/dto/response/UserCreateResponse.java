@@ -1,19 +1,21 @@
 package com.example.tourmanagement.dto.response;
+import java.util.Set;
 
+import com.example.tourmanagement.entity.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationResponse {
-    String token;
-    Date expiryTime;
-    Integer roleId;
+public class UserCreateResponse {
+    int id;
+    String username;
+    String password;
+    String email;
+    int role;
     String roleName;
-    String userName;
+
 }
