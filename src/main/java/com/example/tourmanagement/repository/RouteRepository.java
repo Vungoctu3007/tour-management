@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RouteRepository extends JpaRepository<Route, Integer> {
-
     // get all route
     @Query("SELECT new com.example.tourmanagement.dto.response.RouteResponse(" +
             "de.id, de.route.id, de.detailRouteName, de.description, de.stock, " +
