@@ -24,7 +24,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Notification from "../../../components/Notification";
 import BlockIcon from "@mui/icons-material/Block";
 import AddUser from "./AddUser";
-import { getListUser, getUserByAllSearch } from "../../../services/userService";
+import { getAllRole, getListUser, getUserByAllSearch } from "../../../services/userService";
 
 function ListUser() {
   const [users, setUsers] = useState([]); // This is already correct in your code
@@ -51,10 +51,10 @@ function ListUser() {
       clearTimeout(handler);
     };
   }, [searchUser]);
-
+  
   useEffect(() => {
     const fetchUsers = async () => {
-      try {
+      try { 
         let response;
   
         if (debouncedSearchUser) {
@@ -80,9 +80,9 @@ function ListUser() {
   
     const fetchRoles = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/role");
+        const response = await getAllRole();
         setRoles(response.data.result || []);
-      } catch (error) {
+      } catch (error) { 
         console.error("Error fetching roles:", error);
       }
     };
@@ -90,7 +90,7 @@ function ListUser() {
     fetchUsers();
     fetchRoles();
   }, [currentPage, debouncedSearchUser]);
-  
+    
 
   const handleSearchChange = (event) => {
     setSearchUser(event.target.value);
@@ -188,9 +188,9 @@ function ListUser() {
                   <TableCell>{user.id}</TableCell>
                   <TableCell>{user.username}</TableCell>
                   <TableCell>{user.password}</TableCell>
-                  <TableCell>{user.email || "N/A"}</TableCell>
+                  <TableCell>{user.email || "default"}</TableCell>
                   <TableCell>{user.role}</TableCell>
-                  <TableCell>{user.roleName || "N/A"}</TableCell>
+                  <TableCell>{user.roleName || "default"}</TableCell>
                   <TableCell>
                     <Box display="flex" alignItems="center">
                       <div onClick={() => alert(`Edit ${user.username}`)} style={{ marginRight: 8, cursor: "pointer", padding: "8px", textAlign: "center" }}>

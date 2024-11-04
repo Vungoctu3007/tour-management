@@ -13,6 +13,7 @@ import Score from "../pages/Client/Profile/score";
 import Discount from "../pages/Client/Profile/discount";
 import Book from "../pages/Client/Profile/book";
 import Refund from "../pages/Client/Profile/refund";
+import BookingTour from "../pages/Client/OrderTour";
 // layout
 import DefaultLayout from "../layouts/DefaultLayout";
 import AdminLayout from "../layouts/AdminLayout";
@@ -36,6 +37,7 @@ const publicRoutes = [
   { path: routes.login, component: Login, layout: null },
   { path: routes.register, component: Register, layout: null },
   { path: routes.payment, component: Payment, layout: null },
+  { path: routes.booking_tour, component: BookingTour, layout: DefaultLayout },
   // profile
   { path: routes.profile, component: Profile, layout: ProfileLayout },
   { path: routes.discount, component: Discount, layout: ProfileLayout },

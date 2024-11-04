@@ -39,10 +39,12 @@ public class SecurityConfig {
                 .jwtAuthenticationConverter(jwtAuthenticationConverter()))
                 .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
 
+
         httpSecurity.csrf(AbstractHttpConfigurer::disable); // Disable CSRF if you're using JWT
 
         return httpSecurity.build();
     }
+
 
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilter() {

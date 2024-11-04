@@ -7,6 +7,7 @@ const routes = {
   about_us: "/about-us",
   payment: "/payment",
   detail_route: "/route/detail/:id",
+  booking_tour: "/route/booking/:id",
   // profile
   profile: "/profile",
   score: "/profile/score",

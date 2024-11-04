@@ -24,8 +24,12 @@ public class RouteResponseDetail {
     Double rating;
     Double price;
     public RouteResponseDetail(Integer detailRouteId, Integer routeId, String detailRouteName,
+
                                String description, Integer stock, LocalDate timeToDeparture,
                                LocalDate timeToFinish, Double rating,Double price) {
+
+
+
         this.detailRouteId = detailRouteId;
         this.routeId = routeId;
         this.detailRouteName = detailRouteName;

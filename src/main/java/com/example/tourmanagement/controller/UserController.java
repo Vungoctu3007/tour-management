@@ -35,12 +35,12 @@ public class UserController {
                 .result(userService.getUsers(pageable))
                 .build();
     }
-//    @PostMapping("/register")
-//    ApiResponse<UserCreateResponse> register(@RequestBody UserCreateRequest request) {
-//        return ApiResponse.<UserCreateResponse>builder()
-//                .result(userService.createUser(request))
-//                .build();
-//    }
+    @PostMapping("/register")
+    ApiResponse<UserResponse> register(@RequestBody UserCreateRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.createUser(request))
+                .build();
+    }
     //create-user
     @PostMapping("/create")
     ApiResponse<UserResponse> createUser(@RequestBody UserCreateRequest request) {
