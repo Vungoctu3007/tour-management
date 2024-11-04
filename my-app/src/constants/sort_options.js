@@ -1,8 +1,28 @@
-const sortOptions = [
-  { id: "default", label: "Mặc định", value: "default", checked: true },
-  { id: "priceLowToHigh", label: "Giá: Thấp đến cao", value: "priceLowToHigh" },
-  { id: "priceHighToLow", label: "Giá: Cao đến thấp", value: "priceHighToLow" },
-  { id: "bestRating", label: "Đánh giá tốt nhất", value: "bestRating" },
-  { id: "bestDeal", label: "Ưu đãi tốt nhất", value: "bestDeal" },
+const sort_options = [
+  {
+    id:1,
+    title: "Mặc Định",
+    value:""
+  },
+  {
+    id:2,
+    title: "Giá : Thấp Tăng Dần",
+    value:"asc"
+  },
+  {
+    id:3,
+    title: "Giá : Giảm Dần",
+    value:"desc"
+  },
+  {
+    id:4,
+    title: "Đánh Giá Tốt Nhất",
+    value:"rating"
+  },
+  {
+    id:5,
+    title: "Ưu Đãi Tốt Nhất",
+    value:""
+  },
 ];
-export default sortOptions;
+export default sort_options;

@@ -26,12 +26,12 @@ public class RouteService {
     ImageRepository imageRepository;
     LegRepository legRepository;
     //    get all route
-    public RouteResponseWrapper getAllRoutes(Pageable pageable) {
-        Page<RouteResponse> routes = routeRepository.getDetailRoute(pageable);
+    public RouteResponseWrapper getAllRoutes(Pageable pageable,String sort) {
+        Page<RouteResponse> routes = routeRepository.getDetailRoute(pageable,sort);
         return new RouteResponseWrapper(routes.getTotalPages(),routes.getTotalElements(), routes.getContent());
     }
     //    get route by id
-    public RouteResponseDetail getRouteById(Integer id) {;
+    public RouteResponseDetail getRouteById(Integer id) {
         RouteResponseDetail routeResponseDetail = routeRepository.getDetailRouteById(id);
         List<ImageResponse> images =imageRepository.getImagesByDetailRouteId(id);
         List<LegResponse> legs=legRepository.getAllLegByDetailId(id);
@@ -40,8 +40,8 @@ public class RouteService {
         return  routeResponseDetail;
     }
     // find Routes By Arrival Departure And Date
-    public RouteResponseWrapper findRoutesByArrivalDepartureAndDate(String arrivalName, String departureName, LocalDate timeToDeparture,Pageable pageable) {
-        Page<RouteResponse> routeResponse= routeRepository.findRoutesByArrivalDepartureAndDate(arrivalName,departureName,timeToDeparture,pageable);
+    public RouteResponseWrapper findRoutesByArrivalDepartureAndDate(String arrivalName, String departureName, LocalDate timeToDeparture,Pageable pageable,String sort) {
+        Page<RouteResponse> routeResponse= routeRepository.findRoutesByArrivalDepartureAndDate(arrivalName,departureName,timeToDeparture,pageable,sort);
         RouteResponseWrapper routeResponseWrapper = new RouteResponseWrapper();
         routeResponseWrapper.setRoutes(routeResponse.getContent());
         routeResponseWrapper.setTotalPages(routeResponse.getTotalPages());
@@ -49,8 +49,8 @@ public class RouteService {
         return routeResponseWrapper;
     }
     // find routes by arrival name
-    public RouteResponseWrapper findRouteByArrivalName(String arrivalName, Pageable pageable) {
-        Page<RouteResponse> routeResponses=routeRepository.findRoutesByArrival(arrivalName,pageable);
+    public RouteResponseWrapper findRouteByArrivalName(String arrivalName, Pageable pageable,String sort) {
+        Page<RouteResponse> routeResponses=routeRepository.findRoutesByArrival(arrivalName,pageable,sort);
         RouteResponseWrapper routeResponseWrapper = new RouteResponseWrapper();
         routeResponseWrapper.setRoutes(routeResponses.getContent());
         routeResponseWrapper.setTotalPages(routeResponses.getTotalPages());

@@ -22,8 +22,8 @@ public class RouteResponse {
     Double rating;
     Integer arrivalId;
     String arrivalName;
-
-    public RouteResponse(Integer detailRouteId, Integer routeId, String detailRouteName, String description, Integer stock, LocalDate timeToDeparture, LocalDate timeToFinish, Integer imageId, String textImage, Double rating) {
+    Double price;
+    public RouteResponse(Integer detailRouteId, Integer routeId, String detailRouteName, String description, Integer stock, LocalDate timeToDeparture, LocalDate timeToFinish, Integer imageId, String textImage, Double rating,Double price) {
         this.detailRouteId = detailRouteId;
         this.routeId = routeId;
         this.detailRouteName = detailRouteName;
@@ -34,5 +34,6 @@ public class RouteResponse {
         this.imageId = imageId;
         this.textImage = textImage;
         this.rating = rating;
+        this.price = price;
     }
 }
