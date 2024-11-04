@@ -5,7 +5,7 @@ import Login from "../pages/Client/Login";
 import Register from "../pages/Client/Register";
 import About from "../pages/Client/AboutUs";
 import Payment from "../pages/Client/Payment";
-import DetailTour from "../pages/Client/DetailTour";
+import DetailTour from "../pages/Client/DetailTour"
 import Tour from "../pages/Client/Tour"
 // client profile
 import Profile from "../pages/Client/Profile";
