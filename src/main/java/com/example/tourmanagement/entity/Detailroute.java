@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "detailroutes", schema = "tour_management")
+@Table(name = "detailroutes")
 public class Detailroute {
     @Id
     @Column(name = "detail_route_id", nullable = false)
@@ -19,12 +19,10 @@ public class Detailroute {
     @JoinColumn(name = "route_id")
     private Route route;
 
-    // @Column(name = "price")
-    // private Double price;
-
     @Column(name = "detail_route_name")
     private String detailRouteName;
-
+    @Column(name="price")
+    private Double price;
     @Lob
     @Column(name = "description")
     private String description;

@@ -22,3 +22,20 @@ export const getTour=async ()=>{
         throw error;
     }
 }
+export const getListUser =async (page, size) =>{
+    try {
+        const response=await httpRequest.get(`/user?page=${page}&size=${size}`)
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching user")
+        throw error;
+    }
+}
+export const getUserByAllSearch = async (username) =>{
+    try {
+        const response=await httpRequest.get(`/user/search?username=${username}`)
+        return response.data;
+    } catch (error) {
+        
+    }
+}

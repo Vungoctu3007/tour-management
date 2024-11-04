@@ -1,23 +1,16 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import Images from "../../assets/images/item.jpg";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import StarBorderPurple500Icon from "@mui/icons-material/StarBorderPurple500";
 import InsertInvitationIcon from "@mui/icons-material/InsertInvitation";
 import styles from "./TourList.module.css";
-function TourItem({ isInsideCol, isHorizontal, selectedId ,routes}) {
-  const colClass = isInsideCol ? "" : "col-md-4";
-  const cardRowClass = isHorizontal ? "row" : "row flex-column";
-  const filterRoute = selectedId
-    ? routes.filter((route) => route.id === selectedId)
-    : routes;
+function TourItem({ routes }) {
   return (
     <div className="row">
       {routes.map((route, index) => (
-        <div key={index} className={colClass + " mb-4"}>
+        <div key={index} className=" mb-4">
           <div className="card">
-            <div className={cardRowClass}>
-              <div className={isHorizontal ? "col-md-4" : "col-md-12"}>
+            <div className="row">
+              <div className="col-md-4">
                 <div className="position-relative">
                   <img
                     src={require(`../../assets/images/Tour/${route.textImage}`)}
@@ -30,7 +23,7 @@ function TourItem({ isInsideCol, isHorizontal, selectedId ,routes}) {
                   </div>
                 </div>
               </div>
-              <div className={isHorizontal ? "col-md-8" : "col-md-12"}>
+              <div className="col-md-8">
                 <div className="card-body mt-2">
                   <h5
                     className="card-title"

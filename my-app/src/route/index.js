@@ -5,9 +5,8 @@ import Login from "../pages/Client/Login";
 import Register from "../pages/Client/Register";
 import About from "../pages/Client/AboutUs";
 import Payment from "../pages/Client/Payment";
-import DetailTour from "../pages/Client/DetailTour";
-import Tour from "../pages/Client/Tour";
-import BookingTour from "../pages/Client/OrderTour";
+import DetailTour from "../pages/Client/DetailTour"
+import Tour from "../pages/Client/Tour"
 // client profile
 import Profile from "../pages/Client/Profile";
 import Score from "../pages/Client/Profile/score";
@@ -37,7 +36,6 @@ const publicRoutes = [
   { path: routes.login, component: Login, layout: null },
   { path: routes.register, component: Register, layout: null },
   { path: routes.payment, component: Payment, layout: null },
-  { path: routes.booking_tour, component: BookingTour, layout: DefaultLayout },
   // profile
   { path: routes.profile, component: Profile, layout: ProfileLayout },
   { path: routes.discount, component: Discount, layout: ProfileLayout },

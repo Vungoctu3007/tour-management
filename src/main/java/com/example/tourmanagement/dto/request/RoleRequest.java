@@ -1,16 +1,14 @@
-package com.example.tourmanagement.dto.response;
-
-import java.util.Set;
+package com.example.tourmanagement.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoleResponse {
+public class RoleRequest {
     int id;
     String name;
 }

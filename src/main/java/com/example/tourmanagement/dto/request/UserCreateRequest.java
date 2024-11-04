@@ -1,7 +1,4 @@
-package com.example.tourmanagement.dto.response;
-
-import java.util.Set;
-
+package com.example.tourmanagement.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,7 +7,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoleResponse {
-    int id;
-    String name;
+public class UserCreateRequest {
+
+    String username;
+    String password;
+    String email;
+    int roleId;
 }

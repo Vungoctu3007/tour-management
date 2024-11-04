@@ -15,7 +15,13 @@ import { useNavigate } from "react-router-dom";
 
 export default function Login() {
     const navigate = useNavigate();
-    const [isLogin, setIsLogin] = useState(true); // Toggle between login and signup form
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [snackBarOpen, setSnackBarOpen] = useState(false);
+    const [snackBarMessage, setSnackBarMessage] = useState("");
+    const [snackBarSeverity, setSnackBarSeverity] = useState("success");
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleCloseSnackBar = (event, reason) => {
         if (reason === "clickaway") {
@@ -24,55 +30,83 @@ export default function Login() {
         setSnackBarOpen(false);
     };
 
-    const handleClick = () => {
-        alert(
-            "Please refer to Oauth2 series for this implementation guidelines. https://www.youtube.com/playlist?list=PL2xsxmVse9IbweCh6QKqZhousfEWabSeq"
-        );
+    const validateForm = () => {
+        if (!username.trim()) {
+            setErrorMessage('Username không được để trống');
+            return false;
+        }
+        if (!password.trim()) {
+            setErrorMessage('Password không được để trống');
+            return false;
+        }
+        if (password.length < 6) {
+            setErrorMessage('Password phải có ít nhất 6 ký tự');
+            return false;
+        }
+        return true;
     };
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [email, setEmail] = useState(""); // Email field for signup form
-    const [snackBarOpen, setSnackBarOpen] = useState(false);
-    const [snackBarMessage, setSnackBarMessage] = useState("");
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const roleId = localStorage.getItem('roleId');
+            if (roleId === '1' || roleId === '2') {
+                navigate("/admin/dashboard");
+            } else if (roleId === '3') {
+                navigate("/");
+            }
+        }
+    }, [navigate]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const url = isLogin ? "http://localhost:8080/auth/login" : "http://localhost:8080/auth/signup"; // Change URL for signup
+
+        const url = "http://localhost:8080/api/login";
+
+        if (!validateForm()) return;
 
         fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(
-                isLogin
-                    ? { username, password }
-                    : { username, email, password } // Add email to the signup form
-            ),
+            body: JSON.stringify({ username, password }),
         })
             .then((response) => response.json())
             .then((data) => {
                 if (data.code !== 1000) {
                     throw new Error(data.message);
                 }
-                if (isLogin) {
-                    localStorage.setItem("token", data.result?.token);
-                    const roleId = data.result?.roleId;
-                    if (roleId === 1) {
-                        navigate("/admin");
-                    } else if (roleId === 2 || roleId === 3) {
+
+                localStorage.setItem("token", data.result?.token);
+                localStorage.setItem("username", data.result?.userName);
+                localStorage.setItem("roleId", data.result?.roleId);
+
+                const roleId = data.result?.roleId;
+                setSnackBarMessage("Đăng nhập thành công!");
+                setSnackBarSeverity("success");
+                setSnackBarOpen(true);
+                setTimeout(() => {
+                    if (roleId === 1 || roleId === 2) {
+                        navigate("/admin/dashboard");
+                    } else if (roleId === 3) {
                         navigate("/");
                     }
-                } else {
-                    // Handle successful signup
-                    setIsLogin(true); // After signup, switch back to login
-                }
+                }, 3000);
             })
             .catch((error) => {
                 setSnackBarMessage(error.message);
+                setSnackBarSeverity("error");
                 setSnackBarOpen(true);
             });
+    };
+
+    const handleGoogleLogin = () => {
+        // Logic for Google login integration
+    };
+
+    const handleNavigateToRegister = () => {
+        navigate("/register"); // Navigate to the registration page
     };
 
     return (
@@ -80,12 +114,12 @@ export default function Login() {
             <Snackbar
                 open={snackBarOpen}
                 onClose={handleCloseSnackBar}
-                autoHideDuration={6000}
+                autoHideDuration={3000}
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}
             >
                 <Alert
                     onClose={handleCloseSnackBar}
-                    severity="error"
+                    severity={snackBarSeverity}
                     variant="filled"
                     sx={{ width: "100%" }}
                 >
@@ -112,7 +146,7 @@ export default function Login() {
                 >
                     <CardContent>
                         <Typography variant="h5" component="h1" gutterBottom>
-                            {isLogin ? "Welcome" : "Create Account"}
+                            Welcome
                         </Typography>
                         <Box
                             component="form"
@@ -131,16 +165,6 @@ export default function Login() {
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
-                            {!isLogin && (
-                                <TextField
-                                    label="Email"
-                                    variant="outlined"
-                                    fullWidth
-                                    margin="normal"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            )}
                             <TextField
                                 label="Password"
                                 type="password"
@@ -161,9 +185,9 @@ export default function Login() {
                                     mb: "25px",
                                 }}
                             >
-                                {isLogin ? "Login" : "Sign Up"}
+                                Login
                             </Button>
-                            <Divider></Divider>
+                            <Divider />
                         </Box>
 
                         <Box display="flex" flexDirection="column" width="100%" gap="25px">
@@ -172,7 +196,7 @@ export default function Login() {
                                 variant="contained"
                                 color="secondary"
                                 size="large"
-                                onClick={handleClick}
+                                onClick={handleGoogleLogin}
                                 fullWidth
                                 sx={{ gap: "10px" }}
                             >
@@ -184,9 +208,9 @@ export default function Login() {
                                 variant="contained"
                                 color="success"
                                 size="large"
-                                onClick={() => setIsLogin(!isLogin)} // Toggle form on button click
+                                onClick={handleNavigateToRegister} // Navigate to Register page
                             >
-                                {isLogin ? "Create an account" : "Back to login"}
+                                Create an account
                             </Button>
                         </Box>
                     </CardContent>

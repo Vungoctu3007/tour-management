@@ -3,17 +3,15 @@ package com.example.tourmanagement.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
+import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationResponse {
-    String token;
-    Date expiryTime;
-    Integer roleId;
-    String roleName;
-    String userName;
+public class UserResponseWrapper {
+    long totalPages;
+    long totalElements;
+    List<UserResponse> users;
 }

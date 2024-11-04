@@ -7,9 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "routes", schema = "tour_management")
+@Table(name = "routes")
 public class Route {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "route_id", nullable = false)
     private Integer id;
 
