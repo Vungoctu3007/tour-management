@@ -19,6 +19,9 @@ public class Detailroute {
     @JoinColumn(name = "route_id")
     private Route route;
 
+    // @Column(name = "price")
+    // private Double price;
+
     @Column(name = "detail_route_name")
     private String detailRouteName;
 
