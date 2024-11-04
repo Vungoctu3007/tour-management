@@ -17,25 +17,25 @@ public class RouteResponseDetail {
     String detailRouteName;
     String description;
     Integer stock;
+    Double price;
     LocalDate timeToDeparture;
     LocalDate timeToFinish;
     List<ImageResponse> textImageList;
     List<LegResponse> legs;
     Double rating;
-    Double price;
     public RouteResponseDetail(Integer detailRouteId, Integer routeId, String detailRouteName,
-                               String description, Integer stock, LocalDate timeToDeparture,
-                               LocalDate timeToFinish, Double rating, Double price) {
+                               String description, Integer stock, Double price, LocalDate timeToDeparture,
+                               LocalDate timeToFinish, Double rating) {
         this.detailRouteId = detailRouteId;
         this.routeId = routeId;
         this.detailRouteName = detailRouteName;
         this.description = description;
         this.stock = stock;
+        this.price = price;
         this.timeToDeparture = timeToDeparture;
         this.timeToFinish = timeToFinish;
         this.rating = rating;
         this.textImageList = new ArrayList<>();
         this.legs = new ArrayList<>();
-        this.price = price;
     }
 }
