@@ -77,7 +77,7 @@ public class AuthenticationService {
         System.out.println("user_id : " + userId);
         if (roleId == 3) {
             // Fetch customer-specific name for customers
-            Customer customer = customerRepository.findByUserId(userId)
+            Customer customer = customerRepository.findByCustomerId(userId)
                     .orElseThrow(() -> new AppException(ErrorCode.CUSTOMER_NOT_EXIST));
             userName = customer.getCustomerName();
         } else {

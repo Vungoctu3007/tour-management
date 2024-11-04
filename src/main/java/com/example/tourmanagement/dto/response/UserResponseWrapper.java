@@ -1,16 +1,17 @@
 package com.example.tourmanagement.dto.response;
 
-import java.util.Set;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoleResponse {
-    int id;
-    String name;
+public class UserResponseWrapper {
+    long totalPages;
+    long totalElements;
+    List<UserResponse> users;
 }

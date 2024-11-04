@@ -21,32 +21,81 @@ import PaginationComponent from "../../../components/Pagination";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Notification from "../../../components/Notification"; // Import your Notification component
+import Notification from "../../../components/Notification";
+import BlockIcon from "@mui/icons-material/Block";
+import AddUser from "./AddUser";
+import { getListUser, getUserByAllSearch } from "../../../services/userService";
 
 function ListUser() {
-  const [users, setUsers] = useState([]);
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [users, setUsers] = useState([]); // This is already correct in your code
+  const pageSize = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [searchUser, setSearchUser] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
+  const [addUserOpen, setAddUserOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
+  const [roles, setRoles] = useState([]);
+
+  // Debounced search state
+  const [debouncedSearchUser, setDebouncedSearchUser] = useState(searchUser);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchUser(searchUser);
+    }, 300); // Adjust the debounce delay (300ms)
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchUser]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/user");
-        setUsers(
-          Array.isArray(response.data.result) ? response.data.result : []
-        );
+        let response;
+  
+        if (debouncedSearchUser) {
+          // Search API
+          response = await getUserByAllSearch(debouncedSearchUser);
+          console.log(response);
+        } else {
+          // Fetch paginated users if no search term
+          response = await getListUser(currentPage, pageSize);
+        }
+  
+        // Ensure the response is valid before accessing its properties
+        if (response && response.code === 1000) {
+          setUsers(response.result.users || []); // Update this line to correctly access users
+          setTotalPages(response.result.totalPages || 1);
+        } else {
+          setUsers([]); // If not successful, set users to an empty array
+        }
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
-
+  
+    const fetchRoles = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/role");
+        setRoles(response.data.result || []);
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+      }
+    };
+  
     fetchUsers();
-  }, []);
+    fetchRoles();
+  }, [currentPage, debouncedSearchUser]);
+  
+
+  const handleSearchChange = (event) => {
+    setSearchUser(event.target.value);
+    setCurrentPage(1); // Reset to the first page when a new search is initiated
+  };
 
   const handleOpenDialog = (user) => {
     setSelectedUser(user);
@@ -58,17 +107,45 @@ function ListUser() {
     setSelectedUser(null);
   };
 
-  console.log("user id : ",selectedUser.id)
-  const handleDelete = async () => {
+  const handleAddUserOpen = () => {
+    setAddUserOpen(true);
+  };
+
+  const handleAddUserClose = () => {
+    setAddUserOpen(false);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleAddUserSave = async (newUser) => {
+    try {
+      const response = await axios.post("http://localhost:8080/api/user", newUser);
+      setUsers((prevUsers) => [...prevUsers, response.data]);
+      setNotificationMessage(`User ${newUser.username} added successfully.`);
+      setNotificationOpen(true);
+    } catch (error) {
+      console.error("Error adding user:", error);
+      setNotificationMessage("Failed to add user.");
+      setNotificationOpen(true);
+    }
+  };
+
+  const handleBlockUser = async () => {
     if (selectedUser) {
       try {
-        await axios.delete(`http://localhost:8080/api/user/${selectedUser.id}`);
-        setUsers(users.filter((user) => user.id !== selectedUser.id));
-        setNotificationMessage(`User ${selectedUser.username} deleted successfully.`);
+        await axios.put(`http://localhost:8080/api/user/${selectedUser.id}?status=0`);
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === selectedUser.id ? { ...user, status: 0 } : user
+          )
+        );
+        setNotificationMessage(`User ${selectedUser.username} is blocked.`);
         setNotificationOpen(true);
         handleCloseDialog();
       } catch (error) {
-        console.error("Error deleting user:", error);
+        console.error("Error updating user status:", error);
       }
     }
   };
@@ -77,56 +154,28 @@ function ListUser() {
     setNotificationOpen(false);
   };
 
-  const handleAddUser = () => {
-    const newUser = {
-      username: `user${Date.now()}`,
-      email: `user${users.length + 1}@example.com`,
-      role: 3,
-    };
-    setUsers([...users, newUser]);
-  };
-
-  const handleChangePage = (newPage) => {
-    setPage(newPage);
-  };
-
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-    setPage(1);
-  };
-
-  const filteredUsers = users.filter((user) =>
-    user.username.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const totalPages = Math.ceil(filteredUsers.length / rowsPerPage);
-
   return (
     <div>
       <Paper>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mb={2}
-        >
+        <Box display="flex" justifyContent="center" alignItems="center" mb={2} gap={2}>
           <TextField
             variant="outlined"
             placeholder="Search user"
-            value={searchTerm}
-            onChange={handleSearch}
-            style={{ marginRight: 16 }}
+            value={searchUser}
+            onChange={handleSearchChange}
+            style={{ width: "300px" }}
           />
-          <Button variant="contained" color="primary" onClick={handleAddUser}>
+          <div onClick={handleAddUserOpen} style={{ cursor: "pointer", marginLeft: "8px", textAlign: "center" }}>
             <GroupAddIcon />
-          </Button>
+          </div>
         </Box>
         <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>UserId</TableCell>
+                <TableCell>Id</TableCell>
                 <TableCell>Username</TableCell>
+                <TableCell>Password</TableCell>
                 <TableCell>Email</TableCell>
                 <TableCell>RoleId</TableCell>
                 <TableCell>Role name</TableCell>
@@ -134,75 +183,57 @@ function ListUser() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredUsers
-                .slice((page - 1) * rowsPerPage, page * rowsPerPage)
-                .map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>{user.id}</TableCell>
-                    <TableCell>{user.username}</TableCell>
-                    <TableCell>{user.email || "N/A"}</TableCell>
-                    <TableCell>{user.role}</TableCell>
-                    <TableCell>{user.roleName}</TableCell>
-                    <TableCell>
-                      <Box display="flex" alignItems="center">
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          onClick={() => alert(`Edit ${user.username}`)}
-                          style={{ marginRight: 8 }}
-                        >
-                          <EditIcon />
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="error"
-                          onClick={() => handleOpenDialog(user)}
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                ))}
+              {users.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.id}</TableCell>
+                  <TableCell>{user.username}</TableCell>
+                  <TableCell>{user.password}</TableCell>
+                  <TableCell>{user.email || "N/A"}</TableCell>
+                  <TableCell>{user.role}</TableCell>
+                  <TableCell>{user.roleName || "N/A"}</TableCell>
+                  <TableCell>
+                    <Box display="flex" alignItems="center">
+                      <div onClick={() => alert(`Edit ${user.username}`)} style={{ marginRight: 8, cursor: "pointer", padding: "8px", textAlign: "center" }}>
+                        <EditIcon />
+                      </div>
+                      <div onClick={() => handleOpenDialog(user)} style={{ cursor: "pointer", padding: "8px", textAlign: "center" }}>
+                        <BlockIcon />
+                      </div>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
-
-        {/* Pagination */}
         <PaginationComponent
           totalPages={totalPages}
-          currentPage={page}
-          onPageChange={handleChangePage}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
           variant="outlined"
           color="primary"
           shape="rounded"
         />
-
-        {/* Delete Confirmation Dialog */}
         <Dialog open={openDialog} onClose={handleCloseDialog}>
-          <DialogTitle>Confirm Deletion</DialogTitle>
+          <DialogTitle>Confirm Block</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Are you sure you want to delete user <strong>{selectedUser?.username}</strong>?
+              Are you sure you want to block user <strong>{selectedUser?.username}</strong>?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseDialog} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleDelete} color="error">
-              Delete
-            </Button>
+            <Button onClick={handleCloseDialog} color="primary">Cancel</Button>
+            <Button onClick={handleBlockUser} color="error">Block</Button>
           </DialogActions>
         </Dialog>
+        <AddUser
+          open={addUserOpen}
+          onClose={handleAddUserClose}
+          onSave={handleAddUserSave}
+          roles={roles}
+        />
       </Paper>
-
-      {/* Notification Component */}
-      <Notification
-        open={notificationOpen}
-        message={notificationMessage}
-        onClose={handleNotificationClose}
-      />
+      <Notification open={notificationOpen} message={notificationMessage} onClose={handleNotificationClose} />
     </div>
   );
 }
