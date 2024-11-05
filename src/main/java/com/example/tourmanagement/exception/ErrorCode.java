@@ -13,7 +13,7 @@ public enum ErrorCode {
     USER_EXISTS(1004,"User exited", HttpStatus.BAD_REQUEST),
     PASSWORD_TOO_SHORT(1005, "Password must be at least 6 characters long", HttpStatus.BAD_REQUEST),
     CUSTOMER_NOT_EXIST(1005, "Customer not exits", HttpStatus.BAD_REQUEST),
-
+    USER_OR_PASSWORD_WRONG(1006, "User or password wrong", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

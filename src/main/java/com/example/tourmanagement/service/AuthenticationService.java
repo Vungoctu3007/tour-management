@@ -66,7 +66,7 @@ public class AuthenticationService {
         // Compare input password with the stored encoded password
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
         if (!authenticated) {
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+            throw new AppException(ErrorCode.USER_OR_PASSWORD_WRONG);
         }
 
         // Retrieve role and set user-specific data

@@ -104,5 +104,3 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
     Page<RouteResponse> findRoutesByArrival(String arrivalName,
                                             Pageable pageable,String sort);
 }
-
-
