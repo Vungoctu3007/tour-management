@@ -18,6 +18,6 @@ public class Arrival {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
-    private Statusroleoperation status;
+    private com.example.tourmanagement.entity.Statusroleoperation status;
 
 }

@@ -6,19 +6,15 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Embeddable
-public class TicketId implements Serializable {
-    private static final long serialVersionUID = -514482395848430367L;
+public class TicketId implements java.io.Serializable {
+    private static final long serialVersionUID = 2637434328953449496L;
     @Column(name = "booking_id", nullable = false)
     private Integer bookingId;
-
-    @Column(name = "detail_route_id", nullable = false)
-    private Integer detailRouteId;
 
     @Column(name = "passenger_id", nullable = false)
     private Integer passengerId;
@@ -29,13 +25,12 @@ public class TicketId implements Serializable {
 //        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
 //        TicketId entity = (TicketId) o;
 //        return Objects.equals(this.passengerId, entity.passengerId) &&
-//                Objects.equals(this.detailRouteId, entity.detailRouteId) &&
 //                Objects.equals(this.bookingId, entity.bookingId);
 //    }
 
     @Override
     public int hashCode() {
-        return Objects.hash(passengerId, detailRouteId, bookingId);
+        return Objects.hash(passengerId, bookingId);
     }
 
 }

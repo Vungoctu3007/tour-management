@@ -1,33 +1,84 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getRouteDetailById } from '../../../services/bookingService';
+import { handleBooking } from '../../../services/bookingService';
 
 function BookingTour() {
-    // load page
-    const { id } = useParams(); // Lấy ID từ URL
-    const [tour, setTour] = useState(null); // State lưu thông tin tour
+    const { id } = useParams();
+    const [tour, setTour] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // State for storing form data
     const [formData, setFormData] = useState({
-        fullName: '',
-        phone: '',
-        email: '',
-        address: '',
+        customerName: '',
+        customerEmail: '',
+        customerAddress: '',
+        customerPhone: '',
         adults: 1,
-        children: 0,
-        infants: 0,
-        passengerName: '',
-        gender: 'Nam',
-        birthDate: '',
+        children: '0',
+        infants: '0'
     });
 
+    
+
+    const [passengerRequestList, setPassengers] = useState([{ passengerName: '', passengerGender: 'Nam', passengerDateBirth: '', passengerObjectId: 1 }]);
+
+    const payload = {
+        ...formData,
+        passengerRequestList,
+    }
+    
+    // Update passenger array when the counts change
+
+    const updatePassengerCount = (type, count) => {
+        const newCount = Math.max(0, count);
+        setFormData((prev) => ({ ...prev, [type]: newCount }));
+    
+        let updatedPassengers = [...passengerRequestList];
+        const totalPassengers = formData.adults + formData.children + formData.infants;
+        const difference = newCount - formData[type];
+    
+        if (difference > 0) {
+            // Thêm hành khách mới
+            for (let i = 0; i < difference; i++) {
+                const objectId = getPassengerType(type); // Lấy loại vé
+                updatedPassengers.push({ passengerName: '', passengerGender: 'Nam', passengerDateBirth: '', passengerObjectId: objectId });
+            }
+        } else if (difference < 0) {
+            // Xóa hành khách
+            updatedPassengers.splice(totalPassengers + difference, -difference);
+        }
+    
+        setPassengers(updatedPassengers);
+    };
+    
+    // Hàm để xác định loại vé
+    const getPassengerType = (type) => {
+        switch (type) {
+            case 'adults':
+                return 1; // Người lớn
+            case 'children':
+                return 2; // Trẻ em
+            case 'infants':
+                return 3; // Trẻ sơ sinh
+            default:
+                return null;
+        }
+    };
+    
     // Handle input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
+        setFormData({ ...formData, [name]: value });
+    };
+
+    // Update individual passenger info
+    const handlePassengerChange = (index, event) => {
+        const { name, value } = event.target;
+    
+        setPassengers((prevPassengers) => {
+            const updatedPassengers = [...prevPassengers];
+            updatedPassengers[index] = { ...updatedPassengers[index], [name]: value };
+            return updatedPassengers;
         });
     };
 
@@ -35,60 +86,56 @@ function BookingTour() {
         const fetchTourData = async () => {
             try {
                 const response = await getRouteDetailById(id);
-                console.log(response)
-                setTour(response); // Lưu dữ liệu tour vào state
-                setLoading(false); // Đánh dấu là đã hoàn tất loading
+                setTour(response); 
+                setLoading(false); 
             } catch (error) {
                 console.error('Error fetching tour data:', error);
-                setLoading(false); // Đánh dấu là đã hoàn tất loading
+                setLoading(false);
             }
         };
 
-        fetchTourData(); // Gọi hàm fetch
-    }, [id]); // Chạy effect mỗi khi ID thay đổi
+        fetchTourData();
+    }, [id]); 
 
-    // Nếu đang loading, hiển thị thông báo
     if (loading) {
         return <div>Loading...</div>;
     }
 
-    // Nếu không có tour, hiển thị thông báo
     if (!tour) {
         return <div>No tour found!</div>;
     }
 
-
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         try {
-            const response = await fetch('https://your-api-endpoint.com/book-tour', {
+            const response = await fetch('http://localhost:8080/api/booking/handle-booking', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData), // Chuyển đổi dữ liệu thành JSON
+                body: JSON.stringify(payload),
             });
-
+    
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
-            const data = await response.json(); // Nhận phản hồi từ server
-            console.log('Form submitted successfully:', data);
-            // Xử lý thêm nếu cần, như hiển thị thông báo thành công
+    
+            const data = await response.json();
+            console.log('Booking successful:', data);
+            // Handle success, e.g., show a success message or navigate
         } catch (error) {
             console.error('Error submitting form:', error);
-            // Xử lý lỗi, như hiển thị thông báo lỗi
+            // Handle error, e.g., show an error message to the user
         }
     };
+    
 
     // Calculate total price
     const totalPrice = () => {
-        const adultPrice = 12990000;
-        const childPrice = 8000000;
-        const infantPrice = 3000000;
+        const adultPrice = tour.result.price;
+        const childPrice = tour.result.price * 0.8;
+        const infantPrice = tour.result.price * 0.5;
         return (formData.adults * adultPrice) + (formData.children * childPrice) + (formData.infants * infantPrice);
     };
 
@@ -106,8 +153,8 @@ function BookingTour() {
                                     type="text"
                                     className="form-control"
                                     placeholder="Nhập họ tên"
-                                    name="fullName"
-                                    value={formData.fullName}
+                                    name="customerName"
+                                    value={formData.customerName}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -119,8 +166,8 @@ function BookingTour() {
                                     type="text"
                                     className="form-control"
                                     placeholder="Nhập số điện thoại"
-                                    name="phone"
-                                    value={formData.phone}
+                                    name="customerPhone"
+                                    value={formData.customerPhone}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -134,8 +181,8 @@ function BookingTour() {
                                     type="email"
                                     className="form-control"
                                     placeholder="name@example.com"
-                                    name="email"
-                                    value={formData.email}
+                                    name="customerEmail"
+                                    value={formData.customerEmail}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -147,89 +194,106 @@ function BookingTour() {
                                     type="text"
                                     className="form-control"
                                     placeholder="Nhập địa chỉ"
-                                    name="address"
-                                    value={formData.address}
+                                    name="customerAddress"
+                                    value={formData.customerAddress}
                                     onChange={handleChange}
                                 />
                             </div>
                         </div>
                     </div>
-
                     <h5>Hành khách</h5>
                     <div className="row mb-3">
                         <div className="col-md-4">
                             <PassengerCounter
                                 label="Người lớn"
                                 count={formData.adults}
-                                onIncrement={() => setFormData({ ...formData, adults: formData.adults + 1 })}
-                                onDecrement={() => setFormData({ ...formData, adults: Math.max(0, formData.adults - 1) })}
+                                onIncrement={() => updatePassengerCount('adults', formData.adults + 1)} 
+                                onDecrement={() => updatePassengerCount('adults', formData.adults - 1)} 
                             />
                         </div>
+
                         <div className="col-md-4">
                             <PassengerCounter
                                 label="Trẻ em"
                                 count={formData.children}
-                                onIncrement={() => setFormData({ ...formData, children: formData.children + 1 })}
-                                onDecrement={() => setFormData({ ...formData, children: Math.max(0, formData.children - 1) })}
+                                onIncrement={() => updatePassengerCount('children', formData.children + 1)}
+                                onDecrement={() => updatePassengerCount('children', formData.children - 1)}
                             />
                         </div>
                         <div className="col-md-4">
                             <PassengerCounter
-                                label="Em bé"
+                                label="Trẻ sơ sinh"
                                 count={formData.infants}
-                                onIncrement={() => setFormData({ ...formData, infants: formData.infants + 1 })}
-                                onDecrement={() => setFormData({ ...formData, infants: Math.max(0, formData.infants - 1) })}
+                                onIncrement={() => updatePassengerCount('infants', formData.infants + 1)}
+                                onDecrement={() => updatePassengerCount('infants', formData.infants - 1)}
                             />
                         </div>
                     </div>
 
                     <h5>Thông tin hành khách</h5>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="mb-3">
-                                <label htmlFor="passengerName" className="form-label">Họ tên *</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Nhập họ tên"
-                                    name="passengerName"
-                                    value={formData.passengerName}
-                                    onChange={handleChange}
-                                />
+                    {passengerRequestList.map((passenger, index) => (
+                        <div key={index} className="row">
+                            <div className="col-md-4">
+                                <div className="mb-3">
+                                    <label htmlFor={`passengerName${index}`} className="form-label">Họ tên *</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Nhập họ tên"
+                                        name="passengerName"
+                                        value={passenger.passengerName}
+                                        onChange={(e) => handlePassengerChange(index, e)}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-3">
-                            <div className="mb-3">
-                                <label htmlFor="gender" className="form-label">Giới tính *</label>
-                                <select
-                                    name="gender"
-                                    className="form-select"
-                                    value={formData.gender}
-                                    onChange={handleChange}
-                                >
-                                    <option>Nam</option>
-                                    <option>Nữ</option>
-                                </select>
+                            <div className="col-md-3">
+                                <div className="mb-3">
+                                    <label htmlFor={`gender${index}`} className="form-label">Giới tính *</label>
+                                    <select
+                                        name="passengerGender"
+                                        className="form-select"
+                                        value={passenger.passengerGender}
+                                        onChange={(e) => handlePassengerChange(index, e)}
+                                    >
+                                        <option value="Nam">Nam</option>
+                                        <option value="Nữ">Nữ</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-3">
-                            <div className="mb-3">
-                                <label htmlFor="birthDate" className="form-label">Ngày sinh *</label>
-                                <input
-                                    type="date"
-                                    className="form-control"
-                                    name="birthDate"
-                                    value={formData.birthDate}
-                                    onChange={handleChange}
-                                />
+                            <div className="col-md-3">
+                                <div className="mb-3">
+                                    <label htmlFor={`birthDate${index}`} className="form-label">Ngày sinh *</label>
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        name="passengerDateBirth"
+                                        value={passenger.passengerDateBirth}
+                                        onChange={(e) => handlePassengerChange(index, e)}
+                                    />
+                                </div>
                             </div>
+                            {/* Nếu bạn muốn hiển thị object_id */}
+                            <div className="col-md-2">
+                                <div className="mb-3">
+                                    <label className="form-label">Loại vé *</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={passenger.passengerObjectId === 1 ? "Người lớn" : passenger.passengerObjectId === 2 ? "Trẻ em" : "Trẻ sơ sinh"}
+                                        readOnly
+                                    />
+                                </div>
+                            </div>
+                            <hr></hr>
                         </div>
-                    </div>
+
+                    ))}
                 </div>
+
                 {/* Right Section - Tour Summary */}
                 <div className="col-md-4">
                     <div className="card p-4">
-                        <img src="tour-image.jpg" className="card-img-top" alt="Tour" />
+                        <img src={require(`../../../assets/images/Tour/${tour.result.textImageList[0].textImage}`)} className="card-img-top" alt="Tour" />
                         <div className="card-body">
                             <h5 className="card-title">{tour.result.detailRouteName}</h5>
                             <ul className="list-unstyled">
@@ -241,10 +305,11 @@ function BookingTour() {
 
                             <h6>KHÁCH HÀNG + PHỤ THU</h6>
                             <ul className="list-unstyled">
-                                <li>Người lớn {formData.adults} x 12,990,000 ₫</li>
-                                <li>Trẻ em {formData.children} x 8,000,000 ₫</li>
-                                <li>Em bé {formData.infants} x 3,000,000 ₫</li>
+                                <li>Người lớn {formData.adults} x {tour.result.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</li>
+                                <li>Trẻ em {formData.children} x {(tour.result.price * 0.8).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</li>
+                                <li>Em bé {formData.infants} x {(tour.result.price * 0.5).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</li>
                             </ul>
+
 
                             <div className="text-end fw-bold text-danger fs-4">
                                 TỔNG TIỀN: {totalPrice().toLocaleString()} ₫
@@ -255,6 +320,7 @@ function BookingTour() {
                         </button>
                     </div>
                 </div>
+
             </div>
         </div>
     );
@@ -271,4 +337,3 @@ const PassengerCounter = ({ label, count, onIncrement, onDecrement }) => (
 );
 
 export default BookingTour;
-

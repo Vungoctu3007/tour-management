@@ -17,12 +17,14 @@ public class Detailroute {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id")
-    private Route route;
+    private com.example.tourmanagement.entity.Route route;
+
+    @Column(name = "price")
+    private Double price;
 
     @Column(name = "detail_route_name")
     private String detailRouteName;
-    @Column(name="price")
-    private Double price;
+
     @Lob
     @Column(name = "description")
     private String description;

@@ -24,12 +24,13 @@ public class RouteController {
 
     //    get all routes
     @GetMapping
-    public ApiResponse<RouteResponseWrapper> getAllRoutes(@RequestParam(defaultValue = "1") int page, @RequestParam int size) {
-        Pageable pageable= PageRequest.of(page-1, size);
+    public ApiResponse<RouteResponseWrapper> getAllRoutes(@RequestParam(defaultValue = "1") int page, @RequestParam int size, @RequestParam(required = false) String sort) {
+        Pageable pageable = PageRequest.of(page - 1, size);
         return ApiResponse.<RouteResponseWrapper>builder()
-                .result(routeService.getAllRoutes(pageable))
+                .result(routeService.getAllRoutes(pageable, sort))
                 .build();
     }
+
     //    get route by id
     @GetMapping("/detail/{id}")
     public ApiResponse<RouteResponseDetail> getRouteById(@PathVariable Integer id) {
@@ -37,25 +38,29 @@ public class RouteController {
                 .result(routeService.getRouteById(id))
                 .build();
     }
+
     // find Routes By Arrival Departure And Date
     @GetMapping("/search")
     public ApiResponse<RouteResponseWrapper> searchRouteByArrivalDepartureDate(@RequestParam String arrivalName,
-                                                                      @RequestParam(defaultValue = "") String departureName,
-                                                                      @RequestParam LocalDate timeToDeparture,
-                                                                      @RequestParam(defaultValue = "1") int page,
-                                                                      @RequestParam int size) {
-        Pageable pageable= PageRequest.of(page-1, size);
+                                                                               @RequestParam(defaultValue = "") String departureName,
+                                                                               @RequestParam LocalDate timeToDeparture,
+                                                                               @RequestParam(defaultValue = "1") int page,
+                                                                               @RequestParam int size,
+                                                                               @RequestParam(required = false) String sort) {
+        Pageable pageable = PageRequest.of(page - 1, size);
         return ApiResponse.<RouteResponseWrapper>builder()
-                .result(routeService.findRoutesByArrivalDepartureAndDate(arrivalName, departureName, timeToDeparture,pageable))
+                .result(routeService.findRoutesByArrivalDepartureAndDate(arrivalName, departureName, timeToDeparture, pageable,sort))
                 .build();
     }
+
     @GetMapping("/filter-arrivalName")
     public ApiResponse<RouteResponseWrapper> searchRouteByArrivalName(@RequestParam String arrivalName,
                                                                       @RequestParam(defaultValue = "1") int page,
-                                                                      @RequestParam int size) {
-        Pageable pageable= PageRequest.of(page-1, size);
+                                                                      @RequestParam int size,
+                                                                      @RequestParam(required = false) String sort) {
+        Pageable pageable = PageRequest.of(page - 1, size);
         return ApiResponse.<RouteResponseWrapper>builder()
-                .result(routeService.findRouteByArrivalName(arrivalName,pageable))
+                .result(routeService.findRouteByArrivalName(arrivalName, pageable,sort))
                 .build();
     }
 }

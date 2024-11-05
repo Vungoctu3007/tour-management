@@ -10,9 +10,5 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BookingResponse {
-    Integer detailRouteId;
-    String detailRouteName;
-    LocalDate timeToDeparture;
-    LocalDate timeToFinish;
-    Double price;
+    Integer status;
 }

@@ -10,7 +10,6 @@ import lombok.Setter;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
     private Integer id;
 
@@ -20,14 +19,17 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "email", nullable = false)
-    private String email;
+    @Column(name = "identity_id")
+    private String identityId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @Column(name = "email", nullable = false)
+    private String email;
+
     @Column(name = "status", nullable = false)
-    private int status;
+    private Integer status;
 
 }
