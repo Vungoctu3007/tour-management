@@ -10,7 +10,6 @@ import lombok.Setter;
 @Table(name = "employees")
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id", nullable = false)
     private String employeeId;
 
@@ -18,6 +17,7 @@ public class Employee {
     private String employeeEmail;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id") // Đảm bảo tên cột phù hợp với cơ sở dữ liệu
+    @JoinColumn(name = "user_id")
     private User user;
+
 }

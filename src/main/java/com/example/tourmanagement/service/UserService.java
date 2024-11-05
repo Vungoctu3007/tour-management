@@ -102,6 +102,7 @@ public class UserService {
             customer.setUser(user);
             customer.setCustomerAddress("Default");
             customer.setCustomerName(user.getUsername());
+            customer.setCustomerPhone("0827415586");
             customerRepository.save(customer);
         }
 

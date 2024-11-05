@@ -28,4 +28,7 @@ public class Passenger {
     @Column(name = "date_birth", nullable = false)
     private LocalDate dateBirth;
 
+    @Column(name = "customer_phone", nullable = false)
+    private String customerPhone;
+
 }

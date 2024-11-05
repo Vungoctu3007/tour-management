@@ -20,14 +20,14 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "email", nullable = false)
-    private String email;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @Column(name = "email", nullable = false)
+    private String email;
+
     @Column(name = "status", nullable = false)
-    private int status;
+    private Integer status;
 
 }

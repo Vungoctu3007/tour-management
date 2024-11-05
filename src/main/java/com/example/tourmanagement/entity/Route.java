@@ -10,7 +10,6 @@ import lombok.Setter;
 @Table(name = "routes")
 public class Route {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "route_id", nullable = false)
     private Integer id;
 
