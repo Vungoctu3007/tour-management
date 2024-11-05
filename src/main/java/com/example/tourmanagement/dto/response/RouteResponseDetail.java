@@ -23,10 +23,11 @@ public class RouteResponseDetail {
     List<LegResponse> legs;
     Double rating;
     Double price;
+    String departureName;
     public RouteResponseDetail(Integer detailRouteId, Integer routeId, String detailRouteName,
 
                                String description, Integer stock, LocalDate timeToDeparture,
-                               LocalDate timeToFinish, Double rating,Double price) {
+                               LocalDate timeToFinish, Double rating,Double price, String departureName) {
 
 
 
@@ -39,6 +40,7 @@ public class RouteResponseDetail {
         this.timeToFinish = timeToFinish;
         this.rating = rating;
         this.price = price;
+        this.departureName = departureName;
         this.textImageList = new ArrayList<>();
         this.legs = new ArrayList<>();
     }

@@ -1,15 +1,29 @@
-function Schedule({detailRoute}) {
-  console.log(detailRoute);
+import { useState } from "react";
+
+function Schedule({ detailRoute }) {
+  const [visibleImage, setVisibleImage] = useState({});
+
+  const handleToggleImage = (id) => {
+    setVisibleImage((prev) => ({
+      // ...prev,
+      [id]: !prev[id], 
+    }));
+  };
+
   return (
     <div className="border rounded p-2">
-      <h2>Chương trình tour</h2>
-      <div className="accordion accordion-flush" id="accordionFlushExample">
+      <h5>Chương trình tour</h5>
+      <div
+        className="accordion accordion-flush mt-4"
+        id="accordionFlushExample"
+      >
         {detailRoute.legs.map((item, index) => (
-          <div className="accordion-item border rounded mt-4" key={index}>
+          <div className="accordion-item border rounded" key={index}>
             <div className="accordion-header">
               <div
                 className="accordion-button collapsed"
                 type="button"
+                onClick={() => handleToggleImage(item.id)} 
                 data-bs-toggle="collapse"
                 data-bs-target={`#flush-collapse${item.id}`}
                 aria-expanded="false"
@@ -18,19 +32,19 @@ function Schedule({detailRoute}) {
                 <div className="w-100">
                   <div>
                     <div className="row">
-                      <div className="col-3">
+                      <div className={`col-3 ${visibleImage[item.id] ? 'd-none' : ''}`}>
                         <img
                           src={require(`../../../assets/images/Tour/${item.textImage}`)}
                           style={{
-                            width: "150px",
-                            height: "100px",
+                            width: "130px",
+                            height: "70px",
                             objectFit: "cover",
                           }}
                           alt={item.textImage}
                         />
                       </div>
                       <div className="col-9">
-                        <h5>{item.sequence}</h5>
+                        <h5>Ngày {item.sequence}</h5>
                         <span>{item.title}</span>
                       </div>
                     </div>
@@ -44,14 +58,19 @@ function Schedule({detailRoute}) {
               data-bs-parent="#accordionFlushExample"
             >
               <div className="accordion-body">
-               {item.description}
+                {item.description}
+                <img
+                  alt=""
+                  src={require(`../../../assets/images/Tour/${item.textImage}`)}
+                  className="w-100"
+                  style={{ height: "400px" }}
+                />
               </div>
             </div>
           </div>
         ))}
       </div>
     </div>
-    
   );
 }
 export default Schedule;

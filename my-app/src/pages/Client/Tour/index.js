@@ -1,6 +1,7 @@
 import CategoryTitle from "../../../components/CategoryTitle";
 import { useState, useEffect } from "react";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import SearchInput from "../../../components/Search/searchInput";
 import SearchSideBar from "./SearchSideBar";
 import PaginationComponent from "../../../components/Pagination";
@@ -15,10 +16,11 @@ import {
 
 function Tour() {
   const [routes, setRoutes] = useState([]);
-  const pageSize = 10;
+  const pageSize = 1;
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [searchParams, setSearchParams] = useState({});
+  const [totalElements, setTotalElements] = useState(0);
   // search sidebar
   const [selectArrivalName, setSelectArrivalName] = useState("");
   const [selectedSortOption, setSelectedSortOption] = useState("Mặc Định");
@@ -43,18 +45,24 @@ function Tour() {
             selectedSortOption
           );
         } else if (selectArrivalName) {
-          data = await getRouteFilter(selectArrivalName, currentPage, pageSize,selectedSortOption);
+          data = await getRouteFilter(
+            selectArrivalName,
+            currentPage,
+            pageSize,
+            selectedSortOption
+          );
         } else {
-          data = await getAllRoutes(currentPage, pageSize,selectedSortOption);
+          data = await getAllRoutes(currentPage, pageSize, selectedSortOption);
         }
         setRoutes(data.result.routes);
         setTotalPages(data.result.totalPages);
+        setTotalElements(data.result.totalElements);
       } catch (error) {
         console.error("Error fetching routes", error);
       }
     };
     fetchRoute();
-  }, [currentPage, searchParams, selectArrivalName,selectedSortOption]);
+  }, [currentPage, searchParams, selectArrivalName, selectedSortOption]);
   //  lọc chỉ the tên bên side bar
   const handleArrivalSelect = (arrival) => {
     setSelectArrivalName(arrival);
@@ -84,7 +92,7 @@ function Tour() {
           ></SearchInput>
         </div>
         <div className="row mt-4">
-          <CategoryTitle />
+          <CategoryTitle title="Danh-Sách-Tour" />
         </div>
         <div className="row mt-4">
           <div className="col-md-3">
@@ -95,7 +103,22 @@ function Tour() {
               className="rounded d-flex justify-content-between align-items-center mb-3 p-2"
               style={{ background: "#f2f4f4" }}
             >
-              <span>Tổng Cộng {routes.length} Tour</span>
+              <div className="d-flex">
+                Tổng Cộng:{" "}
+                <span className="fs-6 fw-bold ms-2">{totalElements}</span>-Tour
+                {searchParams.departureName && searchParams.arrivalName && (
+                  <div className="ms-2">
+                    Từ{" "}
+                    <span className="fs-6 fw-bold ms-1">
+                      {searchParams.departureName}
+                    </span>
+                    <ArrowRightAltIcon />
+                    <span className="fs-6 fw-bold ">
+                      {searchParams.arrivalName}
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
             {/* filter */}
             <div className="dropdown border rounded col-4 mb-2">
@@ -108,7 +131,9 @@ function Tour() {
                 <SwapVertIcon />{" "}
                 <span>
                   Sắp xếp theo:
-                  <span className="text-success ms-2 fw-bold">{selectedSortTitle}</span>{" "}
+                  <span className="text-success ms-2 fw-bold">
+                    {selectedSortTitle}
+                  </span>{" "}
                 </span>
               </div>
               <ul
