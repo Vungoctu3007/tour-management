@@ -92,6 +92,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(token.token)
                 .expiryTime(token.expiryDate)
+                .userId(userId)
                 .roleId(roleId)
                 .roleName(roleName)
                 .userName(userName)

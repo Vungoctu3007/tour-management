@@ -81,7 +81,7 @@ export default function Login() {
                 if (data.code !== 1000) {
                     throw new Error(data.message);
                 }
-
+                localStorage.setItem("userId", data.result?.userId)
                 localStorage.setItem("token", data.result?.token);
                 localStorage.setItem("username", data.result?.userName);
                 localStorage.setItem("roleId", data.result?.roleId);
