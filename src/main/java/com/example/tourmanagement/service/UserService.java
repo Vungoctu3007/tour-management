@@ -59,51 +59,51 @@ public class UserService {
     }
 
     public UserResponse createUser(UserCreateRequest request) {
-        // Kiểm tra xem tên người dùng đã tồn tại chưa
         System.out.println("username : " + request.getUsername());
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTS);
         }
 
-        // Kiểm tra độ dài mật khẩu
         if (request.getPassword().length() < 6) {
             throw new AppException(ErrorCode.PASSWORD_TOO_SHORT);
         }
 
-        // Chuyển đổi yêu cầu thành thực thể người dùng
         User user = userMapper.toUser(request);
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setStatus(1);
         Role role;
 
-        // Kiểm tra xem tên người dùng có bắt đầu bằng "NV_"
         if (request.getUsername().startsWith("NV_")) {
             role = roleRepository.findById(2) // Vai trò mặc định cho nhân viên
                     .orElseThrow(() -> new RuntimeException("Role mặc định không tồn tại"));
 
-            user.setRole(role); // Gán role cho user
-            user = userRepository.save(user); // Lưu user vào cơ sở dữ liệu
+            user.setRole(role); 
+            user = userRepository.save(user); 
 
-            // Tạo nhân viên
+         
             Employee employee = new Employee();
-            String employeeId = employeeService.generateEmployeeId(); // Phương thức sinh mã nhân viên
+            String employeeId = employeeService.generateEmployeeId(); 
             employee.setEmployeeId(employeeId);
-            employee.setEmployeeEmail(user.getUsername() + "@example.com"); // Giả sử email được tạo từ username
-            employee.setUser(user); // Gán user cho employee
-            employeeRepository.save(employee); // Lưu nhân viên vào cơ sở dữ liệu
+            employee.setEmployeeEmail(user.getUsername() + "@example.com"); 
+            employee.setUser(user); 
+            employeeRepository.save(employee); 
 
         } else {
-            role = roleRepository.findById(3) // Vai trò mặc định cho khách hàng
+            role = roleRepository.findById(3) 
                     .orElseThrow(() -> new RuntimeException("Role mặc định không tồn tại"));
 
-            user.setRole(role); // Gán role cho us er
-            user = userRepository.save(user); // Lưu user vào cơ sở dữ liệu
+            user.setRole(role); 
+            
+            user = userRepository.save(user);
 
             Customer customer = new Customer();
-            customer.setCustomerEmail(user.getUsername() + "@example.com"); // Giả sử email được tạo từ username
-            customer.setUser(user); // Gán user cho customer
-            customerRepository.save(customer); // Lưu khách hàng vào cơ sở dữ liệu
+            customer.setCustomerEmail(user.getUsername() + "@gmail.com"); 
+            customer.setUser(user);
+            customer.setCustomerAddress("Default");
+            customer.setCustomerName(user.getUsername());
+            customer.setCustomerPhone("0827415586");
+            customerRepository.save(customer);
         }
 
         return userMapper.toUserResponse(user);

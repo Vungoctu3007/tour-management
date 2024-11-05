@@ -8,7 +8,7 @@ function Header() {
   const currentUser = true;
   return (
     // #259ed5
-    <Navbar  className="" expand="lg">
+    <Navbar  className="" style={{backgroundColor:"#259ed5"}} expand="lg">
       <Container>
         <Navbar.Brand href="/">
           <img

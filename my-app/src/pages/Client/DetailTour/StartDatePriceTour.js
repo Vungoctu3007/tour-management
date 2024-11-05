@@ -1,7 +1,7 @@
 function StartDatePriceTour() {
     return ( 
         <div className="border rounded p-2">
-            <h2>Lịch Khởi Hành Và Giá Tour</h2>
+            <h5>Đánh Giá Khách Hàng</h5>
         </div>
      );
 }

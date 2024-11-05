@@ -7,3 +7,7 @@
 .pointer{
     cursor: pointer !important;
 }
+
+.selected {
+    color: #ffc107; 
+  }

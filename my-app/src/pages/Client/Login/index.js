@@ -8,16 +8,20 @@ import {
     Typography,
     Snackbar,
     Alert,
+    InputAdornment,
+    IconButton,
 } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export default function Login() {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
+    const [showPassword, setShowPassword] = useState(false); // State to control password visibility
     const [snackBarOpen, setSnackBarOpen] = useState(false);
     const [snackBarMessage, setSnackBarMessage] = useState("");
     const [snackBarSeverity, setSnackBarSeverity] = useState("success");
@@ -109,6 +113,10 @@ export default function Login() {
         navigate("/register"); // Navigate to the registration page
     };
 
+    const togglePasswordVisibility = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+    };
+
     return (
         <>
             <Snackbar
@@ -167,12 +175,21 @@ export default function Login() {
                             />
                             <TextField
                                 label="Password"
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={togglePasswordVisibility} edge="end">
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
                             />
                             <Button
                                 type="submit"

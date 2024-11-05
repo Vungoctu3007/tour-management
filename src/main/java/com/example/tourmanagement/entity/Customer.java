@@ -10,6 +10,7 @@ import lombok.Setter;
 @Table(name = "customers")
 public class Customer {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id", nullable = false)
     private Integer id;
 
@@ -24,7 +25,7 @@ public class Customer {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private com.example.tourmanagement.entity.User user;
+    private User user;
 
     @Column(name = "customer_phone", nullable = false)
     private String customerPhone;

@@ -20,7 +20,7 @@ public class Booking {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    private com.example.tourmanagement.entity.Customer customer;
+    private Customer customer;
 
     @Column(name = "total_price", precision = 10, scale = 2)
     private BigDecimal totalPrice;
@@ -30,12 +30,12 @@ public class Booking {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id")
-    private com.example.tourmanagement.entity.Payment payment;
+    private Payment payment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "payment_status_id")
-    private com.example.tourmanagement.entity.Paymentstatus paymentStatus;
+    private Paymentstatus paymentStatus;
 
     @Column(name = "status_booking", nullable = false)
     private Integer statusBooking;
@@ -43,6 +43,6 @@ public class Booking {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "detail_route_id")
-    private com.example.tourmanagement.entity.Detailroute detailRoute;
+    private Detailroute detailRoute;
 
 }

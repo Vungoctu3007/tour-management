@@ -18,6 +18,6 @@ public class Employee {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private com.example.tourmanagement.entity.User user;
+    private User user;
 
 }

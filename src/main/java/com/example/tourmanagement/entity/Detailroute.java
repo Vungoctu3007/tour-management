@@ -17,7 +17,7 @@ public class Detailroute {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id")
-    private com.example.tourmanagement.entity.Route route;
+    private Route route;
 
     @Column(name = "price")
     private Double price;

@@ -1,7 +1,7 @@
 import httpRequest from "../utils/httpRequest";
-export const getAllRoutes = async (page, size) => {
+export const getAllRoutes = async (page, size,sort) => {
   try {
-    const response = await httpRequest.get(`/route?page=${page}&size=${size}`);
+    const response = await httpRequest.get(`/route?page=${page}&size=${size}&sort=${sort}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching user");
@@ -22,10 +22,11 @@ export const getRouteByAllSearch = async (
   timeToDeparture,
   page,
   size,
+  sort
 ) => {
   try {
     const response = await httpRequest.get(
-      `/route/search?arrivalName=${arrivalName}&departureName=${departureName}&timeToDeparture=${timeToDeparture}&page=${page}&size=${size}`
+      `/route/search?arrivalName=${arrivalName}&departureName=${departureName}&timeToDeparture=${timeToDeparture}&page=${page}&size=${size}&sort=${sort}`
     );
     return response.data;
   } catch (error) {
@@ -36,10 +37,11 @@ export const getRouteFilter = async (
   arrivalName,
   page,
   size,
+  sort,
 ) => {
   try {
     const response = await httpRequest.get(
-      `/route/filter-arrivalName?arrivalName=${arrivalName}&page=${page}&size=${size}`
+      `/route/filter-arrivalName?arrivalName=${arrivalName}&page=${page}&size=${size}&sort=${sort}`
     );
     return response.data;
   } catch (error) {
