@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
 @RestController
 @RequestMapping("/api/booking")
 @RequiredArgsConstructor
@@ -31,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class BookingController {
     RouteService routeService;
     BookingService bookingService;
+
     @GetMapping("/{id}")
     public ApiResponse<RouteResponseDetail> getDetailRoute(@PathVariable Integer id) {
         return ApiResponse.<RouteResponseDetail>builder().result(routeService.getRouteById(id)).build();
@@ -39,21 +38,17 @@ public class BookingController {
     @PostMapping("/handle-booking")
     public ApiResponse<BookingResponse> handleBooking(@RequestBody BookingRequest request) {
         int status = bookingService.createCustomer(request); // Call the createCustomer method
-    
+
         // Prepare the ApiResponse based on the status
         if (status == 1) {
             return ApiResponse.<BookingResponse>builder()
-                .message("Booking successful")
-                .build();
+                    .message("Booking successful")
+                    .build();
         } else {
             return ApiResponse.<BookingResponse>builder()
-                .message("Booking failed")
-                .build();
+                    .message("Booking failed")
+                    .build();
         }
     }
-    
-    
-    
-    
-    
+
 }

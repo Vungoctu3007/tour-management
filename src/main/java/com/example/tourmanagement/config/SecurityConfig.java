@@ -35,8 +35,8 @@ public class SecurityConfig {
 
         // Nếu không sử dụng OAuth2, có thể bỏ phần cấu hình OAuth2
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer
-                .decoder(customJwtDecoder)
-                .jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                        .decoder(customJwtDecoder)
+                        .jwtAuthenticationConverter(jwtAuthenticationConverter()))
                 .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
 
 

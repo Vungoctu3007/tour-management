@@ -1,6 +1,7 @@
 package com.example.tourmanagement.service;
 
 import com.example.tourmanagement.dto.request.AuthenticationRequest;
+import com.example.tourmanagement.dto.request.ExchangeTokenRequest;
 import com.example.tourmanagement.dto.request.IntrospectRequest;
 import com.example.tourmanagement.dto.response.AuthenticationResponse;
 import com.example.tourmanagement.dto.response.IntrospectResponse;
@@ -9,6 +10,7 @@ import com.example.tourmanagement.repository.CustomerRepository;
 import com.example.tourmanagement.entity.User;
 import com.example.tourmanagement.exception.AppException;
 import com.example.tourmanagement.exception.ErrorCode;
+import com.example.tourmanagement.repository.OutboundIdentityClient;
 import com.example.tourmanagement.repository.UserRepository;
 import com.fasterxml.jackson.core.io.JsonEOFException;
 import com.nimbusds.jose.*;
@@ -17,6 +19,7 @@ import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.el.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,8 +39,25 @@ public class AuthenticationService {
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    OutboundIdentityClient outboundIdentityClient;
+
     @Value("${jwt.signerKey}")
     protected String signerKey;
+
+    @NonFinal
+    @Value("${outbound.identity.client-id}")
+    protected String CLIENT_ID;
+
+    @NonFinal
+    @Value("${outbound.identity.client-secret}")
+    protected String CLIENT_SECRET;
+
+    @NonFinal
+    @Value("${outbound.identity.redirect-uri}")
+    protected String REDIRECT_URI;
+
+    @NonFinal
+    protected final String GRANT_TYPE = "authorization_code";
 
     private record TokenInfo(String token, Date expiryDate) {
     }
@@ -98,7 +118,6 @@ public class AuthenticationService {
                 .userName(userName)
                 .build();
     }
-
 
 
     private TokenInfo generateToken(User user) {
@@ -171,16 +190,25 @@ public class AuthenticationService {
         return stringJoiner.toString();
     }
 
-    // public void logout(LogoutRequest request) throws ParseException,
-    // JOSEException {
-    // var signToken = verifyToken(request.getToken());
-    //
-    // String jit = signToken.getJWTClaimsSet().getJWTID();
-    // Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime();
-    //
-    // InvalidatedToken invalidatedToken =
-    // InvalidatedToken.builder().id(jit).expiryTime(expiryTime).build();
-    //
-    // invalidatedTokenRepository.save(invalidatedToken);
-    // }
+    public AuthenticationResponse outboundAuthenticate(String code){
+        try {
+            var response = outboundIdentityClient.exchangeToken(ExchangeTokenRequest.builder()
+                    .code(code)
+                    .clientId(CLIENT_ID)
+                    .clientSecret(CLIENT_SECRET)
+                    .redirectUri(REDIRECT_URI)
+                    .grantType(GRANT_TYPE)
+                    .build());
+
+            log.info("TOKEN RESPONSE {}", response);
+
+            return AuthenticationResponse.builder()
+                    .token(response.getAccessToken())
+                    .build();
+        } catch (Exception e) {
+            log.error("Error occurred during token exchange: {}", e.getMessage(), e);
+            throw new AppException(ErrorCode.OAUTH_ERROR);
+        }
+    }
+
 }

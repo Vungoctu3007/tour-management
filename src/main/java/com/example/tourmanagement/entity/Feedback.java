@@ -4,12 +4,15 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @Entity
 @Table(name = "feedback")
 public class Feedback {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feedback_id", nullable = false)
     private Integer id;
 
@@ -26,5 +29,7 @@ public class Feedback {
 
     @Column(name = "rating", nullable = false)
     private Float rating;
+    @Column(name = "date_create", nullable = false)
+    private Date dateCreate;
 
 }
