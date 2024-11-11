@@ -8,13 +8,16 @@ import DatePicker from "react-datepicker";
 import styles from "./Search.module.css";
 import SearchItem from "./SearchItem";
 import { getAllDeparture } from "../../services/departureService";
-function SearchInput({ onSearchResults, currentPage, pageSize }) {
+import { useNavigate } from "react-router-dom";
+function SearchInput({ onSearchResults, currentPage, pageSize,isHomePage  }) {
+  const navigate = useNavigate();
   const [departures, setDepartures] = useState([]);
   const [showSearchItem, setShowSearchItem] = useState(false);
   const [departureName, setDepartureName] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [arrivalName, setArrivalName] = useState("");
   const [timeToDeparture, setTimeToDeparture] = useState("2024-10-29");
+  
   const handleSearchClick = () => {
     if (arrivalName.trim() === "" && departureName.trim() === "") {
       alert("Vui lòng chọn cả điểm khởi hành và điểm đến.");
@@ -26,7 +29,14 @@ function SearchInput({ onSearchResults, currentPage, pageSize }) {
         currentPage,
         pageSize,
       };
-      onSearchResults(searchData);
+      // onSearchResults(searchData);
+      if (isHomePage) {
+        // Navigate to the route page with search data
+        navigate("/route", { state: { searchData } });  navigate(`/route?arrivalName=${arrivalName}&departureName=${departureName}&timeToDeparture=${timeToDeparture}`);
+      } else {
+        // Perform regular search on the current page
+        onSearchResults(searchData);
+      }
       setArrivalName("");
       setDepartureName("");
     }
@@ -170,6 +180,7 @@ function SearchInput({ onSearchResults, currentPage, pageSize }) {
                 className="btn btn-warning w-100"
                 style={{ height: "60px" }}
                 onClick={() => handleSearchClick()}
+              
               >
                 Tìm
               </button>
