@@ -1,4 +1,3 @@
-import SearchInput from "../../components/Search/searchInput";
 import Carousel from "react-bootstrap/Carousel";
 import Image1 from "../../assets/images/item.jpg";
 import Image2 from "../../assets/images/slider_1.jpg";
@@ -38,8 +37,7 @@ function Slider() {
       <div
         className={`position-absolute top-50 start-50 w-100 ${styles.searchcarousel}`}
       >
-        
-        <SearchInput />
+      
       </div>
     </div>
   );

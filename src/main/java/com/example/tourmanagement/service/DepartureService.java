@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +18,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DepartureService {
-    DepartureRepository departureRepository;
     DepartureMapper departureMapper;
+    DepartureRepository departureRepository;
+
+
     public List<DepartureResponse> getAllDepartures() {
         log.info(departureRepository.findAll().stream().map(departureMapper::toDepartureResponse).toList().toString());
         return departureRepository.findAll().stream().map(departureMapper::toDepartureResponse).toList();

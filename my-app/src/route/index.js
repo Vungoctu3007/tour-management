@@ -28,6 +28,9 @@ import AddUser from "../pages/Admin/User/AddUser";
 import ListTour from "../pages/Admin/Tour/ListTour";
 import AddTour from "../pages/Admin/Tour/AddTour";
 
+// feedback
+import ListFeedback from "../pages/Admin/Feedback";
+
 const publicRoutes = [
   // client routes
   { path: routes.home, component: Home, layout: DefaultLayout },
@@ -37,6 +40,7 @@ const publicRoutes = [
   { path: routes.login, component: Login, layout: null },
   { path: routes.register, component: Register, layout: null },
   { path: routes.payment, component: Payment, layout: null },
+  { path: routes.booking_tour, component: BookingTour, layout: DefaultLayout },
   { path: routes.booking_tour, component: BookingTour, layout: DefaultLayout },
   // profile
   { path: routes.profile, component: Profile, layout: ProfileLayout },
@@ -51,9 +55,10 @@ const publicRoutes = [
   //  1 user
   { path: routes.add_user, component: AddUser, layout: AdminLayout },
   { path: routes.list_user, component: ListUser, layout: AdminLayout },
-  //  2 tour
-  { path: routes.add_tour, component: AddTour, layout: AdminLayout },
-  { path: routes.list_tour, component: ListTour, layout: AdminLayout },
+ 
+  // admin feedback
+  {path: routes.list_feedback, component: ListFeedback, layout: AdminLayout}
 
+  
 ];
 export default publicRoutes;

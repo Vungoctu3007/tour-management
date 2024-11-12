@@ -18,12 +18,19 @@ const routes = {
   users: "/admin/users",
   dashboard: "/admin/dashboard",
   receipt: "/admin/receipt",
+  feedback: "/admin/feedback",
+  
   // admin user
   list_user:"/admin/user/list-user",
   add_user:"/admin/user/add-user",
   
   // admin tour
   list_tour:"/admin/tour/list-tour",
-  add_tour:"/admin/tour/add-tour"
+  add_tour:"/admin/tour/add-tour",
+
+
+  //admin feedback
+  list_feedback:"/admin/feedback/list-feedback",
+
 };
 export default routes;

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Snackbar, Alert } from '@mui/material';
 
-const Notification = ({ open, message, onClose }) => {
+const Notification = ({ open, message, onClose, type = "success" }) => {
   return (
     <Snackbar
       open={open}
@@ -10,7 +10,7 @@ const Notification = ({ open, message, onClose }) => {
       onClose={onClose}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
-      <Alert onClose={onClose} severity="success" sx={{ width: '100%' }}>
+      <Alert onClose={onClose} severity={type} sx={{ width: '100%' }}>
         {message}
       </Alert>
     </Snackbar>

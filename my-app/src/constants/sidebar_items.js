@@ -16,7 +16,7 @@ const sidebar_items = [
       title: "Tài Khoản",
       iconUp: <KeyboardArrowDownIcon />,
       item: [
-        {
+        { 
           title: "Người Dùng",
           to: "/admin/user/list-user",
         },
@@ -33,8 +33,8 @@ const sidebar_items = [
     },
     {
       icon: <DashboardCustomizeIcon />,
-      title: "Tổng Qua",
-      to: "/admin/dashboard",
+      title: "Phản Hồi",
+      to: "/admin/feedback/list-feedback",
     },
   
    
