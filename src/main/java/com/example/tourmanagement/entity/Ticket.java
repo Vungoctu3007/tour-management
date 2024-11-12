@@ -22,8 +22,21 @@ public class Ticket {
     @JoinColumn(name = "passenger_id", nullable = false)
     private Passenger passenger;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "detail_route_id", nullable = false)
-    private Detailroute detailRoute;
+    public void setBookingId(Integer bookingId) {
+        if (this.id == null) {
+            this.id = new TicketId();  // Đảm bảo id được khởi tạo
+        }
+        this.id.setBookingId(bookingId);
+        this.booking = new Booking();
+        this.booking.setId(bookingId);
+    }
 
+    public void setPassengerId(Integer passengerId) {
+        if (this.id == null) {
+            this.id = new TicketId();  // Đảm bảo id được khởi tạo
+        }
+        this.id.setPassengerId(passengerId);
+        this.passenger = new Passenger();
+        this.passenger.setId(passengerId);
+    }
 }

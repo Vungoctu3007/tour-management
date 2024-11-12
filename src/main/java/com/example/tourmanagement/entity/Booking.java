@@ -15,6 +15,7 @@ import java.time.Instant;
 @Table(name = "bookings")
 public class Booking {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "booking_id", nullable = false)
     private Integer id;
 
@@ -45,4 +46,35 @@ public class Booking {
     @JoinColumn(name = "detail_route_id")
     private Detailroute detailRoute;
 
+    public void setCustomerId(Integer customerId) {
+        if (this.customer == null) {
+            this.customer = new Customer();
+        }
+        this.customer.setId(customerId);  
+    }
+
+    public void setPaymentId(Integer paymentId) {
+        if (this.payment == null) {
+            this.payment = new Payment();
+        }
+        this.payment.setId(paymentId);  
+    }
+
+    public void setPaymentStatusId(Integer paymentStatusId) {
+        if (this.paymentStatus == null) {
+            this.paymentStatus = new Paymentstatus();
+        }
+        this.paymentStatus.setId(paymentStatusId);
+    }
+
+    public void setDetailRouteId(Integer detailRouteId) {
+        if (this.detailRoute == null) {
+            this.detailRoute = new Detailroute();
+        }
+        this.detailRoute.setId(detailRouteId);
+    }
+
+    public void setTimeToOrder() {
+        this.timeToOrder = Instant.now();  // Sets the current date and time (UTC)
+    }
 }

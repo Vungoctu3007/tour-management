@@ -14,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,10 +39,13 @@ public class BookingController {
 
     @PostMapping("/handle-booking")
     public ApiResponse<BookingResponse> handleBooking(@RequestBody BookingRequest request) {
-        int status = bookingService.createCustomer(request); // Call the createCustomer method
+        int customerId = bookingService.createCustomer(request);
+        List<Integer> passengerIds = bookingService.createPassengers(request);
+        int bookingId = bookingService.createBooking(request, customerId);
+        boolean status = bookingService.createTickets(passengerIds, bookingId);
     
         // Prepare the ApiResponse based on the status
-        if (status == 1) {
+        if (status == true) {
             return ApiResponse.<BookingResponse>builder()
                 .message("Booking successful")
                 .build();

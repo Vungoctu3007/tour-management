@@ -7,8 +7,12 @@ function BookingTour() {
     const { id } = useParams();
     const [tour, setTour] = useState(null);
     const [loading, setLoading] = useState(true);
+    const userId = localStorage.getItem('userId');
 
     const [formData, setFormData] = useState({
+        total_price: 0,
+        detailRouteId: id,
+        userId: userId || '',
         customerName: '',
         customerEmail: '',
         customerAddress: '',
@@ -18,7 +22,12 @@ function BookingTour() {
         infants: '0'
     });
 
-    
+    const totalPrice = () => {
+        const adultPrice = tour.result.price;
+        const childPrice = tour.result.price * 0.8;
+        const infantPrice = tour.result.price * 0.5;
+        return (formData.adults * adultPrice) + (formData.children * childPrice) + (formData.infants * infantPrice);
+    };
 
     const [passengerRequestList, setPassengers] = useState([{ passengerName: '', passengerGender: 'Nam', passengerDateBirth: '', passengerObjectId: 1 }]);
 
@@ -26,10 +35,22 @@ function BookingTour() {
         ...formData,
         passengerRequestList,
     }
+
+    useEffect(() => {
+        if (tour) {
+            const calculatedTotalPrice = totalPrice();  // Calculate total price based on formData
+            setFormData(prevState => ({
+                ...prevState,
+                total_price: calculatedTotalPrice  // Update the total_price in formData
+            }));
+        }
+    }, [formData.adults, formData.children, formData.infants, tour]);  // Recalculate when any of these values change
+    
     
     // Update passenger array when the counts change
 
     const updatePassengerCount = (type, count) => {
+        console.log(payload)
         const newCount = Math.max(0, count);
         setFormData((prev) => ({ ...prev, [type]: newCount }));
     
@@ -132,12 +153,7 @@ function BookingTour() {
     
 
     // Calculate total price
-    const totalPrice = () => {
-        const adultPrice = tour.result.price;
-        const childPrice = tour.result.price * 0.8;
-        const infantPrice = tour.result.price * 0.5;
-        return (formData.adults * adultPrice) + (formData.children * childPrice) + (formData.infants * infantPrice);
-    };
+
 
     return (
         <div className="container py-4">

@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 public class PassengerRequest {
-    int passengerObjectId;
+    Integer passengerObjectId;
     String passengerName;
     String passengerGender;
     LocalDate passengerDateBirth;

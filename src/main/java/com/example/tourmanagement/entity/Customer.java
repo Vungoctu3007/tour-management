@@ -30,4 +30,9 @@ public class Customer {
     @Column(name = "customer_phone", nullable = false)
     private String customerPhone;
 
+    public void setUserId(Integer userId) {
+        this.user = new User();
+        this.user.setId(userId); 
+    }
+
 }
