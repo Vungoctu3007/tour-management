@@ -1,5 +1,7 @@
 package com.example.tourmanagement.controller;
 
+import com.example.tourmanagement.repository.CustomerRepository;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class BookingController {
     RouteService routeService;
     BookingService bookingService;
+    CustomerRepository customerRepository;
 
     @GetMapping("/{id}")
     public ApiResponse<RouteResponseDetail> getDetailRoute(@PathVariable Integer id) {
@@ -37,7 +40,7 @@ public class BookingController {
     }
 
     @PostMapping("/handle-booking")
-    public ApiResponse<BookingResponse> handleBooking(@RequestBody BookingRequest request) {
+    public ApiResponse<BookingResponse> handleBooking(@RequestBody @Valid BookingRequest request) {
         int customerId = bookingService.createCustomer(request);
         List<Integer> passengerIds = bookingService.createPassengers(request);
         int bookingId = bookingService.createBooking(request, customerId);
@@ -53,5 +56,11 @@ public class BookingController {
                     .build();
         }
     }
+
+    @GetMapping("/check-available-quantity")
+    public boolean checkAvailability(@RequestParam Integer detailRouteId, @RequestParam Integer totalPassengers) {
+        return bookingService.checkAvailableQuantity(detailRouteId, totalPassengers);
+    }
+
 
 }

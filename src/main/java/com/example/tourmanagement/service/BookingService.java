@@ -1,7 +1,10 @@
 package com.example.tourmanagement.service;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import com.example.tourmanagement.dto.response.AvailableQuantityDetailRouteResponse;
+import com.example.tourmanagement.repository.*;
 import org.springframework.stereotype.Service;
 
 import com.example.tourmanagement.dto.request.BookingRequest;
@@ -10,10 +13,6 @@ import com.example.tourmanagement.entity.Booking;
 import com.example.tourmanagement.entity.Customer;
 import com.example.tourmanagement.entity.Passenger;
 import com.example.tourmanagement.entity.Ticket;
-import com.example.tourmanagement.repository.BookingRepository;
-import com.example.tourmanagement.repository.CustomerRepository;
-import com.example.tourmanagement.repository.PassengerRepository;
-import com.example.tourmanagement.repository.TicketRepository;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +28,7 @@ public class BookingService {
     CustomerRepository customerRepository;
     BookingRepository bookingRepository;
     TicketRepository ticketRepository;
+    DetailRouteRepository detailRouteRepository;
 
     public int createCustomer(BookingRequest request) {
         Customer customer = new Customer();
@@ -68,6 +68,7 @@ public class BookingService {
         booking.setCustomerId(customerId);
         booking.setTotalPrice(request.getTotal_price());
         booking.setTimeToOrder();
+        booking.setPaymentId(request.getPaymentMethod());
         booking.setPaymentStatusId(1);
         booking.setStatusBooking(1);
         booking.setDetailRouteId(request.getDetailRouteId());
@@ -89,6 +90,18 @@ public class BookingService {
             e.printStackTrace();
             return false; 
         }
+    }
+
+    public boolean checkAvailableQuantity(Integer detailTourId, Integer totalPassengers) {
+        AvailableQuantityDetailRouteResponse stockAndBookingAdvance = detailRouteRepository.findStockAndBookingAdvanceByTourId(detailTourId);
+        if (stockAndBookingAdvance != null) {
+            Integer stock = stockAndBookingAdvance.getStock();
+            Integer bookInAdvance = stockAndBookingAdvance.getBookInAdvance();
+            Integer availableSeats = stock - bookInAdvance;
+
+            return availableSeats >= totalPassengers;
+        }
+        return false;
     }
     
 }

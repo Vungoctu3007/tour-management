@@ -19,3 +19,17 @@ export const handleBooking = async (payload) => {
     }
 };
 
+export const checkAvailablequantity = async (detailRouteId, totalPassengers) => {
+    try {
+        const response = await httpRequest.get('/booking/check-available-quantity', {
+            params: {
+                detailRouteId: detailRouteId,
+                totalPassengers: totalPassengers
+            }
+        });
+        return response.data; // Trả về dữ liệu từ API
+    } catch(error) {
+        console.error("Error fetching booking", error);
+        throw error;
+    }
+};

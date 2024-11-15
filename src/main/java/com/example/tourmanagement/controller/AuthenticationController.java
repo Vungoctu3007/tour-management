@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class AuthenticationController {
-
+    @Autowired
     private final  AuthenticationService authenticationService;
 
 

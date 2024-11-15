@@ -1,6 +1,9 @@
 package com.example.tourmanagement.entity;
 
+import com.example.tourmanagement.validation.UniqueEmail;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
