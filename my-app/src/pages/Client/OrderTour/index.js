@@ -203,7 +203,7 @@ function BookingTour() {
             console.log(validateList['paymentMethod']);
             if(data.message) {
                 setNotificationMessage(
-                  "Đặt tour thành công, vui lòng vào hồ sơ để thanh toán!"
+                  "Đặt chỗ thành công, vui lòng thanh toán trong 24h, nếu không đơn giữ chỗ sẽ tự động huỷ!"
                 );
                 setNotificationType("success"); // Set to "error" if the user hasn't booked the tour
                 setNotificationOpen(true);

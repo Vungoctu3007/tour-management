@@ -1,7 +1,14 @@
 package com.example.tourmanagement.controller;
 
+import com.example.tourmanagement.dto.response.BookingDetailResponse;
+import com.example.tourmanagement.dto.response.UserBookingInformationResponse;
+import com.example.tourmanagement.repository.BookingRepository;
 import com.example.tourmanagement.repository.CustomerRepository;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class BookingController {
     RouteService routeService;
     BookingService bookingService;
-    CustomerRepository customerRepository;
+    BookingRepository bookingRepository;
 
     @GetMapping("/{id}")
     public ApiResponse<RouteResponseDetail> getDetailRoute(@PathVariable Integer id) {
@@ -62,5 +69,22 @@ public class BookingController {
         return bookingService.checkAvailableQuantity(detailRouteId, totalPassengers);
     }
 
+    @GetMapping("/get-all-booking-by-user")
+    public ApiResponse<Page<UserBookingInformationResponse>> getAllBookingsInformationByUserId(@RequestParam Integer userId, @RequestParam(defaultValue = "0") int page,
+                                                                                               @RequestParam(defaultValue = "10") int size,
+                                                                                               @RequestParam(defaultValue = "name,asc") String[] sort) {
+        Sort sorting = Sort.by(sort[0]);
+        if (sort[1].equalsIgnoreCase("desc")) {
+            sorting = sorting.descending();
+        }
 
+         Pageable pageable = PageRequest.of(page, size, sorting);
+
+        return ApiResponse.<Page<UserBookingInformationResponse>>builder().result(bookingRepository.getAllUserBookingInformationByUserId(userId, pageable)).build();
+    }
+
+    @GetMapping("/get-detail-booking/{bookingId}")
+    public ApiResponse<BookingDetailResponse> getDetailBooking(@PathVariable Integer bookingId) {
+        return ApiResponse.<BookingDetailResponse>builder().result(bookingService.getBookingDetail(bookingId)).build();
+    }
 }

@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.example.tourmanagement.dto.response.AvailableQuantityDetailRouteResponse;
+import com.example.tourmanagement.dto.response.BookingDetailResponse;
+import com.example.tourmanagement.dto.response.PassengerResponse;
 import com.example.tourmanagement.repository.*;
 import org.springframework.stereotype.Service;
 
@@ -102,6 +104,13 @@ public class BookingService {
             return availableSeats >= totalPassengers;
         }
         return false;
+    }
+
+    public BookingDetailResponse getBookingDetail(Integer bookingId) {
+        BookingDetailResponse bookingDetailResponse = bookingRepository.getBookingDetailByBookingId(bookingId);
+        List<PassengerResponse> passengerResponses = passengerRepository.findPassengersByBookingId(bookingId);
+        bookingDetailResponse.setPassengers(passengerResponses);
+        return bookingDetailResponse;
     }
     
 }

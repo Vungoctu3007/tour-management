@@ -33,3 +33,23 @@ export const checkAvailablequantity = async (detailRouteId, totalPassengers) => 
         throw error;
     }
 };
+
+export const getAllBookingsInformationByUserId = async (userId, page, size, sort) => {
+    try {
+        const response = await httpRequest.get(`/booking/get-all-booking-by-user?userId=${userId}&page=${page}&size=${size}&sort=${sort}`);
+        return response.data;
+    } catch (e) {
+        console.error("Error fetching booking", e);
+        throw e;
+    }
+}
+
+export const getBookingDetailById = async (bookingId) => {
+    try {
+        const response = await httpRequest.get(`/booking/get-detail-booking/${bookingId}`);
+        return response.data;
+    } catch (e) {
+        console.error("Error fetching booking", e);
+        throw e;
+    }
+}

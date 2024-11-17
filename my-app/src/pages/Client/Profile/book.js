@@ -1,7 +1,12 @@
+import BookingPagination from "./bookingPagination";
+import { useParams } from 'react-router-dom';
+
 function Book() {
-    return ( 
-        <h1>Đặt chỗ</h1>
-     );
+  const userId = localStorage.getItem("userId");
+  return (
+    <BookingPagination userId={userId} itemsPerPage={5} />
+  );
 }
 
 export default Book;
+

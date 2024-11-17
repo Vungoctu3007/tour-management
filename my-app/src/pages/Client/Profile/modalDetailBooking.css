@@ -1,0 +1,99 @@
+.modal-header {
+    background-color: #f8f9fa; /* Màu nền nhạt cho header */
+    border-bottom: 1px solid #ddd;
+    padding: 1rem;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.modal-body {
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 6px;
+}
+
+.modal-body h6 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #4a4a4a;
+}
+
+.modal-body .border {
+    background-color: #f9f9f9; /* Nền xám nhạt */
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 1rem;
+}
+
+.badge.bg-danger {
+    background-color: #ff6b6b; /* Màu đỏ */
+    color: white;
+    font-weight: bold;
+}
+
+.badge.bg-success {
+    background-color: #28a745; /* Màu xanh lá cây */
+    color: white;
+    font-weight: bold;
+}
+
+.modal-footer {
+    border-top: 1px solid #ddd;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    background-color: #f8f9fa;
+}
+
+.modal-footer .btn-outline-success {
+    border-color: #28a745;
+    color: #28a745;
+}
+
+.modal-footer .btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+.modal-footer .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.modal-footer .btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.modal-footer .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.modal-dialog-scrollable {
+    max-height: 80vh; /* Đặt chiều cao tối đa của modal */
+    overflow-y: auto; /* Bật thanh cuộn khi nội dung dài */
+}
+
+.modal-body::-webkit-scrollbar {
+    width: 8px; /* Độ rộng của thanh cuộn */
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Màu của thanh cuộn */
+    border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background-color: #bbb; /* Màu khi hover */
+}
