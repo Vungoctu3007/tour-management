@@ -4,6 +4,7 @@ import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import DiscountIcon from '@mui/icons-material/Discount';
 const sidebar_items = [
   
     {
@@ -69,16 +70,16 @@ const sidebar_items = [
       ],
     },
     {
-      icon: <TravelExploreIcon />,
-      title: "Tour",
+      icon: <DiscountIcon />,
+      title: "Khuyễn Mãi",
       iconUp: <KeyboardArrowDownIcon />,
       item: [
         {
-          title: "Thêm Tour",
-          to: "/admin/tour/add-tour",
+          title: "Danh Sách Khuyễn Mãi",
+          to: "/admin/promotion/list-promotion",
         },
         {
-          title: "Danh Sách Tour",
+          title: "Thêm Khuyễn Mãi",
           to: "/admin/tour/list-tour",
         },
       ],

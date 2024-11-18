@@ -52,7 +52,7 @@ public class RouteController {
                 .result(routeService.findRoutesByArrivalDepartureAndDate(arrivalName, departureName, timeToDeparture, pageable,sort))
                 .build();
     }
-
+    // find tour filter-arrivalName
     @GetMapping("/filter-arrivalName")
     public ApiResponse<RouteResponseWrapper> searchRouteByArrivalName(@RequestParam String arrivalName,
                                                                       @RequestParam(defaultValue = "1") int page,
