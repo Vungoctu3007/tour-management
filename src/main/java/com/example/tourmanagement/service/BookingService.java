@@ -7,6 +7,7 @@ import com.example.tourmanagement.dto.response.AvailableQuantityDetailRouteRespo
 import com.example.tourmanagement.dto.response.BookingDetailResponse;
 import com.example.tourmanagement.dto.response.PassengerResponse;
 import com.example.tourmanagement.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.example.tourmanagement.dto.request.BookingRequest;
@@ -112,5 +113,16 @@ public class BookingService {
         bookingDetailResponse.setPassengers(passengerResponses);
         return bookingDetailResponse;
     }
-    
+
+    @Transactional
+    public boolean updateBookingStatus(Integer bookingId, Integer statusId) {
+        try {
+            int rowsUpdated = bookingRepository.updateBookingStatus(bookingId, statusId);
+            return rowsUpdated > 0;
+        } catch (Exception e) {
+            log.error("Error updating booking status", e);
+            return false;
+        }
+    }
+
 }

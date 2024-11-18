@@ -1,6 +1,7 @@
 package com.example.tourmanagement.repository;
 
 import com.example.tourmanagement.dto.response.BookingDetailResponse;
+import com.example.tourmanagement.dto.response.OrdersResponse;
 import com.example.tourmanagement.dto.response.UserBookingInformationResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,15 @@ import java.util.List;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
+    @Query("SELECT new com.example.tourmanagement.dto.response.OrdersResponse(" +
+            "b.id, c.customerName, b.timeToOrder, b.totalPrice, s.id, s.statusName, p.paymentName) " +
+            "FROM Booking b " +
+            "JOIN b.customer c " +
+            "JOIN b.paymentStatus s " +
+            "JOIN b.payment p "
+    )
+    Page<OrdersResponse> getAllBookings(Pageable pageable);
+
     @Query("SELECT new com.example.tourmanagement.dto.response.UserBookingInformationResponse(" +
             "b.id, c.id, b.totalPrice, b.timeToOrder, ps.statusName, d.detailRouteName) " +
             "FROM Booking b " +
@@ -42,6 +52,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             "c.id, c.customerName, c.customerEmail, c.customerPhone, c.customerAddress")
     BookingDetailResponse getBookingDetailByBookingId(@Param("bookingId") Integer bookingId);
 
-
-
+    @Modifying
+    @Query("UPDATE Booking b SET b.paymentStatus.id = :statusId WHERE b.id = :bookingId")
+    int updateBookingStatus(Integer bookingId, Integer statusId);
 }

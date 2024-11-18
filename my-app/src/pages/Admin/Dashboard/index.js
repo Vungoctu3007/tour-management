@@ -14,11 +14,8 @@ function DashBoard() {
         </select>
       </div>
       <div className="row mt-2 g-3">
-        <div className="col-lg-7 border p-2 mb-3" style={{ height: "300px" }}>
+        <div className="border p-2 mb-3" style={{ height: "500px" }}>
           <LineChartComponent />
-        </div>
-        <div className="col-lg-5 border p-2 mb-3" style={{ height: "300px" }}>
-          <PieChartComponent />
         </div>
       </div>
     </div>
