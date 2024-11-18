@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Table(name = "passengers")
 public class Passenger {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "passenger_id", nullable = false)
     private Integer id;
 
@@ -28,7 +29,8 @@ public class Passenger {
     @Column(name = "date_birth", nullable = false)
     private LocalDate dateBirth;
 
-    @Column(name = "customer_phone", nullable = false)
-    private String customerPhone;
-
+    public void setObjectId(Integer objectId) {
+        this.object = new Object();
+        this.object.setId(objectId); // This only sets the ID of the associated Object
+    }
 }

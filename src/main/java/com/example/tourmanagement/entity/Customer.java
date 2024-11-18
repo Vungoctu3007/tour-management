@@ -1,6 +1,9 @@
 package com.example.tourmanagement.entity;
 
+import com.example.tourmanagement.validation.UniqueEmail;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,5 +32,10 @@ public class Customer {
 
     @Column(name = "customer_phone", nullable = false)
     private String customerPhone;
+
+    public void setUserId(Integer userId) {
+        this.user = new User();
+        this.user.setId(userId); 
+    }
 
 }

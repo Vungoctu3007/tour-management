@@ -18,6 +18,8 @@ const routes = {
   users: "/admin/users",
   dashboard: "/admin/dashboard",
   receipt: "/admin/receipt",
+  feedback: "/admin/feedback",
+  
   // admin user
   list_user:"/admin/user/list-user",
   add_user:"/admin/user/add-user",
@@ -25,7 +27,14 @@ const routes = {
   // admin tour
   list_tour:"/admin/tour/list-tour",
   add_tour:"/admin/tour/add-tour",
+
   // admin promotion
-  list_promotion:"/admin/promotion/list-promotion"
+  list_promotion:"/admin/promotion/list-promotion",
+
+
+
+  //admin feedback
+  list_feedback:"/admin/feedback/list-feedback"
+
 };
 export default routes;

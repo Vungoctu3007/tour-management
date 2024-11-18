@@ -15,15 +15,10 @@ import java.util.Optional;
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Query("SELECT c FROM Customer c WHERE c.user.id = :userId")
     Optional<Customer> findByCustomerId(@Param("userId") Integer userId);
-    @Modifying
-    @Query("DELETE FROM Customer c WHERE c.user.id = :userId") // Thay 'user' nếu cần
-    void deleteCustomerByUserId(@Param("userId") Integer userId);
 
-    @Transactional
     @Modifying
-    @Query(value = "INSERT INTO customers (customer_name, customer_email, customer_address, customer_phone) VALUES (:customerName, :customerEmail, :customerAddress, :customerPhone)", nativeQuery = true)
-    int insertCustomer(@Param("customerName") String customerName,
-                       @Param("customerEmail") String customerEmail,
-                       @Param("customerAddress") String customerAddress,
-                       @Param("customerPhone") String customerPhone);
+    @Query("DELETE FROM Customer c WHERE c.user.id = :userId")
+        // Thay 'user' nếu cần
+    void deleteCustomerByUserId(@Param("userId") Integer userId);
+    boolean existsCustomerByCustomerEmail(String email);
 }

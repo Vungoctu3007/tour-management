@@ -38,4 +38,7 @@ public class Detailroute {
     @Column(name = "stock")
     private Integer stock;
 
+    @Column(name = "book_in_advance")
+    private Integer bookInAdvance;
+
 }
