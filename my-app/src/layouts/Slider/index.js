@@ -5,7 +5,6 @@ import Image3 from "../../assets/images/slider_2.jpg";
 import styles from "./Slider.module.css"
 function Slider() {
   return (
-   
     <div className="position-relative d-block w-100 ">
       <Carousel interval={2000} controls={false}>
         <Carousel.Item>

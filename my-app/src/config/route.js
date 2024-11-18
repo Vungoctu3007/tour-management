@@ -24,6 +24,8 @@ const routes = {
   
   // admin tour
   list_tour:"/admin/tour/list-tour",
-  add_tour:"/admin/tour/add-tour"
+  add_tour:"/admin/tour/add-tour",
+  // admin promotion
+  list_promotion:"/admin/promotion/list-promotion"
 };
 export default routes;

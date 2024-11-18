@@ -27,7 +27,8 @@ import AddUser from "../pages/Admin/User/AddUser";
 // 2 tour
 import ListTour from "../pages/Admin/Tour/ListTour";
 import AddTour from "../pages/Admin/Tour/AddTour";
-
+// 3 promotion
+import Promotion from "../pages/Admin/Promotion";
 const publicRoutes = [
   // client routes
   { path: routes.home, component: Home, layout: DefaultLayout },
@@ -54,6 +55,7 @@ const publicRoutes = [
   //  2 tour
   { path: routes.add_tour, component: AddTour, layout: AdminLayout },
   { path: routes.list_tour, component: ListTour, layout: AdminLayout },
-
+  // 3 promotion
+  { path: routes.list_promotion, component: Promotion, layout: AdminLayout },
 ];
 export default publicRoutes;
