@@ -13,5 +13,5 @@ public class LegResponse {
     String title;
     String description;
     Integer sequence;
-    String textImage;
+
 }

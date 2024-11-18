@@ -20,7 +20,6 @@ public class DepartureService {
     DepartureRepository departureRepository;
     DepartureMapper departureMapper;
     public List<DepartureResponse> getAllDepartures() {
-        log.info(departureRepository.findAll().stream().map(departureMapper::toDepartureResponse).toList().toString());
         return departureRepository.findAll().stream().map(departureMapper::toDepartureResponse).toList();
     }
 }

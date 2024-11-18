@@ -22,7 +22,7 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
             "FROM Detailroute de " +
             "JOIN Image img ON de.id = img.detailRoute.id " +
             "LEFT JOIN Feedback fe ON de.id = fe.detailRoute.id " +
-            "WHERE img.isPrimary =1" +
+            "WHERE img.isPrimary =1 AND de.timeToDeparture > CURRENT DATE " +
             "GROUP BY de.id " +
             "ORDER BY CASE " +
             "WHEN :sort = 'asc' THEN de.price END ASC, " +
@@ -38,7 +38,6 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
 
     @Query("SELECT new com.example.tourmanagement.dto.response.RouteResponseDetail(" +
             "de.id, de.route.id, de.detailRouteName, de.description, de.stock, " +
-
             "de.timeToDeparture, de.timeToFinish, AVG(fe.rating), de.price, departure.departureName) " +
             "FROM Detailroute de " +
             "JOIN Route route ON de.route.id = route.id " +
@@ -48,11 +47,6 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
             "WHERE img.isPrimary = 1 AND de.id = :id " +
             "GROUP BY de.id")
     RouteResponseDetail getDetailRouteById(@Param("id") Integer id);
-
-
-
-
-
 
     // get route by search đủ 3 tham số
     @Query("SELECT new com.example.tourmanagement.dto.response.RouteResponse(" +

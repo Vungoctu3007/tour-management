@@ -10,9 +10,8 @@ import java.util.List;
 
 public interface LegRepository extends JpaRepository<Leg, Integer> {
     //    get all leg by detailId
-    @Query("SELECT new com.example.tourmanagement.dto.response.LegResponse(leg.id,leg.title,leg.description,leg.sequence,image.textImage) " +
+    @Query("SELECT new com.example.tourmanagement.dto.response.LegResponse(leg.id,leg.title,leg.description,leg.sequence) " +
             "FROM Leg leg " +
-            "JOIN Image image ON leg.sequence=image.id " +
             "WHERE leg.detailRoute.id = :detailRouteId")
     List<LegResponse> getAllLegByDetailId(Integer detailRouteId);
 }

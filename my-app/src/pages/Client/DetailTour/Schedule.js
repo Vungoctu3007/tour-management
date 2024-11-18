@@ -5,7 +5,7 @@ function Schedule({ detailRoute }) {
 
   const handleToggleImage = (id) => {
     setVisibleImage((prev) => ({
-      // ...prev,
+      ...prev,
       [id]: !prev[id], 
     }));
   };
@@ -32,8 +32,8 @@ function Schedule({ detailRoute }) {
                 <div className="w-100">
                   <div>
                     <div className="row">
-                      <div className={`col-3 ${visibleImage[item.id] ? 'd-none' : ''}`}>
-                        <img
+                      <div className={`col-0 ${visibleImage[item.id] ? 'd-none' : ''}`}>
+                        {/* <img
                           src={require(`../../../assets/images/Tour/${item.textImage}`)}
                           style={{
                             width: "130px",
@@ -41,7 +41,7 @@ function Schedule({ detailRoute }) {
                             objectFit: "cover",
                           }}
                           alt={item.textImage}
-                        />
+                        /> */}
                       </div>
                       <div className="col-9">
                         <h5>Ngày {item.sequence}</h5>
@@ -59,12 +59,12 @@ function Schedule({ detailRoute }) {
             >
               <div className="accordion-body">
                 {item.description}
-                <img
+                {/* <img
                   alt=""
                   src={require(`../../../assets/images/Tour/${item.textImage}`)}
                   className="w-100"
                   style={{ height: "400px" }}
-                />
+                /> */}
               </div>
             </div>
           </div>

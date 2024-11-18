@@ -3,7 +3,6 @@ function Payment() {
     return (<div>
       helell
        
-
     </div>  );
 }
 

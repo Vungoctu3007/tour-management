@@ -25,6 +25,7 @@ function Tour() {
   const [selectArrivalName, setSelectArrivalName] = useState("");
   const [selectedSortOption, setSelectedSortOption] = useState("Mặc Định");
   const [selectedSortTitle, setSelectedSortTitle] = useState("Mặc Định");
+  const [isReset, setIsReset] = useState(false);
   // lấy ra danh sách route
   useEffect(() => {
     const fetchRoute = async () => {
@@ -35,6 +36,7 @@ function Tour() {
           searchParams.departureName ||
           searchParams.timeToDeparture;
         if (hasSearchParamsData) {
+          setIsReset(true);
           const { arrivalName, departureName, timeToDeparture } = searchParams;
           data = await getRouteByAllSearch(
             arrivalName,
@@ -74,6 +76,7 @@ function Tour() {
     setSearchParams(searchData);
     setSelectArrivalName("");
     setCurrentPage(1);
+    setIsReset(false);
   };
   const onSortOptionSelect = (option) => {
     setSelectedSortOption(option.value);
@@ -96,7 +99,7 @@ function Tour() {
         </div>
         <div className="row mt-4">
           <div className="col-md-3">
-            <SearchSideBar selectArrivalName={handleArrivalSelect} />
+            <SearchSideBar selectArrivalName={handleArrivalSelect}   isReset={isReset}/>
           </div>
           <div className="col-md-9">
             <div
