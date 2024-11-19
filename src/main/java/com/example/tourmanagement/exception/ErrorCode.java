@@ -15,6 +15,9 @@ public enum ErrorCode {
     CUSTOMER_NOT_EXIST(1005, "Customer not exits", HttpStatus.BAD_REQUEST),
     USER_OR_PASSWORD_WRONG(1006, "User or password wrong", HttpStatus.BAD_REQUEST),
     OAUTH_ERROR(1007, "Oauth2 invalid", HttpStatus.BAD_REQUEST),
+    USER_ALREADY_VERIFIED(1008, "User already verified", HttpStatus.BAD_REQUEST),
+    INVALID_TOKEN(1009, "Invalid token", HttpStatus.BAD_REQUEST),
+    USER_IS_BLOCKED(1010, "User blocked", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

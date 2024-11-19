@@ -3,13 +3,15 @@ package com.example.tourmanagement.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionResponse {
-    int id;
-    String name;
-    String description;
+public class DecentralizationResponseWrapper {
+    long totalPages;
+    long totalElements;
+    List<DecentralizationResponse> decentralization;
 }

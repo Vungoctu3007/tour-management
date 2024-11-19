@@ -2,6 +2,7 @@ package com.example.tourmanagement.controller;
 
 import com.example.tourmanagement.dto.request.ApiResponse;
 import com.example.tourmanagement.dto.request.UserCreateRequest;
+import com.example.tourmanagement.dto.request.UserUpdateRequest;
 import com.example.tourmanagement.dto.response.UserCreateResponse;
 import com.example.tourmanagement.dto.response.UserResponse;
 import com.example.tourmanagement.dto.response.UserResponseWrapper;
@@ -13,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,7 @@ import org.springframework.http.HttpStatus;
 
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/user")
@@ -66,6 +69,20 @@ public class UserController {
                 .result(userResponses)
                 .build();
     }
+    @PutMapping("/update/{id}")
+    ApiResponse<UserResponse> updateUser(@RequestBody UserUpdateRequest request , @PathVariable  int id) {
+        log.info("request update :", request.toString());
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.updateUser(request , id))
+                .build();
+    }
 
-    
+    @GetMapping("/{userId}")
+    public ApiResponse<UserResponse> getUserById(@PathVariable int userId) {
+        UserResponse userResponse = userService.getUserById(userId);
+        return ApiResponse.<UserResponse>builder()
+                .result(userResponse)
+                .build();
+    }
+
 }

@@ -3,19 +3,14 @@ package com.example.tourmanagement.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
-
+import java.util.List;
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationResponse {
-    Integer userId;
-    String token;
-    Date expiryTime;
-    Integer roleId;
+public class RolePermissionResponse {
+    int roleId;
     String roleName;
-    String userName;
-    boolean authenticated;
+    List<String> permissions;
 }

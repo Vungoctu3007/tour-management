@@ -1,8 +1,20 @@
 import httpRequest from "../utils/httpRequest";
-export const getFeedbackList = async (page, size, detailRouteId) => {
+export const getFeedbackListAdmin = async (page, size, detailRouteId) => {
   try {
     const response = await httpRequest.get(
-      `/feedback?detailRouteId=${detailRouteId}&page=${page}&size=${size}`
+      `/feedback/admin?detailRouteId=${detailRouteId}&page=${page}&size=${size}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching feedback");
+    throw error;
+  }
+};
+
+export const getFeedbackListClient = async (page, size, detailRouteId) => {
+  try {
+    const response = await httpRequest.get(
+      `/feedback/client?detailRouteId=${detailRouteId}&page=${page}&size=${size}`
     );
     return response.data;
   } catch (error) {
@@ -27,6 +39,19 @@ export const checkCustomerOrderTour = async (userId, detailRouteId) => {
     return response.data;
   } catch (error) {
     console.error("Error creating feedback");
+    throw error;
+  }
+};
+
+
+export const searchFeedbackByDetailName = async (detailRouteName, page, size) => {
+  try {
+    const response = await httpRequest.get(
+      `/feedback/search?detailRouteName=${detailRouteName}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error search feedback");
     throw error;
   }
 };

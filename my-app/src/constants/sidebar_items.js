@@ -22,7 +22,7 @@ const sidebar_items = [
         },
         {
           title: "Phân Quyền",
-          to: "/admin/tour/role",
+          to: "/admin/decentralization",
         },
       ],
     },
@@ -156,5 +156,6 @@ const sidebar_items = [
         },
       ],
     },
+    
   ];
   export default sidebar_items

@@ -1,4 +1,4 @@
-package com.example.tourmanagement.dto.request;
+package com.example.tourmanagement.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,10 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FeedbackRequest {
-    float rating;
-    String text;
-    int bookingId;
-    int detailRouteId;
-
+public class RefreshResponse {
+    String token;
+    boolean authenticated;
 }

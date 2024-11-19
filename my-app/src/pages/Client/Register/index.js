@@ -86,7 +86,7 @@ export default function Register() {
                 setSnackBarOpen(true);
 
                 // Redirect to login page after successful registration
-                setTimeout(() => navigate("/login"), 2000);
+                setTimeout(() => navigate("/login"), 500);
 
                 // Reset form fields
                 setUsername("");

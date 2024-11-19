@@ -8,10 +8,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FeedbackRequest {
-    float rating;
-    String text;
-    int bookingId;
-    int detailRouteId;
-
+public class UserUpdateRequest {
+    int id;
+    String username;
+    String email;
+    int roleId;
 }

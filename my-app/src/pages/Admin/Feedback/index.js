@@ -16,13 +16,13 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Typography
 } from "@mui/material";
 import PaginationComponent from "../../../components/Pagination";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Notification from "../../../components/Notification";
-import { getFeedbackList, getFeedbackBySearch } from "../../../services/feedbackService";
-
+import { searchFeedbackByDetailName, getFeedbackListAdmin } from "../../../services/feedbackService";
 function ListFeedback() {
   const [feedbacks, setFeedbacks] = useState([]);
   const pageSize = 5;
@@ -53,12 +53,9 @@ function ListFeedback() {
         let response;
 
         if (debouncedSearchFeedback) {
-            return "a";
-          // Search API
-        //   response = await getFeedbackBySearch(debouncedSearchFeedback);
+            response = await searchFeedbackByDetailName(debouncedSearchFeedback);
         } else {
-          // Fetch paginated feedback if no search term
-          response = await getFeedbackList(currentPage, pageSize);
+          response = await getFeedbackListAdmin(currentPage, pageSize);
         }
 
         if (response && response.code === 1000) {
@@ -77,7 +74,7 @@ function ListFeedback() {
 
   const handleSearchChange = (event) => {
     setSearchFeedback(event.target.value);
-    setCurrentPage(1); // Reset to the first page when a new search is initiated
+    setCurrentPage(1); 
   };
 
   const handleOpenDialog = (feedback) => {
@@ -105,7 +102,7 @@ function ListFeedback() {
         setNotificationOpen(true);
         handleCloseDialog();
       } catch (error) {
-        console.error("Error deleting feedback:", error);
+        console.error("Error deleting feedback:", error); 
       }
     }
   };
@@ -116,16 +113,28 @@ function ListFeedback() {
 
   return (
     <div>
-      <Paper>
-        <Box display="flex" justifyContent="center" alignItems="center" mb={2} gap={2}>
+
+      <Paper>      
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        {/* Bên trái: Tiêu đề */}
+        <Typography variant="h2" style={{ fontSize: "24px", fontWeight: "bold" , marginLeft : "16px"}}>
+          LIST FEEDBACK
+        </Typography>
+
+        {/* Ở giữa: Ô tìm kiếm */}
+        <Box display="flex" justifyContent="center" flexGrow={1}>
           <TextField
             variant="outlined"
             placeholder="Search feedback"
             value={searchFeedback}
             onChange={handleSearchChange}
-            style={{ width: "300px" }}
+            style={{ width: "300px" , marginRight : "150px" }}
           />
         </Box>
+
+        {/* Bên phải: Phần trống */}
+        <Box style={{ width: "24px" }} />
+      </Box>
         <TableContainer>
           <Table>
             <TableHead>

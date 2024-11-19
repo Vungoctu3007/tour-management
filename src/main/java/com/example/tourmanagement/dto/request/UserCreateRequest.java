@@ -6,6 +6,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserCreateRequest {
 
