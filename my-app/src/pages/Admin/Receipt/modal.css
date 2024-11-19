@@ -1,0 +1,76 @@
+/* styles.css */
+
+/* Tùy chỉnh modal */
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    background-color: #343a40;
+    color: #ffffff;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.modal-title {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: white;
+}
+
+.modal-body {
+    max-height: 400px; /* Giới hạn chiều cao của nội dung modal */
+    overflow-y: auto; /* Thêm thanh cuộn */
+    padding: 15px;
+}
+
+.modal-footer {
+    border-top: 2px solid #dee2e6;
+}
+
+/* Thanh cuộn */
+.modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+/* Button close */
+.btn-close {
+    filter: invert(100%);
+}
+
+/* Dropdown trạng thái */
+.form-select {
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.form-select:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Button cập nhật */
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    transition: all 0.2s ease;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}

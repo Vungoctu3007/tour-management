@@ -28,6 +28,10 @@ import AddUser from "../pages/Admin/User/AddUser";
 import ListTour from "../pages/Admin/Tour/ListTour";
 import AddTour from "../pages/Admin/Tour/AddTour";
 
+// 3 promotion
+import Promotion from "../pages/Admin/Promotion";
+
+
 // feedback
 import ListFeedback from "../pages/Admin/Feedback";
 import { patch } from "@mui/material";
@@ -59,6 +63,13 @@ const publicRoutes = [
   //  1 user
   { path: routes.add_user, component: AddUser, layout: AdminLayout },
   { path: routes.list_user, component: ListUser, layout: AdminLayout },
+
+  //  2 tour
+  { path: routes.add_tour, component: AddTour, layout: AdminLayout },
+  { path: routes.list_tour, component: ListTour, layout: AdminLayout },
+  // 3 promotion
+  { path: routes.list_promotion, component: Promotion, layout: AdminLayout },
+
  
   // admin feedback
   {path: routes.list_feedback, component: ListFeedback, layout: AdminLayout},

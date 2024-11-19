@@ -23,7 +23,6 @@ public class DepartureService {
 
 
     public List<DepartureResponse> getAllDepartures() {
-        log.info(departureRepository.findAll().stream().map(departureMapper::toDepartureResponse).toList().toString());
         return departureRepository.findAll().stream().map(departureMapper::toDepartureResponse).toList();
     }
 }

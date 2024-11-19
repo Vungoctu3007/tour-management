@@ -8,9 +8,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ArrivalResponse {
-    Integer id;
-    String arrivalName;
-
-    Long countRoute;
+public class AvailableQuantityDetailRouteResponse {
+    Integer stock;
+    Integer bookInAdvance;
 }

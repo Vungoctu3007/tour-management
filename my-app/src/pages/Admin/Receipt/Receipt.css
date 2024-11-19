@@ -1,0 +1,54 @@
+/* styles.css */
+.container {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h4 {
+    font-weight: bold;
+    color: #343a40;
+}
+
+.table {
+    margin-bottom: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background-color: #343a40;
+    color: #ffffff;
+    text-align: center;
+}
+
+.table tbody td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.form-control {
+    border-radius: 20px;
+    border: 1px solid #ced4da;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn:hover {
+    color: #ffffff !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pagination-button {
+    min-width: 80px;
+    font-weight: bold;
+}
