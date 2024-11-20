@@ -36,9 +36,10 @@ function AdminHeader() {
         </div>
       </div>
 
-      {/* Right-side Icons */}
+      {/* Right-side Username and Avatar */}
       <div className="d-flex align-items-center">
-        <div className="btn-group" style={{ marginRight: "40px" }}>
+        <span className="me-2 fw-bold">{username}</span> {/* Username */}
+        <div className="btn-group">
           <Avatar
             className="btn-danger"
             data-bs-toggle="dropdown"
@@ -46,7 +47,6 @@ function AdminHeader() {
             style={{ cursor: "pointer" }}
           />
           <div className="dropdown-menu dropdown-menu-end">
-            <span className="dropdown-item-text fw-bold">{username}</span>
             <button className="dropdown-item" onClick={handleLogout}>Logout</button>
           </div>
         </div>

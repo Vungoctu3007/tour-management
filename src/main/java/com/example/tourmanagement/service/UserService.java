@@ -103,7 +103,7 @@ public class UserService {
             Employee employee = new Employee();
             String employeeId = employeeService.generateEmployeeId();
             employee.setEmployeeId(employeeId);
-            employee.setEmployeeEmail(user.getUsername() + "@example.com");
+            employee.setEmployeeEmail(user.getUsername() + "@gmail.com");
             employee.setUser(user);
             employeeRepository.save(employee);
         } else {

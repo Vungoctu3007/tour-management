@@ -46,11 +46,47 @@ public class DecentralizationController {
                 .build();
     }
 
+    @GetMapping("/getOperationById")
+    public ApiResponse<RoleOperationResponse> getOperationById(@RequestParam int roleId) {
+        // Gọi service để lấy dữ liệu permissions và operations theo roleId
+        RoleOperationResponse response = decentralizationService.getListOperationByRoleId(roleId);
+        return ApiResponse.<RoleOperationResponse>builder()
+                .result(response)
+                .build();
+    }
+
     @PostMapping("/updatePermissions")
     public ApiResponse<DecentralizationResponse> updatePermissions(@RequestBody RolePermissionRequest request) {
-        decentralizationService.updatePermissions(request.getRoleId(), request.getPermissionIds());
+        decentralizationService.updatePermissions(request.getRoleId(), request.getPermissions());
         return ApiResponse.<DecentralizationResponse>builder()
                 .message("Permissions updated successfully!")
+                .build();
+    }
+
+    @PostMapping("/addPermissions")
+    public ApiResponse<Void> addPermissions(@RequestBody RolePermissionRequest request) {
+        decentralizationService.addNewPermissions(request.getRoleId(), request.getPermissions());
+        return ApiResponse.<Void>builder()
+                .message("Permissions added successfully!")
+                .build();
+    }
+
+
+
+    @GetMapping("/getAllOperations")
+    ApiResponse<List<OperationResponse>> getListOperation(){
+        return ApiResponse.<List<OperationResponse>>builder()
+                .result(decentralizationService.getListOperation())
+                .build();
+    }
+
+    @GetMapping("/unassigned-permissions")
+    public ApiResponse<List<PermissionOperationResponse>> getUnassignedPermissions(
+            @RequestParam int roleId
+    ) {
+        List<PermissionOperationResponse> unassignedPermissions = decentralizationService.getUnassignedPermissionsAndOperations(roleId);
+        return ApiResponse.<List<PermissionOperationResponse>>builder()
+                .result(unassignedPermissions)
                 .build();
     }
 
