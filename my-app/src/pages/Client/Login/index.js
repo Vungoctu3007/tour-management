@@ -17,7 +17,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { OAuthConfig } from "../../../config/configuration";
 import { FaFacebook, FaGoogle } from "react-icons/fa"; // Import Facebook icon from react-icons
-
+import { decodeToken , setupAutoRefreshToken} from "../../../services/authenticationService";
 export default function Login() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -51,25 +51,14 @@ export default function Login() {
     return true;
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const roleId = localStorage.getItem("roleId");
-      if (roleId === "1" || roleId === "2") {
-        navigate("/admin/dashboard");
-      } else if (roleId === "3") {
-        navigate("/");
-      }
-    }
-  }, [navigate]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+  
     const url = "http://localhost:8080/api/login";
-
+  
     if (!validateForm()) return;
-
+  
     fetch(url, {
       method: "POST",
       headers: {
@@ -82,22 +71,43 @@ export default function Login() {
         if (data.code !== 1000) {
           throw new Error(data.message);
         }
-        localStorage.setItem("userId", data.result?.userId);
-        localStorage.setItem("token", data.result?.token);
-        localStorage.setItem("username", data.result?.userName);
-        localStorage.setItem("roleId", data.result?.roleId);
+        const token = data.result?.token;
 
-        const roleId = data.result?.roleId;
+        setupAutoRefreshToken();
+        localStorage.setItem("userId", data.result?.userId);
+        localStorage.setItem("token", token);
+        localStorage.setItem("username", data.result?.userName);
+
+        // Show login success message
         setSnackBarMessage("Đăng nhập thành công!");
         setSnackBarSeverity("success");
         setSnackBarOpen(true);
-        setTimeout(() => {
-          if (roleId === 1 || roleId === 2) {
-            navigate("/admin/dashboard");
-          } else if (roleId === 3) {
-            navigate("/");
+  
+        // Decode token and get role
+        decodeToken(token)
+          .then((data) => {
+            const role = data.result?.role_name;
+            console.log(role);
+          if (role){
+            
+           setTimeout(() => {
+            if (role.trim() === "STAFF" || role.trim() === "ADMIN") {
+                navigate("/admin/dashboard");
+            } else if (role.trim() === "CUSTOMER" ) {
+              navigate("/");
+ 
+           }
+           },1000)
           }
-        }, 3000);
+
+            
+          })
+          .catch((error) => {
+            setErrorMessage(error.message);
+            setSnackBarMessage(error.message);
+            setSnackBarSeverity("error");
+            setSnackBarOpen(true);
+          });
       })
       .catch((error) => {
         setSnackBarMessage(error.message);
@@ -130,7 +140,6 @@ export default function Login() {
   const handleFacebookLogin = () => {
     // Implement Facebook login here (using a service or SDK)
   };
-
   return (
     <>
       <Snackbar

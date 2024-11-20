@@ -9,24 +9,26 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-const data = [
-  { name: "T1", uv: 4000, pv: 2400 },
-  { name: "T2", uv: 3000, pv: 1398 },
-  { name: "T3", uv: 2000, pv: 9800 },
-  { name: "T4", uv: 2780, pv: 3908 },
-  { name: "T5", uv: 1890, pv: 4800 },
-  { name: "T6", uv: 2390, pv: 3800 },
-  { name: "T7", uv: 3490, pv: 4300 },
-  { name: "T8", uv: 3490, pv: 4300 },
-  { name: "T9", uv: 3490, pv: 4300 },
-  { name: "T10", uv: 3490, pv: 4300 },
-  { name: "T11", uv: 3490, pv: 4300 },
-  { name: "T12", uv: 3490, pv: 4300 },
-];
+
 class LineChartComponent extends PureComponent {
   render() {
+    const data = [
+      { name: "T1", revenue: 5000, bookings: 240 },
+      { name: "T2", revenue: 4000, bookings: 180 },
+      { name: "T3", revenue: 6000, bookings: 300 },
+      { name: "T4", revenue: 8000, bookings: 450 },
+      { name: "T5", revenue: 7000, bookings: 380 },
+      { name: "T6", revenue: 6500, bookings: 340 },
+      { name: "T7", revenue: 9000, bookings: 500 },
+      { name: "T8", revenue: 8500, bookings: 480 },
+      { name: "T9", revenue: 7300, bookings: 420 },
+      { name: "T10", revenue: 7800, bookings: 440 },
+      { name: "T11", revenue: 8100, bookings: 460 },
+      { name: "T12", revenue: 9200, bookings: 550 },
+    ];
+
     return (
-      <ResponsiveContainer style={{backgroundColor:"transparent"}}>
+      <ResponsiveContainer width="100%" height="100%">
         <LineChart
           width={500}
           height={300}
@@ -39,17 +41,23 @@ class LineChartComponent extends PureComponent {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
+          <XAxis dataKey="name" label={{ value: "Tháng", position: "insideBottomRight", offset: -5 }} />
+          <YAxis label={{ value: "Doanh thu & Lượt đặt", angle: -90, position: "insideLeft" }} />
           <Tooltip />
           <Legend />
           <Line
             type="monotone"
-            dataKey="pv"
+            dataKey="revenue"
+            name="Doanh thu (VNĐ)"
             stroke="#8884d8"
             activeDot={{ r: 8 }}
           />
-          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+          <Line
+            type="monotone"
+            dataKey="bookings"
+            name="Lượt đặt chỗ"
+            stroke="#82ca9d"
+          />
         </LineChart>
       </ResponsiveContainer>
     );

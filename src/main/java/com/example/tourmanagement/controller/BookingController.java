@@ -1,7 +1,6 @@
 package com.example.tourmanagement.controller;
 
-import com.example.tourmanagement.dto.response.BookingDetailResponse;
-import com.example.tourmanagement.dto.response.UserBookingInformationResponse;
+import com.example.tourmanagement.dto.response.*;
 import com.example.tourmanagement.repository.BookingRepository;
 import com.example.tourmanagement.repository.CustomerRepository;
 import jakarta.validation.Valid;
@@ -9,13 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.tourmanagement.dto.request.ApiResponse;
 import com.example.tourmanagement.dto.request.BookingRequest;
-import com.example.tourmanagement.dto.response.BookingResponse;
-import com.example.tourmanagement.dto.response.RouteResponseDetail;
 import com.example.tourmanagement.service.BookingService;
 import com.example.tourmanagement.service.RouteService;
 
@@ -25,12 +21,6 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/booking")
@@ -87,4 +77,47 @@ public class BookingController {
     public ApiResponse<BookingDetailResponse> getDetailBooking(@PathVariable Integer bookingId) {
         return ApiResponse.<BookingDetailResponse>builder().result(bookingService.getBookingDetail(bookingId)).build();
     }
+
+    @GetMapping("/get-all-booking-orders")
+    public ApiResponse<Page<OrdersResponse>> getDetailBooking(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "customer,asc") String[] sort) {
+
+        Sort sorting = Sort.by(sort[0]);
+        if (sort[1].equalsIgnoreCase("desc")) {
+            sorting = sorting.descending();
+        }
+
+        Pageable pageable = PageRequest.of(page, size, sorting);
+
+        // Lấy dữ liệu phân trang từ repository
+        Page<OrdersResponse> result = bookingRepository.getAllBookings(pageable);
+
+        // Trả về ApiResponse
+        return ApiResponse.<Page<OrdersResponse>>builder()
+                .result(result)
+                .build();
+    }
+
+    @PutMapping("/update-status")
+    public ApiResponse<String> updateBookingStatus(
+            @RequestParam Integer bookingId,
+            @RequestParam Integer statusId
+    ) {
+        boolean success = bookingService.updateBookingStatus(bookingId, statusId);
+
+        if (success) {
+            return ApiResponse.<String>builder()
+                    .message("Status updated successfully")
+                    .result("Success")
+                    .build();
+        } else {
+            return ApiResponse.<String>builder()
+                    .message("Failed to update status")
+                    .result("Failure")
+                    .build();
+        }
+    }
+
 }

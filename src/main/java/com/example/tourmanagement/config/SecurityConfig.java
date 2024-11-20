@@ -26,6 +26,29 @@ public class SecurityConfig {
     @Autowired
     private CustomJwtDecoder customJwtDecoder;
 
+
+    private final String[] PUBLIC_ENDPOINT = {"/api/login"};
+    private final String[] PUBLIC_PRIVATE = {"/api/private"};
+
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity.authorizeHttpRequests(request -> request
+//                .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT).permitAll()
+//                .anyRequest()
+//                .authenticated()
+//        );
+//
+//        httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer
+//                        .decoder(customJwtDecoder)
+//                        .jwtAuthenticationConverter(jwtAuthenticationConverter()))
+//                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+//        );
+//
+//        httpSecurity.csrf(AbstractHttpConfigurer::disable); // Disable CSRF if you're using JWT
+//
+//        return httpSecurity.build();
+//    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         // Cho phép tất cả các endpoint mà không yêu cầu xác thực
@@ -44,6 +67,7 @@ public class SecurityConfig {
 
         return httpSecurity.build();
     }
+
 
 
     @Bean

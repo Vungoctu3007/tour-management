@@ -17,4 +17,5 @@ public class AuthenticationResponse {
     Integer roleId;
     String roleName;
     String userName;
+    boolean authenticated;
 }

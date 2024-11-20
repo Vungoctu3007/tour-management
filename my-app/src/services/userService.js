@@ -44,3 +44,23 @@ export const getAllRole = async () => {
     return response.data;
   } catch (error) {}
 };
+
+export const getUserById = async (id) => {
+  try {
+    const response = await httpRequest.get(`/user/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user by ID");
+    throw error;
+  }
+};
+
+export const verifyEmailToken = async (token) => {
+  try {
+    const response = await httpRequest.post("/verify", { token });
+    return response.data;
+  } catch (error) {
+    console.error("Error verifying email token:", error);
+    throw error;
+  }
+};

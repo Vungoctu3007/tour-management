@@ -15,6 +15,19 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    protocol: smtp  # Đã sửa từ `stmp` thành `smtp`
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 outbound:
   identity:
     client-id: "${GOOGLE_CLIENT_ID}"
@@ -22,14 +35,12 @@ outbound:
     redirect-uri: "http://localhost:8080/api/login/oauth2/google"
     scope: spring.security.oauth2.client.registration.google.scope=openid,https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/userinfo.profile
 
-
 feign:
-  client: 
+  client:
     config:
       SSOG:
         connect-timeout: 5000
         read-timeout: 5000
-
 
 jwt:
   signerKey: "1TjXchw5FloESb63Kc+DFhTARvpWL4jUGCwfGWxuG5SIf/1y/LgJxHnMqaF6A/ij"

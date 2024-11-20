@@ -15,6 +15,7 @@ public interface UserMapper {
 
     @Mapping(source = "role.id", target = "role", defaultExpression = "java(user.getRole() != null ? user.getRole().getId() : 0)")
     @Mapping(source = "role.roleName", target = "roleName", defaultExpression = "java(user.getRole() != null ? user.getRole().getRoleName() : null)")
+    @Mapping(source = "verificationToken", target = "token")
     UserResponse toUserResponse(User user);
 }
 

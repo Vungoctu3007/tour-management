@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FeedbackRequest {
-    int rating;
+    float rating;
     String text;
     int bookingId;
     int detailRouteId;

@@ -30,4 +30,7 @@ public class User {
     @Column(name = "status", nullable = false)
     private Integer status;
 
+    @Column(name = "verify_token", length = 512)
+    private String verificationToken;
+
 }

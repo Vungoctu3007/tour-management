@@ -34,7 +34,11 @@ import Promotion from "../pages/Admin/Promotion";
 
 // feedback
 import ListFeedback from "../pages/Admin/Feedback";
+import { patch } from "@mui/material";
 
+import Decentralization from "../pages/Admin/Decentralization";
+
+import VerifyEmail from "../pages/Client/Register/verifyEmail";
 const publicRoutes = [
   // client routes
   { path: routes.home, component: Home, layout: DefaultLayout },
@@ -70,8 +74,12 @@ const publicRoutes = [
 
  
   // admin feedback
-  {path: routes.list_feedback, component: ListFeedback, layout: AdminLayout}
+  {path: routes.list_feedback, component: ListFeedback, layout: AdminLayout},
 
-  
+  //admiin decentralization 
+  {path : routes.decentralization, component: Decentralization, layout: AdminLayout} ,//}
+
+  // authentication user
+  {path: routes.verify , component : VerifyEmail, layout : DefaultLayout}
 ];
 export default publicRoutes;

@@ -35,7 +35,12 @@ const routes = {
 
 
   //admin feedback
-  list_feedback:"/admin/feedback/list-feedback"
+  list_feedback:"/admin/feedback/list-feedback",
+  
+  //admin decentrazation
+  decentralization: "/admin/decentralization",
 
+  //verify email
+  verify: "/verify"
 };
 export default routes;

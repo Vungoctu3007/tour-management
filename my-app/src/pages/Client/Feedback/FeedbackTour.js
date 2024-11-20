@@ -4,6 +4,7 @@ import moment from "moment";
 import {
   getFeedbackList,
   checkCustomerOrderTour,
+  getFeedbackListClient,
 } from "../../../services/feedbackService";
 import MapsUgcIcon from "@mui/icons-material/MapsUgc";
 import { Rating } from "@mui/material"; // Importing Material-UI Rating component
@@ -48,7 +49,7 @@ function FeedbackTour({ detailRouteId, customerId }) {
 
   const loadFeedback = async (page, reset = false) => {
     try {
-      const data = await getFeedbackList(page, 3, detailRouteId);
+      const data = await getFeedbackListClient(page, 3, detailRouteId);
       const newFeedbacks = data.result.feedbacks;
 
       if (reset) {
