@@ -57,4 +57,9 @@ public class RouteService {
         routeResponseWrapper.setTotalElements(routeResponses.getTotalElements());
         return routeResponseWrapper;
     }
+
+
+    public List<DepartureAndArrivalResponse> getAllDepartureAndArrivals(){
+        return routeRepository.getAllDepartureAndArrivals();
+    }
 }

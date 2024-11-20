@@ -1,6 +1,7 @@
 package com.example.tourmanagement.controller;
 
 import com.example.tourmanagement.dto.request.ApiResponse;
+import com.example.tourmanagement.dto.response.DepartureAndArrivalResponse;
 import com.example.tourmanagement.dto.response.RouteResponse;
 import com.example.tourmanagement.dto.response.RouteResponseDetail;
 import com.example.tourmanagement.dto.response.RouteResponseWrapper;
@@ -61,6 +62,13 @@ public class RouteController {
         Pageable pageable = PageRequest.of(page - 1, size);
         return ApiResponse.<RouteResponseWrapper>builder()
                 .result(routeService.findRouteByArrivalName(arrivalName, pageable,sort))
+                .build();
+    }
+
+    @GetMapping("/road")
+    public ApiResponse<List<DepartureAndArrivalResponse>> getAllDepartureAndArrivals(){
+        return ApiResponse.<List<DepartureAndArrivalResponse>>builder()
+                .result(routeService.getAllDepartureAndArrivals())
                 .build();
     }
 }

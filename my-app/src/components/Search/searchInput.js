@@ -18,12 +18,16 @@ function SearchInput({ onSearchResults, currentPage, pageSize }) {
   const [arrivalName, setArrivalName] = useState("");
   const [timeToDeparture, setTimeToDeparture] = useState(new Date());
 
+  //
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
   // lấy năm
   const currentYear = new Date().getFullYear();
   const minDate = new Date(currentYear, 0, 1);
   const handleSearchClick = () => {
     if (arrivalName.trim() === "" && departureName.trim() === "") {
-      alert("Vui lòng chọn cả điểm khởi hành và điểm đến.");
+      setNotificationMessage("Vui lòng chọn cả điểm khởi hành và điểm đến.");
+      setNotificationOpen(true);
     } else {
       const formattedDate = format(timeToDeparture, "yyyy-MM-dd");
       console.log(formattedDate);
@@ -72,6 +76,7 @@ function SearchInput({ onSearchResults, currentPage, pageSize }) {
   const handleSelectedArrival = (arrival) => {
     setArrivalName(arrival);
   };
+  
 
   return (
     <div className="container rounded border z-100 p-2 position-relative ">
@@ -188,6 +193,7 @@ function SearchInput({ onSearchResults, currentPage, pageSize }) {
           </div>
         </div>
       </div>
+      <Notification open={notificationOpen} message={notificationMessage} onClose={()=>setNotificationOpen(false)} />
     </div>
   );
 }

@@ -67,6 +67,10 @@ const sidebar_items = [
           title: "Danh Sách Tour",
           to: "/admin/tour/list-tour",
         },
+        {
+          title: "Cập nhật tour",
+          to: "/admin/tour/update-tour",
+        },
       ],
     },
     {
