@@ -1,11 +1,12 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Button, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import PaginationComponent from '../../../components/Pagination';
 import { Visibility, Edit, Delete } from '@mui/icons-material';
-import { getAllRoutes } from '../../../services/routeService';
-import { Link } from 'react-router-dom';
+import { getAllRoutes,isCheckBooking ,deleteTour} from '../../../services/routeService';
+import { Link,useNavigate } from 'react-router-dom';
+import { useNotification } from '../../../components/NotificationProvider';
 const sort_options = [
     {
         id: 1,
@@ -34,12 +35,15 @@ const sort_options = [
     },
 ];
 
-function UserTable() {
+function ListTour() {
+    const notify = useNotification();
     const pageSize = 10;
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [totalElements, setTotalElements] = useState(0);
     const [routes, setRoutes] = useState([]);
+ 
+    const navigate = useNavigate(); 
     useEffect(() => {
         const fet = async () => {
             try {
@@ -55,16 +59,37 @@ function UserTable() {
         fet();
     }, [currentPage]);
 
-    const handleEdit = (name) => {
-        alert(`Editing user: ${name}`);
+    const handleEdit =async (detailRouteId) => {
+        try {
+            const isCheck = await isCheckBooking(detailRouteId);
+            if (isCheck) {
+                notify(isCheck)
+                return;
+            }
+            navigate(`/admin/tour/update-tour/${detailRouteId}`);
+        } catch (error) {
+           
+        }
     };
 
-    const handleDelete = (name) => {
-        alert(`Deleting user: ${name}`);
+    const handleDelete = async(detailRouteId) => {
+        try {
+            const isCheck = await isCheckBooking(detailRouteId);
+            if (isCheck) {
+                notify(isCheck)
+                return;
+            }
+            const data=await deleteTour(detailRouteId);
+            notify(data)
+            const updatedRoutes = routes.filter(route => route.detailRouteId !== detailRouteId);
+            setRoutes(updatedRoutes);
+        } catch (error) {
+           
+        }
     };
-    const handleView = (name) => {
-        alert(`Viewing user: ${name}`);
-    };
+    // const handleView = (name) => {
+    //     alert(`Viewing user: ${name}`);
+    // };
     return (
         <div className="p-2">
             <div>
@@ -118,14 +143,14 @@ function UserTable() {
                                     <td>{route.stock}</td>
                                     <td>{route.price}</td>
                                     <td>
-                                        <div className="d-flex align-items-center gap-2">
+                                        <div className="d-flex align-items-center justify-content-center gap-2">
                                             {/* View Icon */}
                                             <IconButton
                                                 style={{
                                                     backgroundColor: 'rgba(0, 123, 255, 0.2)',
                                                     borderRadius: '50%',
                                                 }}
-                                                onClick={() => handleView(route.detailRouteId)}
+                                                // onClick={() => handleView(route.detailRouteId)}
                                             >
                                                 <Visibility style={{ color: '#007bff' }} />
                                             </IconButton>
@@ -171,4 +196,4 @@ function UserTable() {
     );
 }
 
-export default UserTable;
+export default ListTour;

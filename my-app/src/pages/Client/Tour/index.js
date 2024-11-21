@@ -16,7 +16,7 @@ import {
 
 function Tour() {
   const [routes, setRoutes] = useState([]);
-  const pageSize = 1;
+  const pageSize = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [searchParams, setSearchParams] = useState({});

@@ -1,38 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState,memo,useEffect } from 'react';
 import { Button, IconButton } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CloseIcon from '@mui/icons-material/Close';
 
-
-function UploadImage({onImagesSelected}) {
-    const [selectedImages, setSelectedImages] = useState([]);
-
+function UploadImage({ onImagesSelected ,reset,initialImages}) {
+    const [selectedImages, setSelectedImages] = useState(initialImages?.length ? initialImages :[]);
+   
     const handleImageChange = (event) => {
-        const files = event.target.files;
-        setSelectedImages((prevImages) =>{
-            const newImage=   [...prevImages, ...files]
-            onImagesSelected(newImage.map((image)=> image.name));
-            return newImage;
+        const files = Array.from(event.target.files).map((file) => ({
+            file, // Lưu `File` trực tiếp
+            textImage: file.name,
+            isPrimary: 0, // Gán mặc định isPrimary là 0
+        }));
+      
+        setSelectedImages((prevImages) => {
+            const newImages = [...prevImages, ...files];
+            newImages[0].isPrimary = 1; // Đảm bảo ảnh đầu tiên có isPrimary = 1
+            onImagesSelected(newImages.map((image) => ({
+                textImage: image.textImage,
+                isPrimary: image.isPrimary,
+            })));
+            return newImages;
         });
     };
+   
+    useEffect(() => {
+        if (initialImages && initialImages.length > 0) {
+            setSelectedImages(initialImages);
+        }
+    }, [initialImages]);
+    useEffect(() => {
+        if (reset) {
+           setSelectedImages([]);
+        }
+        
+    }, [reset]);
     const handleRemoveImage = (index) => {
         setSelectedImages((prev) => {
             const updated = prev.filter((_, i) => i !== index);
-            onImagesSelected(updated.map((img) => img.name));
+            if (updated.length > 0) {
+                updated[0].isPrimary = 1; // Gán lại ảnh đầu tiên còn lại là isPrimary
+            }
+            onImagesSelected(updated.map((img) => ({
+                textImage: img.textImage,
+                isPrimary: img.isPrimary,
+            })));
             return updated;
         });
     };
-  
+    useEffect(() => {
+        if (initialImages && initialImages.length > 0) {
+            setSelectedImages(initialImages);
+        }
+    }, [selectedImages]);
+    
+    
     return (
-        <div className="">
+        <div>
             <label>
-                <input type="file" accept="image/*" multiple onChange={handleImageChange} style={{ display: 'none' }} />
+                <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageChange}
+                    style={{ display: 'none' }}
+                />
                 <Button variant="contained" component="span" startIcon={<CloudUploadIcon />}>
-                    upload file
+                    Upload file
                 </Button>
             </label>
             {/* Hiển thị danh sách ảnh đã chọn */}
-            <div className="d-flex border rounded"style={{ height: '150px', overflowX: 'auto', marginTop: '10px' }}>
+            <div className="d-flex border rounded" style={{ height: '150px', overflowX: 'auto', marginTop: '10px' }}>
                 {selectedImages.map((image, index) => (
                     <div key={index} className="position-relative ms-2 mt-3">
                         <IconButton
@@ -50,14 +88,15 @@ function UploadImage({onImagesSelected}) {
                         </IconButton>
                         {/* Hình ảnh */}
                         <img
-                            // src={require(`../../../assets/images/Tour/${image.name}`)}
-                            src={URL.createObjectURL(image)}
+                      
+                            src={require(`../../../assets/images/Tour/${image.textImage}`)}
                             alt={`selected-${index}`}
                             style={{
                                 width: '100px',
                                 height: '100px',
                                 objectFit: 'cover',
                                 borderRadius: '5px',
+                                border: image.isPrimary ? '2px solid blue' : 'none', // Viền xanh nếu là ảnh chính
                             }}
                         />
                     </div>
@@ -67,4 +106,4 @@ function UploadImage({onImagesSelected}) {
     );
 }
 
-export default UploadImage;
+export default memo(UploadImage);

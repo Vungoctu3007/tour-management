@@ -11,4 +11,6 @@ import lombok.experimental.FieldDefaults;
 public class ImageResponse {
     Integer id;
     String textImage;
+    Integer isPrimary;
+
 }

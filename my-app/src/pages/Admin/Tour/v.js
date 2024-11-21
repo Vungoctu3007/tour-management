@@ -1,14 +1,8 @@
-import React, { useState, useEffect, memo } from 'react';
-
-function Leg({ onLegSelected, initialLegs, reset }) {
-    const [legs, setLegs] = useState(initialLegs?.length ? initialLegs : [{ title: '', description: '', sequence: 1 }]);
+function Leg({ onLegSelected, initialLegs = [] }) {
+    const [legs, setLegs] = useState(initialLegs.length > 0 ? initialLegs : [{ title: '', description: '', sequence: 1 }]);
 
     const handleAddLeg = () => setLegs([...legs, { title: '', description: '', sequence: legs.length + 1 }]);
-    useEffect(() => {
-        if (initialLegs && initialLegs.length > 0) {
-            setLegs(initialLegs);
-        }
-    }, [initialLegs]);
+
     const handleRemoveLegs = (index) => {
         const updatedLegs = legs.filter((_, i) => i !== index);
         const reIndexedLegs = updatedLegs.map((leg, i) => ({ ...leg, sequence: i + 1 }));
@@ -20,14 +14,8 @@ function Leg({ onLegSelected, initialLegs, reset }) {
         const updatedLegs = legs.map((leg, i) => (i === index ? { ...leg, [name]: value } : leg));
         setLegs(updatedLegs);
     };
-    useEffect(() => {
-        if (reset) {
-            setLegs([{ title: '', description: '', sequence: 1 }]);
-        }
-    }, [reset]);
-    useEffect(() => {
-        onLegSelected(legs);
-    }, [legs, onLegSelected]);
+
+    useEffect(() => onLegSelected(legs), [legs, onLegSelected]);
 
     return (
         <div className="mt-2">
@@ -36,9 +24,7 @@ function Leg({ onLegSelected, initialLegs, reset }) {
                 {legs.map((leg, index) => (
                     <div className="row mb-3" key={index}>
                         <div className="col-5">
-                            <label htmlFor={`title${index}`} className="form-label">
-                                Tên lịch trình:
-                            </label>
+                            <label htmlFor={`title${index}`} className="form-label">Tên lịch trình:</label>
                             <input
                                 className="d-none"
                                 value={leg.sequence}
@@ -56,9 +42,7 @@ function Leg({ onLegSelected, initialLegs, reset }) {
                             />
                         </div>
                         <div className="col-5">
-                            <label htmlFor={`description${index}`} className="form-label">
-                                Mô tả lịch trình:
-                            </label>
+                            <label htmlFor={`description${index}`} className="form-label">Mô tả lịch trình:</label>
                             <textarea
                                 value={leg.description}
                                 id={`description${index}`}
