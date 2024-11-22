@@ -3,11 +3,16 @@ package com.example.tourmanagement.controller;
 import com.example.tourmanagement.dto.request.ApiResponse;
 import com.example.tourmanagement.dto.request.DetailRouteRequest;
 import com.example.tourmanagement.dto.response.RouteResponseDetail;
+import com.example.tourmanagement.dto.response.RouteResponseWrapper;
+import com.example.tourmanagement.entity.Detailroute;
 import com.example.tourmanagement.service.RouteService;
 import com.example.tourmanagement.service.TourService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,4 +80,12 @@ public class TourController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+    @GetMapping("/search")
+    public ApiResponse<RouteResponseWrapper> searchByDetailRouteId(@RequestParam(defaultValue = "1") int page, @RequestParam int size, @RequestParam(required = false) String sort,@RequestParam Integer detailRouteId) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        return ApiResponse.<RouteResponseWrapper>builder()
+                .result(tourService.searchByDetailRouteId(pageable, sort, detailRouteId))
+                .build();
+    }
+
 }

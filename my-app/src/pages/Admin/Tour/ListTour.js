@@ -4,7 +4,7 @@ import { IconButton } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import PaginationComponent from '../../../components/Pagination';
 import { Visibility, Edit, Delete } from '@mui/icons-material';
-import { getAllRoutes,isCheckBooking ,deleteTour} from '../../../services/routeService';
+import { getAllRoutes,isCheckBooking ,deleteTour,searhcByDetailRouteId} from '../../../services/routeService';
 import { Link,useNavigate } from 'react-router-dom';
 import { useNotification } from '../../../components/NotificationProvider';
 const sort_options = [
@@ -42,23 +42,26 @@ function ListTour() {
     const [totalPages, setTotalPages] = useState(0);
     const [totalElements, setTotalElements] = useState(0);
     const [routes, setRoutes] = useState([]);
- 
+    const [searchKeyword, setSearchKeyword] = useState('');
+
     const navigate = useNavigate(); 
     useEffect(() => {
         const fet = async () => {
-            try {
-                let data;
+            let data;
+            if (searchKeyword) {
+                data = await searhcByDetailRouteId(currentPage, pageSize, 'asc', searchKeyword);
+            } else {
                 data = await getAllRoutes(currentPage, pageSize, 'asc');
-                setRoutes(data.result.routes);
-                setTotalPages(data.result.totalPages);
-                setTotalElements(data.result.totalElements);
-            } catch (error) {
-                console.error(error);
             }
+            setRoutes(data.result.routes);
+            setTotalPages(data.result.totalPages);
+            setTotalElements(data.result.totalElements);
         };
         fet();
-    }, [currentPage]);
-
+    }, [currentPage,searchKeyword]);
+    const handleSearch = () => {
+        setCurrentPage(1); 
+    };
     const handleEdit =async (detailRouteId) => {
         try {
             const isCheck = await isCheckBooking(detailRouteId);
@@ -87,9 +90,6 @@ function ListTour() {
            
         }
     };
-    // const handleView = (name) => {
-    //     alert(`Viewing user: ${name}`);
-    // };
     return (
         <div className="p-2">
             <div>
@@ -102,8 +102,8 @@ function ListTour() {
                             <span className="input-group-text">
                                 <Search />
                             </span>
-                            <input type="text" className="form-control" placeholder="Search" />
-                            <button className="btn btn-primary">Tìm kiếm</button>
+                            <input type="text" className="form-control" placeholder="Search"   onChange={(e) => setSearchKeyword(e.target.value)} />
+                            <button className="btn btn-primary"  onClick={handleSearch}>Tìm kiếm</button>
                         </div>
 
                         <select className="form-select w-auto">

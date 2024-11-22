@@ -3,15 +3,20 @@ package com.example.tourmanagement.service;
 import com.example.tourmanagement.dto.request.DetailRouteRequest;
 import com.example.tourmanagement.dto.request.ImageRequest;
 import com.example.tourmanagement.dto.request.LegRequest;
+import com.example.tourmanagement.dto.response.RouteResponse;
+import com.example.tourmanagement.dto.response.RouteResponseWrapper;
 import com.example.tourmanagement.entity.Detailroute;
 import com.example.tourmanagement.entity.Image;
 import com.example.tourmanagement.entity.Leg;
 import com.example.tourmanagement.mapper.DetailRouteMapper;
 import com.example.tourmanagement.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -102,5 +107,9 @@ public class TourService {
     }
     public boolean checkBooking(Integer detailRouteId) {
         return bookingRepository.existsBookingsByDetailRoute_Id(detailRouteId);
+    }
+    public RouteResponseWrapper searchByDetailRouteId(Pageable pageable, String sort,Integer detailRouteId) {
+        Page<RouteResponse> routes = routeRepository.searchByDetailRouteId(pageable,sort,detailRouteId);
+        return new RouteResponseWrapper(routes.getTotalPages(),routes.getTotalElements(), routes.getContent());
     }
 }

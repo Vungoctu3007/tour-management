@@ -101,3 +101,14 @@ export const deleteTour = async (detailRouteId) => {
         throw new Error(error.response?.data || 'Failed to check tour status');
     }
 };
+
+
+export const searhcByDetailRouteId = async (page, size, sort,detailRouteId) => {
+    try {
+        const response = await httpRequest.get(`/tour/search?page=${page}&size=${size}&sort=${sort}&detailRouteId=${detailRouteId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user');
+        throw error;
+    }
+};

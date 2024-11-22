@@ -108,4 +108,24 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
             "join  Departure  de on route.departure.id = de.id "
     )
     List<DepartureAndArrivalResponse> getAllDepartureAndArrivals();
+
+
+
+    @Query("SELECT new com.example.tourmanagement.dto.response.RouteResponse(" +
+            "de.id, de.route.id, de.detailRouteName, de.description, de.stock, " +
+            "de.timeToDeparture, de.timeToFinish, img.id, img.textImage, AVG(fe.rating), de.price) " +
+            "FROM Detailroute de " +
+            "JOIN Image img ON de.id = img.detailRoute.id " +
+            "LEFT JOIN Feedback fe ON de.id = fe.detailRoute.id " +
+            "WHERE img.isPrimary =1 AND de.timeToDeparture > CURRENT DATE AND de.id = :detailRouteId " +
+            "GROUP BY de.id " +
+            "ORDER BY CASE " +
+            "WHEN :sort = 'asc' THEN de.price END ASC, " +
+            "CASE " +
+            "WHEN :sort = 'desc' THEN de.price END DESC, " +
+            "CASE " +
+            "WHEN :sort = 'rating' THEN AVG(fe.rating) END DESC"
+    )
+    Page<RouteResponse> searchByDetailRouteId(Pageable pageable, String sort,Integer detailRouteId);
+
 }
