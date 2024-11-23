@@ -12,7 +12,7 @@ const Notification = ({ open, message, onClose, type = "success" }) => {
     >
       <Alert onClose={onClose} severity={type} sx={{ width: '100%' }}>
         {message}
-      </Alert>
+      </Alert>  
     </Snackbar>
   );
 };

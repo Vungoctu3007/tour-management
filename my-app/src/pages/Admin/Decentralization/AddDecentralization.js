@@ -49,6 +49,8 @@ function AddDecentralization({ open, onClose, onSave }) {
 
         fetchRoles();
     }, []);
+
+    
     const fetchPermissionsAndOperations = async (roleId) => {
         try {
             const allPermissionsResponse = await getAllPermission();

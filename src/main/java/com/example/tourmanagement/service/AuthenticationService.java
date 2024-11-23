@@ -27,6 +27,8 @@ import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.el.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -145,7 +147,9 @@ public class AuthenticationService {
                 .expirationTime(expiryTime)
                 .jwtID(UUID.randomUUID().toString()) // Unique ID for the token
                 .claim("user_id", user.getId()) // Add user_id claim here
-                .claim("scope",user.getRole().getRoleName())
+                .claim("scope",user.getRole().getRoleName().trim())
+                .claim("username", user.getUsername())
+                .claim("email:",user.getEmail())
                 .build();
 
 
@@ -162,6 +166,11 @@ public class AuthenticationService {
 
 
     public Map<String, Object> decodeToken(String token) throws Exception {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("username : {}", authentication.getName());
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            log.info(authority.getAuthority());
+        }
         try {
             // Parse the token
             SignedJWT signedJWT = SignedJWT.parse(token);
@@ -182,6 +191,7 @@ public class AuthenticationService {
             tokenDetails.put("expiration_time", claims.getExpirationTime());
             tokenDetails.put("issued_time", claims.getIssueTime());
 
+            log.info("token detail : {}", tokenDetails);
             return tokenDetails;
         } catch (Exception e) {
             throw new Exception(e);

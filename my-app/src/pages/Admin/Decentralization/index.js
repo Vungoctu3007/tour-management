@@ -114,7 +114,7 @@ function Decentralization() {
           >
             DECENTRALIZATION
           </Typography>
-          <Box display="flex" justifyContent="center" flexGrow={1}>
+          {/* <Box display="flex" justifyContent="center" flexGrow={1}>
             <TextField
               variant="outlined"
               placeholder="Search roles"
@@ -122,7 +122,7 @@ function Decentralization() {
               onChange={handleSearchChange}
               style={{ width: "300px", marginRight: "150px" }}
             />
-          </Box>
+          </Box> */}  
           <Button
             variant="contained"
             color="primary"

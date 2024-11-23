@@ -2,7 +2,12 @@ import httpRequest from "../utils/httpRequest";
 
 export const getListDecentralization = async (page, size) => {
     try {
-      const response = await httpRequest.get(`/decentralization?page=${page}&size=${size}`);
+      const token = localStorage.getItem('token')
+      const response = await httpRequest.get(`/admin/decentralization?page=${page}&size=${size}`,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       return response.data;
     } catch (error) {
       console.error("Error fetching decentralization");
@@ -13,7 +18,13 @@ export const getListDecentralization = async (page, size) => {
 
 export const getAllPermission = async () => {
   try { 
-    const response = await fetch(`/api/decentralization/getPermission`);
+    const token = localStorage.getItem('token')
+    console.log(token)
+    const response = await fetch(`/api/admin/decentralization/getPermission`,{
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },  
+    });
     return await response.json();
   } catch (error) {
     console.error("Error fetching permissions:", error);
@@ -26,7 +37,12 @@ export const getAllPermission = async () => {
 
 export const getPermissionByRoleId = async (roleId) => {
   try {
-    const response = await fetch(`/api/decentralization/getPermissionById?roleId=${roleId}`);
+    const token = localStorage.getItem('token')
+    const response = await fetch(`/admin/decentralization/getPermissionById?roleId=${roleId}`,{
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
+    });
     return await response.json();
   } catch (error) {
     console.error("Error fetching permissions:", error);
@@ -37,7 +53,12 @@ export const getPermissionByRoleId = async (roleId) => {
 
 export const getAllOperation = async () => {
   try { 
-    const response = await fetch(`/api/decentralization/getAllOperations`);
+    const token = localStorage.getItem('token')
+    const response = await fetch(`/api/admin/decentralization/getAllOperations`,{
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
+    });
     return await response.json();
   } catch (error) {
     console.error("Error fetching permissions:", error);
@@ -47,7 +68,12 @@ export const getAllOperation = async () => {
 
 export const getOperationByRoleId = async (roleId) => {
   try {
-    const response = await fetch(`/api/decentralization/getOperationById?roleId=${roleId}`);
+    const token = localStorage.getItem('token')
+    const response = await fetch(`/api/admin/decentralization/getOperationById?roleId=${roleId}`,{
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
+    });
     return await response.json();
   } catch (error) {
     console.error("Error fetching operations:", error);
@@ -58,9 +84,14 @@ export const getOperationByRoleId = async (roleId) => {
 
 export const updatePermissions = async (roleId, permissions) => {
   try {
-    const response = await httpRequest.post("/decentralization/updatePermissions", {
+    const token = localStorage.getItem('token')
+    const response = await httpRequest.post("/admin/decentralization/updatePermissions", {
       roleId,
       permissions,
+    },{
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
     });
     return response.data;
   } catch (error) {
@@ -71,9 +102,14 @@ export const updatePermissions = async (roleId, permissions) => {
 
 export const addPermission = async (roleId, permissions) => {
   try {
-    const response = await httpRequest.post("/decentralization/addPermissions", {
+    const token = localStorage.getItem('token')
+    const response = await httpRequest.post("/admin/decentralization/addPermissions", {
       roleId,
       permissions,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
     });
     return response.data;
   } catch (error) {
@@ -86,7 +122,12 @@ export const addPermission = async (roleId, permissions) => {
 
 export const getAssignedPermissions = async (roleId) => {
   try {
-    const response = await httpRequest.get(`/decentralization/unassigned-permissions?roleId=${roleId}`);
+    const token = localStorage.getItem('token')
+    const response = await httpRequest.get(`/admin/decentralization/unassigned-permissions?roleId=${roleId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching decentralization");

@@ -9,18 +9,25 @@ import com.example.tourmanagement.service.FeedbackService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.logging.LoggingRebinder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/feedback")
+@Slf4j
+@RequestMapping("/api/admin/feedback")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FeedbackController {
     @Autowired
     FeedbackService feedbackService;
+    @Autowired
+    private LoggingRebinder loggingRebinder;
 
 
     @GetMapping("/admin")
@@ -35,6 +42,12 @@ public class FeedbackController {
     @GetMapping("/client")
     public ApiResponse<FeedbackResponseWrapper> getListFeedbackClient(@RequestParam(defaultValue = "1") int page,
             @RequestParam int size, @RequestParam(required = false) int detailRouteId) {
+
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("username : {}", authentication.getName());
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            log.info(authority.getAuthority());
+        }
         Pageable pageable = PageRequest.of(page - 1, size);
         return ApiResponse.<FeedbackResponseWrapper>builder()
                 .result(feedbackService.getListFeedback(pageable, detailRouteId))

@@ -1,7 +1,9 @@
 package com.example.tourmanagement.service;
 
+import com.example.tourmanagement.dto.request.CustomerRequest;
 import com.example.tourmanagement.dto.request.UserCreateRequest;
 import com.example.tourmanagement.dto.request.UserUpdateRequest;
+import com.example.tourmanagement.dto.response.CustomerResponse;
 import com.example.tourmanagement.dto.response.UserResponse;
 import com.example.tourmanagement.dto.response.UserResponseWrapper;
 import com.example.tourmanagement.entity.Customer;
@@ -10,6 +12,7 @@ import com.example.tourmanagement.entity.Role;
 import com.example.tourmanagement.entity.User;
 import com.example.tourmanagement.exception.AppException;
 import com.example.tourmanagement.exception.ErrorCode;
+import com.example.tourmanagement.mapper.CustomerMapper;
 import com.example.tourmanagement.mapper.UserMapper;
 import com.example.tourmanagement.repository.CustomerRepository;
 import com.example.tourmanagement.repository.EmployeeRepository;
@@ -29,6 +32,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 public class UserService {
+    private final CustomerMapper customerMapper;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
@@ -51,7 +57,7 @@ public class UserService {
 
     public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder,
             RoleRepository roleRepository, CustomerRepository customerRepository, EmployeeRepository employeeRepository,
-            EmployeeService employeeService, AuthenticationService authenticationService, EmailService emailService) {
+            EmployeeService employeeService, AuthenticationService authenticationService, EmailService emailService, CustomerMapper customerMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
@@ -61,11 +67,17 @@ public class UserService {
         this.employeeService = employeeService;
         this.authenticationService = authenticationService;
         this.emailService = emailService;
+        this.customerMapper = customerMapper;
     }
 
     @Transactional(readOnly = true)
 
     public UserResponseWrapper getUsers(Pageable pageable) {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("username : {}", authentication.getName());
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            log.info(authority.getAuthority());
+        }
         Page<User> usersPage = userRepository.findAllByStatus(1, pageable);
         Page<UserResponse> userResponsesPage = usersPage.map(userMapper::toUserResponse);
         return new UserResponseWrapper(userResponsesPage.getTotalPages(), userResponsesPage.getTotalElements(),
@@ -142,9 +154,8 @@ public class UserService {
 
 
 
-    // create user
+    // create user admin
     public UserResponse newUser(UserCreateRequest request) {
-        System.out.println(request);
 
         User user = new User();
         user.setUsername(request.getUsername());
@@ -250,7 +261,7 @@ public class UserService {
             user.setStatus(1); // Set status to "verified"
             user.setVerificationToken(null);
             userRepository.save(user);
-        } catch (AppException e) {
+        } catch (AppException e) {  
             log.error("Error during email verification: {}", e.getMessage());
             throw e;
         } catch (Exception e) {
@@ -269,4 +280,44 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
+
+    //update customer by userId
+    public CustomerResponse updateCustomerByUserId(int userId , CustomerRequest request) {
+        // Tìm kiếm customer theo userId
+        Customer customer = customerRepository.findByCustomerId(userId)
+            .orElseThrow(() -> new AppException(ErrorCode.CUSTOMER_NOT_EXIST));
+
+        // Cập nhật thông tin từ request
+        customer.setCustomerName(request.getName());
+        customer.setCustomerEmail(request.getEmail());
+        customer.setCustomerPhone(request.getPhone());
+        customer.setCustomerAddress(request.getAddress());
+
+        customer = customerRepository.save(customer);
+
+        // Chuyển đổi thành CustomerResponse
+        return CustomerResponse.builder()
+            .id(customer.getId())
+            .name(customer.getCustomerName())
+            .email(customer.getCustomerEmail())
+            .phone(customer.getCustomerPhone())
+            .address(customer.getCustomerAddress())
+            .build();
+    }
+
+    @Transactional()
+    public CustomerResponse getCustomerByUserId(int userId) {
+        // Tìm customer theo userId
+        Customer customer = customerRepository.findByUserId(userId)
+            .orElseThrow(() -> new AppException(ErrorCode.CUSTOMER_NOT_EXIST));
+
+        // Trả về CustomerResponse
+        return CustomerResponse.builder()
+            .id(customer.getId())
+            .name(customer.getCustomerName())
+            .email(customer.getCustomerEmail())
+            .phone(customer.getCustomerPhone())
+            .address(customer.getCustomerAddress())
+            .build();
+    }
 }

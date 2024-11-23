@@ -9,14 +9,18 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -25,45 +29,29 @@ public class SecurityConfig {
 
     @Autowired
     private CustomJwtDecoder customJwtDecoder;
+    @Autowired
+    MyAuthorizationManager myAuthorizationManager;
 
-
-    private final String[] PUBLIC_ENDPOINT = {"/api/login"};
-    private final String[] PUBLIC_PRIVATE = {"/api/private"};
-
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity.authorizeHttpRequests(request -> request
-//                .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT).permitAll()
-//                .anyRequest()
-//                .authenticated()
-//        );
-//
-//        httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer
-//                        .decoder(customJwtDecoder)
-//                        .jwtAuthenticationConverter(jwtAuthenticationConverter()))
-//                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-//        );
-//
-//        httpSecurity.csrf(AbstractHttpConfigurer::disable); // Disable CSRF if you're using JWT
-//
-//        return httpSecurity.build();
-//    }
-
+    private final String[] PUBLIC_ENDPOINT = {"/api/auth/**", "/api/route/**", "/api/admin/feedback/client", "/api/customer/**"};
+    private final String[] PRIVATE_ENDPOINT = {"/api/admin/user/**", "/api/admin/role/**", "/api/admin/decentralization/**", "/api/admin/feedback/admin"};
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        // Cho phép tất cả các endpoint mà không yêu cầu xác thực
-        httpSecurity.authorizeHttpRequests(request -> request
-                .anyRequest()
-                .permitAll()); // Allow access to all requests
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MyAuthorizationManager myAuthorizationManager) throws Exception {
+        httpSecurity
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Thêm CORS vào HttpSecurity
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers(HttpMethod.OPTIONS, PUBLIC_ENDPOINT).permitAll()
+                        .requestMatchers(PUBLIC_ENDPOINT).permitAll()
 
-        // Nếu không sử dụng OAuth2, có thể bỏ phần cấu hình OAuth2
-        httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer
+                        .requestMatchers(HttpMethod.OPTIONS, PRIVATE_ENDPOINT).hasAnyRole("STAFF", "ADMIN")
+
+                        .anyRequest().authenticated()
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer
                         .decoder(customJwtDecoder)
                         .jwtAuthenticationConverter(jwtAuthenticationConverter()))
-                .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
+                )
 
-
-        httpSecurity.csrf(AbstractHttpConfigurer::disable); // Disable CSRF if you're using JWT
+                .csrf(AbstractHttpConfigurer::disable); // Tắt CSRF vì sử dụng JWT
 
         return httpSecurity.build();
     }
@@ -71,29 +59,42 @@ public class SecurityConfig {
 
 
     @Bean
-    public FilterRegistrationBean<CorsFilter> corsFilter() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("http://localhost:3000");
-        corsConfiguration.addAllowedMethod("*");
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.addAllowedOrigin("http://localhost:3000"); // Cho phép React truy cập
+        corsConfiguration.addAllowedMethod("*"); // Cho phép tất cả các phương thức HTTP
+        corsConfiguration.addAllowedHeader("*"); // Cho phép tất cả các header
+        corsConfiguration.setAllowCredentials(true); // Cho phép gửi cookie hoặc credential
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
-
-        return new FilterRegistrationBean<>(new CorsFilter(source));
+        return source;
     }
 
     @Bean
-    JwtAuthenticationConverter jwtAuthenticationConverter() {
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_"); // Không thêm tiền tố
+        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("scope"); // Sử dụng trường "scope"
+
+        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("scope");
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
+            // Lấy claim "scope"
+            String rawScope = jwt.getClaim("scope");
+
+            if (rawScope != null) {
+                rawScope = rawScope.replace("\r", "").replace("\n", "").trim(); // Loại bỏ \r\n và khoảng trắng
+                return List.of(new SimpleGrantedAuthority(rawScope));
+            }
+
+            return List.of();
+        });
 
         return jwtAuthenticationConverter;
     }
+
 
     @Bean
     PasswordEncoder passwordEncoder() {

@@ -11,7 +11,7 @@ import {
     Snackbar,
     Alert,
 } from "@mui/material";
-
+import { getAllRole, updateUser } from "../../../services/userService";
 const UpdateUser = ({ open, onClose, user, onUserUpdated }) => {
     const [roles, setRoles] = useState([]);
     const [username, setUsername] = useState("");
@@ -24,10 +24,8 @@ const UpdateUser = ({ open, onClose, user, onUserUpdated }) => {
     useEffect(() => {
         const fetchRoles = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/api/role");
-                if (Array.isArray(response.data.result)) {
-                    setRoles(response.data.result);
-                }
+                const rolesData = await getAllRole();
+                setRoles(rolesData.result)
             } catch (error) {
                 console.error("Error fetching roles:", error);
             }
@@ -70,7 +68,7 @@ const UpdateUser = ({ open, onClose, user, onUserUpdated }) => {
 
         try {
             const updatedUser = { id: user.id, username, email, roleId };
-            await axios.put(`http://localhost:8080/api/user/update/${user.id}`, updatedUser);
+            await updateUser(user.id , updatedUser)
             onUserUpdated(updatedUser); // Notify parent component about update
             onClose();
         } catch (error) {

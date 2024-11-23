@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/admin/user")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
     @Autowired
@@ -38,12 +38,7 @@ public class UserController {
                 .result(userService.getUsers(pageable))
                 .build();
     }
-    @PostMapping("/register")
-    ApiResponse<UserResponse> register(@RequestBody UserCreateRequest request) {
-        return ApiResponse.<UserResponse>builder()
-                .result(userService.createUser(request))
-                .build();
-    }
+
     //create-user
     @PostMapping("/create")
     ApiResponse<UserResponse> createUser(@RequestBody UserCreateRequest request) {
@@ -84,5 +79,6 @@ public class UserController {
                 .result(userResponse)
                 .build();
     }
+
 
 }

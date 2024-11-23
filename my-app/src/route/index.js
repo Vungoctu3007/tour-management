@@ -39,6 +39,12 @@ import { patch } from "@mui/material";
 import Decentralization from "../pages/Admin/Decentralization";
 
 import VerifyEmail from "../pages/Client/Register/verifyEmail";
+import GoogleCallback from "../pages/Client/Login/GoogleCallback";
+import WaitingLayout from "../layouts/WatingLayout";
+import LoginWithFacebook from "../pages/Client/Login/LoginWithFacebook";
+import FacebookCallback from "../pages/Client/Login/FacebookCallback";
+
+
 const publicRoutes = [
   // client routes
   { path: routes.home, component: Home, layout: DefaultLayout },
@@ -78,6 +84,11 @@ const publicRoutes = [
   {path : routes.decentralization, component: Decentralization, layout: AdminLayout} ,//}
 
   // authentication user
-  {path: routes.verify , component : VerifyEmail, layout : DefaultLayout}
+  {path: routes.verify , component : VerifyEmail, layout : DefaultLayout},
+
+  //google 
+  {path: routes.google_callback , component: GoogleCallback, layout : null} ,
+  //facebook
+  {path: routes.facebook_callback , component: FacebookCallback, layout : null}
 ];
 export default publicRoutes;

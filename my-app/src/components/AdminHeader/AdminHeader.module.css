@@ -1,0 +1,9 @@
+.sidebar {
+    width: 250px; /* Mặc định */
+    transition: width 0.3s ease; /* Hiệu ứng mượt */
+  }
+  
+  .sidebar.collapsed {
+    width: 60px; /* Kích thước khi thu nhỏ */
+  }
+  

@@ -4,127 +4,375 @@ import com.example.tourmanagement.dto.request.*;
 import com.example.tourmanagement.dto.response.AuthenticationResponse;
 import com.example.tourmanagement.dto.response.IntrospectResponse;
 import com.example.tourmanagement.dto.response.RefreshResponse;
+import com.example.tourmanagement.dto.response.UserResponse;
+import com.example.tourmanagement.entity.Customer;
+import com.example.tourmanagement.entity.Role;
+import com.example.tourmanagement.entity.User;
 import com.example.tourmanagement.exception.AppException;
+import com.example.tourmanagement.repository.CustomerRepository;
+import com.example.tourmanagement.repository.RoleRepository;
+import com.example.tourmanagement.repository.UserRepository;
 import com.example.tourmanagement.service.AuthenticationService;
 import com.example.tourmanagement.service.UserService;
 import com.fasterxml.jackson.core.io.JsonEOFException;
 import com.nimbusds.jose.JOSEException;
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.el.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class AuthenticationController {
-    @Autowired
-    private final  AuthenticationService authenticationService;
-    private final UserService userService;
+
+  @Autowired
+  private final AuthenticationService authenticationService;
+  private final UserService userService;
+  @Autowired
+  private UserRepository userRepository;
+  @Autowired
+  private CustomerRepository customerRepository;
+
+  @NonFinal
+  @Value("${spring.security.oauth2.client.registration.facebook.client-id}")
+  protected String FACEBOOK_CLIENT_ID;
+
+  @NonFinal
+  @Value("${spring.security.oauth2.client.registration.facebook.client-secret}")
+  protected String FACEBOOK_CLIENT_SECRET;
+
+  @NonFinal
+  @Value("${spring.security.oauth2.client.registration.google.client-id}")
+  protected String GOOGLE_CLIENT_ID;
+
+  @NonFinal
+  @Value("${spring.security.oauth2.client.registration.google.client-secret}")
+  protected String GOOGLE_CLIENT_SECRET;
+
+  @NonFinal
+  @Value("${outbound.identity.redirect-uri}")
+  protected String REDIRECT_URI;
+  @Autowired
+  private RoleRepository roleRepository;
 
 
-    @PostMapping("/login")
-    public ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
-        var result = authenticationService.authenticate(request);
-        return ApiResponse.<AuthenticationResponse>builder()
-                .result(result)
-                .build();
+  @GetMapping("/{userId}")
+  public ApiResponse<UserResponse> getUserById(@PathVariable int userId) {
+    UserResponse userResponse = userService.getUserById(userId);
+    return ApiResponse.<UserResponse>builder()
+        .result(userResponse)
+        .build();
+  }
+
+  @PostMapping("/oauth2/callback/google")
+  public ResponseEntity<?> handleGoogleCallback(@RequestBody Map<String, String> body) {
+    String code = body.get("code");
+    if (code == null) {
+      return ResponseEntity.badRequest().body("No code provided");
     }
 
-    @PostMapping("/outbound/authentication")
-    public ApiResponse<AuthenticationResponse> outboundAuthenticate(@RequestParam("code") String code) {
-        var result = authenticationService.outboundAuthenticate(code);
-        return ApiResponse.<AuthenticationResponse>builder()
-                .result(result)
-                .build();
+    try {
+      // 1. Lấy access token từ Google
+      String accessToken = getAccessTokenFromCode(code);
+
+      // 2. Lấy thông tin người dùng từ Google
+      Map<String, Object> userInfo = getUserInfoFromGoogle(accessToken);
+
+      // 3. Tạo mới người dùng (bỏ qua kiểm tra tồn tại)
+      String email = (String) userInfo.get("email");
+      String name = (String) userInfo.get("name");
+      String picture = (String) userInfo.get("picture");
+      String role = "ROLE_CUSTOMER"; // Gán role mặc định
+
+      // Tạo role mới (hoặc lấy từ enum/constant)
+      com.example.tourmanagement.entity.Role adminRole = roleRepository.findByRoleName(3)
+          .orElseThrow(
+              () -> new IllegalStateException("Role ROLE_CUSTOMER does not exist in the database"));
+
+      // Tạo đối tượng người dùng mới
+      User newUser = new User();
+      newUser.setUsername(name); // Đặt username từ Google
+      newUser.setPassword("password account google");
+      newUser.setEmail(email); // Email từ Google
+      newUser.setRole(adminRole); // Gán vai trò mặc định
+      newUser.setStatus(1);
+      // Lưu người dùng vào database
+      User savedUser = userRepository.save(newUser);
+
+      Customer customer = new Customer();
+      customer.setUserId(savedUser.getId());
+      customer.setCustomerName(savedUser.getUsername());
+      customer.setCustomerEmail(savedUser.getEmail());
+      customer.setCustomerPhone("0827415586");
+      customer.setCustomerAddress("119/30 Nguyen van Cu");
+      customerRepository.save(customer); // Lưu Customer vào DB
+
+      // 4. Gọi hàm generateToken để tạo token
+      AuthenticationService.TokenInfo tokenInfo = authenticationService.generateToken(savedUser);
+
+      // 5. Trả về token và thông tin người dùng
+      return ResponseEntity.ok(Map.of(
+          "token", tokenInfo.token(),
+          "expiryTime", tokenInfo.expiryDate(),
+          "email", email,
+          "name", name,
+          "picture", picture
+      ));
+    } catch (Exception e) {
+      return ResponseEntity.status(500).body("Error during Google login: " + e.getMessage());
+    }
+  }
+
+
+  private String getAccessTokenFromCode(String code) throws Exception {
+    RestTemplate restTemplate = new RestTemplate();
+    String tokenUrl = "https://oauth2.googleapis.com/token";
+
+    Map<String, String> params = new HashMap<>();
+    params.put("code", code);
+    params.put("client_id", GOOGLE_CLIENT_ID);
+    params.put("client_secret", GOOGLE_CLIENT_SECRET);
+    params.put("redirect_uri", "http://localhost:3000/oauth2/redirect");
+    params.put("grant_type", "authorization_code");
+
+    ResponseEntity<Map> response = restTemplate.postForEntity(tokenUrl, params, Map.class);
+
+    if (!response.getStatusCode().is2xxSuccessful()) {
+      throw new Exception("Failed to fetch access token");
     }
 
-    @PostMapping("/introspect")
-    ApiResponse<IntrospectResponse> authenticate(@RequestBody IntrospectRequest request)
-            throws ParseException, JOSEException, JsonEOFException {
-        var result = authenticationService.introspect(request);
-        return ApiResponse.<IntrospectResponse>builder().result(result).build();
+    return (String) response.getBody().get("access_token");
+  }
+
+  //login facebook
+  @PostMapping("/oauth2/callback/facebook")
+  public ResponseEntity<?> handleFacebookCallback(@RequestBody Map<String, String> body) {
+    String code = body.get("code");
+    if (code == null) {
+      return ResponseEntity.badRequest().body("No code provided");
     }
 
-    @PostMapping("/decode-token")
-    public ApiResponse<Map<String, Object>> decodeToken(@RequestHeader("Authorization") String authorizationHeader) {
-        try {
-            String token = authorizationHeader.replace("Bearer ", "");
+    try {
+      // 1. Lấy access token từ Facebook
+      String accessToken = getAccessTokenFromCodeWithFacebook(code);
 
-            var decodedToken = authenticationService.decodeToken(token);
-            return ApiResponse.<Map<String, Object>>builder()
-                    .result(decodedToken)
-                    .build();
-        } catch (Exception e) {
-            return ApiResponse.<Map<String, Object>>builder()
-                    .message("Invalid token: " + e.getMessage())
-                    .build();
-        }
+      // 2. Lấy thông tin người dùng từ Facebook
+      Map<String, Object> userInfo = getUserInfoFromFacebook(accessToken);
+
+      // 3. Xử lý người dùng
+      String email = (String) userInfo.get("email");
+      String name = (String) userInfo.get("name");
+//      String picture = ((Map<String, Object>) userInfo.get("picture")).get("data").get("url").toString();
+
+      com.example.tourmanagement.entity.Role adminRole = roleRepository.findByRoleName(3)
+          .orElseThrow(
+              () -> new IllegalStateException("Role ROLE_CUSTOMER does not exist in the database"));
+
+      // Tạo đối tượng User và lưu vào database
+      User newUser = new User();
+      newUser.setUsername(name);
+      newUser.setEmail(email);
+      newUser.setPassword("oauth2_default_password_facebook"); // Mật khẩu mặc định
+      newUser.setRole(adminRole); // Vai trò mặc
+      newUser.setStatus(1);
+      userRepository.save(newUser);
+
+
+      Customer customer = new Customer();
+      customer.setUserId(newUser.getId()); // Gán userId từ User vừa tạo
+      customer.setCustomerName(newUser.getUsername());
+      customer.setCustomerEmail(newUser.getEmail());
+      customer.setCustomerPhone("0827415586"); // Gán thông tin mặc định
+      customer.setCustomerAddress("119/30 Nguyen van Cu");
+      customerRepository.save(customer); // Lưu Customer vào DB
+
+      // Tạo token JWT
+      AuthenticationService.TokenInfo tokenInfo = authenticationService.generateToken(newUser);
+
+      // Trả về token và thông tin người dùng
+      return ResponseEntity.ok(Map.of(
+          "token", tokenInfo.token(),
+          "email", email,
+          "name", name
+      ));
+    } catch (Exception e) {
+      return ResponseEntity.status(500).body("Error during Facebook login: " + e.getMessage());
+    }
+  }
+
+  private String getAccessTokenFromCodeWithFacebook(String code) throws Exception {
+    RestTemplate restTemplate = new RestTemplate();
+    String tokenUrl = "https://graph.facebook.com/v12.0/oauth/access_token"
+        + "?client_id=" + FACEBOOK_CLIENT_ID
+        + "&client_secret=" + FACEBOOK_CLIENT_SECRET
+        + "&redirect_uri=http://localhost:3000/oauth2/callback/facebook"
+        + "&code=" + code;
+
+    ResponseEntity<Map> response = restTemplate.getForEntity(tokenUrl, Map.class);
+
+    if (!response.getStatusCode().is2xxSuccessful()) {
+      throw new Exception("Failed to fetch access token");
     }
 
-    @PostMapping("/verify")
-    public ApiResponse<String> verifyAccount(@RequestBody Map<String, String> payload) {
-        String token = payload.get("token");
-        log.info("token verify : {}", token);
-        try {
-            userService.verifyEmail(token);
-            return ApiResponse.<String>builder()
-                    .code(HttpStatus.OK.value())
-                    .result("Account verified successfully! You can now log in.")
-                    .build();
-        } catch (AppException e) {
-            log.error("Error during email verification: {}", e.getMessage());
-            return ApiResponse.<String>builder()
-                    .code(HttpStatus.BAD_REQUEST.value())
-                    .message(e.getMessage())
-                    .build();
-        } catch (Exception e) {
-            log.error("Unexpected error during email verification", e);
-            return ApiResponse.<String>builder()
-                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                    .message("An unexpected error occurred during email verification.")
-                    .build();
-        }
+    return (String) response.getBody().get("access_token");
+  }
+
+
+  private Map<String, Object> getUserInfoFromFacebook(String accessToken) throws Exception {
+    RestTemplate restTemplate = new RestTemplate();
+    String userInfoUrl = "https://graph.facebook.com/me?fields=id,name,email,picture";
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setBearerAuth(accessToken);
+    HttpEntity<?> entity = new HttpEntity<>(headers);
+
+    ResponseEntity<Map> response = restTemplate.exchange(userInfoUrl, HttpMethod.GET, entity,
+        Map.class);
+
+    if (!response.getStatusCode().is2xxSuccessful()) {
+      throw new Exception("Failed to fetch user info");
     }
 
+    return response.getBody();
+  }
 
-    @PostMapping("/refresh")
-    public ApiResponse<RefreshResponse> refreshToken(@RequestBody RefreshRequest request) {
-        try {
-            RefreshResponse response = authenticationService.refreshToken(request);
 
-            return ApiResponse.<RefreshResponse>builder()
-                    .result(response)
-                    .code(HttpStatus.OK.value())
-                    .message("Token refreshed successfully")
-                    .build();
-        } catch (AppException e) {
-            log.error("Error during token refresh: {}", e.getMessage());
-            return ApiResponse.<RefreshResponse>builder()
-                    .code(HttpStatus.BAD_REQUEST.value())
-                    .message(e.getMessage())
-                    .build();
-        } catch (Exception e) {
-            log.error("Unexpected error during token refresh", e);
-            return ApiResponse.<RefreshResponse>builder()
-                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                    .message("An unexpected error occurred")
-                    .build();
-        }
+  private Map<String, Object> getUserInfoFromGoogle(String accessToken) throws Exception {
+    RestTemplate restTemplate = new RestTemplate();
+    String userInfoUrl = "https://www.googleapis.com/oauth2/v3/userinfo";
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setBearerAuth(accessToken);
+    HttpEntity<?> entity = new HttpEntity<>(headers);
+
+    ResponseEntity<Map> response = restTemplate.exchange(userInfoUrl, HttpMethod.GET, entity,
+        Map.class);
+
+    if (!response.getStatusCode().is2xxSuccessful()) {
+      throw new Exception("Failed to fetch user info");
     }
 
+    return response.getBody();
+  }
+
+
+  @PostMapping("/login")
+  public ApiResponse<AuthenticationResponse> authenticate(
+      @RequestBody AuthenticationRequest request) {
+    var result = authenticationService.authenticate(request);
+    return ApiResponse.<AuthenticationResponse>builder()
+        .result(result)
+        .build();
+  }
+
+  @PostMapping("/outbound/authentication")
+  public ApiResponse<AuthenticationResponse> outboundAuthenticate(
+      @RequestParam("code") String code) {
+    var result = authenticationService.outboundAuthenticate(code);
+    return ApiResponse.<AuthenticationResponse>builder()
+        .result(result)
+        .build();
+  }
+
+  @PostMapping("/introspect")
+  ApiResponse<IntrospectResponse> authenticate(@RequestBody IntrospectRequest request)
+      throws ParseException, JOSEException, JsonEOFException {
+    var result = authenticationService.introspect(request);
+    return ApiResponse.<IntrospectResponse>builder().result(result).build();
+  }
+
+  @PostMapping("/decode-token")
+  public ApiResponse<Map<String, Object>> decodeToken(
+      @RequestHeader("Authorization") String authorizationHeader) {
+    try {
+      String token = authorizationHeader.replace("Bearer ", "");
+
+      var decodedToken = authenticationService.decodeToken(token);
+      return ApiResponse.<Map<String, Object>>builder()
+          .result(decodedToken)
+          .build();
+    } catch (Exception e) {
+      return ApiResponse.<Map<String, Object>>builder()
+          .message("Invalid token: " + e.getMessage())
+          .build();
+    }
+  }
+
+  @PostMapping("/verify")
+  public ApiResponse<String> verifyAccount(@RequestBody Map<String, String> payload) {
+    String token = payload.get("token");
+    log.info("token verify : {}", token);
+    try {
+      userService.verifyEmail(token);
+      return ApiResponse.<String>builder()
+          .code(HttpStatus.OK.value())
+          .result("Account verified successfully! You can now log in.")
+          .build();
+    } catch (AppException e) {
+      log.error("Error during email verification: {}", e.getMessage());
+      return ApiResponse.<String>builder()
+          .code(HttpStatus.BAD_REQUEST.value())
+          .message(e.getMessage())
+          .build();
+    } catch (Exception e) {
+      log.error("Unexpected error during email verification", e);
+      return ApiResponse.<String>builder()
+          .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+          .message("An unexpected error occurred during email verification.")
+          .build();
+    }
+  }
+
+
+  @PostMapping("/refresh")
+  public ApiResponse<RefreshResponse> refreshToken(@RequestBody RefreshRequest request) {
+    try {
+      RefreshResponse response = authenticationService.refreshToken(request);
+
+      return ApiResponse.<RefreshResponse>builder()
+          .result(response)
+          .code(HttpStatus.OK.value())
+          .message("Token refreshed successfully")
+          .build();
+    } catch (AppException e) {
+      log.error("Error during token refresh: {}", e.getMessage());
+      return ApiResponse.<RefreshResponse>builder()
+          .code(HttpStatus.BAD_REQUEST.value())
+          .message(e.getMessage())
+          .build();
+    } catch (Exception e) {
+      log.error("Unexpected error during token refresh", e);
+      return ApiResponse.<RefreshResponse>builder()
+          .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+          .message("An unexpected error occurred")
+          .build();
+    }
+  }
+
+  @PostMapping("/register")
+  ApiResponse<UserResponse> register(@RequestBody UserCreateRequest request) {
+    return ApiResponse.<UserResponse>builder()
+        .result(userService.createUser(request))
+        .build();
+  }
 
 
 }

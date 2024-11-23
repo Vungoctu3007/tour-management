@@ -14,7 +14,7 @@ import {
     Alert,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-
+import { addAccount , getA, getAllRole } from "../../../services/userService";
 const AddUser = ({ open, onClose }) => {
     const [roles, setRoles] = useState([]);
     const [username, setUsername] = useState("");
@@ -29,9 +29,9 @@ const AddUser = ({ open, onClose }) => {
     useEffect(() => {
         const fetchRoles = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/api/role");
-                if (Array.isArray(response.data.result)) {
-                    setRoles(response.data.result);
+                const response = await getAllRole();
+                if (Array.isArray(response.result)) {
+                    setRoles(response.result);
                 }
             } catch (error) {
                 console.error("Error fetching roles:", error);
@@ -77,8 +77,7 @@ const AddUser = ({ open, onClose }) => {
 
         try {
             const newUser = { username, password, email, roleId};
-            console.log("role id :",roleId)
-            await axios.post("http://localhost:8080/api/user/create", newUser);
+            await  addAccount(newUser);
             // Clear form fields
             setUsername("");
             setPassword("");

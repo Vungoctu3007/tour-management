@@ -7,7 +7,7 @@ function ProfileLayout({ children }) {
       <Header />
       <div className="container">
         <div style={{ margin: "20px 0px" }}>
-          <CategoryTitle />
+          <CategoryTitle title="Hồ sơ"/>
         </div>
         <div className="row">
           <div className="col-3">

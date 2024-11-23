@@ -19,7 +19,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/decentralization")
+@RequestMapping("/api/admin/decentralization")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DecentralizationController {
     @Autowired

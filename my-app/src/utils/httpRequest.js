@@ -37,7 +37,6 @@ httpRequest.interceptors.request.use(
         if (!isRefreshing) {
           isRefreshing = true;
           try {
-            console.log("Refreshing token...");
             const newToken = await refreshToken(token); // Gọi API refresh token
             localStorage.setItem("token", newToken); // Lưu token mới
             isRefreshing = false;

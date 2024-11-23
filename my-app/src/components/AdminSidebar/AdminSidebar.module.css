@@ -1,8 +1,13 @@
 
 
 .submenu-open {
-  /* max-height: 500px;  
-  opacity: 1;  */
+  max-height: 0; /* Ẩn nội dung con */
+  overflow: hidden; /* Giấu phần vượt quá */
+  transition: max-height 0.3s ease-in-out; /* Hiệu ứng chuyển động */
+}
+.submenu-open {
+  max-height: 500px; /* Chiều cao tối đa, đủ để chứa nội dung con */
+  display: block;
 }
 .sidebar {
   font-size: 14px; /* Smaller text for the entire sidebar */
@@ -10,13 +15,28 @@
 
 .menuLink {
   font-size: 14px; /* Adjust the font size for the main menu */
+  transition: width 0.3s ease;
 }
 
 .submenu {
   font-size: 12px; 
+  display: none;
+
 }
 
 
 .submenuLink {
   font-size: 12px; /* Smaller font size for the submenu links */
+}
+
+
+.nav-link {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: #f8f9fa;
 }

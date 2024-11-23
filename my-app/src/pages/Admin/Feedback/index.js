@@ -151,7 +151,7 @@ function ListFeedback() {
             </TableHead>
             <TableBody>
               {feedbacks.map((feedback) => (
-                <TableRow key={feedback.id}>
+                <TableRow key={feedback.feedbackId}>
                   <TableCell>{feedback.feedbackId}</TableCell>
                   <TableCell>{feedback.bookingId}</TableCell>
                   <TableCell>{feedback.customerName}</TableCell>

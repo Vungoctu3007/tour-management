@@ -5,6 +5,8 @@ import com.example.tourmanagement.dto.response.UserCreateResponse;
 import com.example.tourmanagement.mapper.RoleMapper;
 import com.example.tourmanagement.repository.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ public class RoleService {
 
     @Transactional(readOnly = true)
     public List<RoleResponse> getListRole() {
+
         return roleRepository.findAll()
                 .stream()
                 .map(roleMapper::toRoleResponse)

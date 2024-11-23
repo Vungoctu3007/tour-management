@@ -18,14 +18,50 @@ import httpRequest from "../utils/httpRequest";
 //       throw error;
 //     }
 // }
+export const loginUser = async ({ username, password }) => {
+    try {
+      const response = await httpRequest.post('/auth/login', {
+        username,
+        password,
+      },{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      // Kiểm tra phản hồi
+      if (response.data.code !== 1000) {
+        throw new Error(response.data.message);
+      }
+  
+      return response.data.result; // Trả về dữ liệu từ API
+    } catch (error) {
+    console.error("Error logging in:", error);
+      throw error.response?.data || error.message;
+    }
+  };
+  
+  export const handleOAuthCallback = async (provider, code) => {
+    try {
+      const response = await httpRequest.post(
+        `   /auth/oauth2/callback/${provider}`,
+        { code }
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  };
+
 
 export const decodeToken = async (token) => {
     try {
-      const response = await httpRequest.post("/decode-token", null, {
+      const response = await httpRequest.post("/auth/decode-token", null, {
         headers: {
           Authorization: `Bearer ${token}`, // Add the Bearer token in the Authorization header
         },
       });
+      console.log(response.data)
       return response.data;
     } catch (error) {
       console.error("Error decoding token:", error);
@@ -36,7 +72,7 @@ export const decodeToken = async (token) => {
 export const refreshToken = async (currentToken) => {
     try {
         const response = await httpRequest.post(
-            "/refresh",
+            "/auth/refresh",
             { token: currentToken }, // Gửi token cũ trong body
             {
                 headers: {
@@ -44,7 +80,6 @@ export const refreshToken = async (currentToken) => {
                 },
             }
         );
-
         console.log("Refresh API response:", response.data); // Log phản hồi từ API
         const newToken = response.data.result?.token; // Lấy token mới từ phản hồi
 
@@ -66,7 +101,7 @@ export const refreshToken = async (currentToken) => {
 let refreshInterval;
 
 export const setupAutoRefreshToken = () => {
-    const refreshCycle = 60 * 1000; // 1 phút (ms)
+    const refreshCycle = 60 * 60 * 1000; // 1 phút (ms)
 
     const refreshFunction = async () => {
         const token = localStorage.getItem("token");

@@ -1,12 +1,13 @@
 package com.example.tourmanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.*;
+@Builder
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 public class User {
     @Id
@@ -32,5 +33,15 @@ public class User {
 
     @Column(name = "verify_token", length = 512)
     private String verificationToken;
+
+
+    public User(Integer id, String username, Role role, String email, Integer status, String verificationToken) {
+        this.id = id;
+        this.username = username;
+        this.role = role;
+        this.email = email;
+        this.status = status;
+        this.verificationToken = verificationToken;
+    }
 
 }

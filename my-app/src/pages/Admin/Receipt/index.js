@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Receipt.css';
-import './modal.css';
+import './Receipt.module.css';
+import './modal.module.css';
 import Notification from "../../../components/Notification";
 
 const Receipt = () => {

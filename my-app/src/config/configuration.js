@@ -1,6 +1,8 @@
 export const OAuthConfig = {
-    clientId: "442264654014-773n7goeub6omj2nchtvrhjd0rsf4ndn.apps.googleusercontent.com",
-    redirectUri: "http://localhost:8080/api/login/oauth2/google",
+    clientId: "442264654014-e1ggfeelf2pe9vqr7k042fs8g42p9gon.apps.googleusercontent.com",
     authUri: "https://accounts.google.com/o/oauth2/v2/auth",
   };
-  
+export const FacebookConfig = {
+  appId: "1695819107932744",
+  callbackUrl: "http://localhost:3000/oauth2/callback/facebook",
+}

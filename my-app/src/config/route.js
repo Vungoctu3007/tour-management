@@ -40,6 +40,12 @@ const routes = {
   decentralization: "/admin/decentralization",
 
   //verify email
-  verify: "/verify"
+  verify: "/verify" ,
+  
+   // Google OAuth callback
+  google_callback: "/oauth2/redirect",
+  
+  // facebook oauth callback
+  facebook_callback: "/oauth2/callback/facebook"
 };
 export default routes;

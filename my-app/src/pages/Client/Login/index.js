@@ -1,284 +1,257 @@
+import React, { useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Divider,
-  TextField,
-  Typography,
-  Snackbar,
-  Alert,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { OAuthConfig } from "../../../config/configuration";
-import { FaFacebook, FaGoogle } from "react-icons/fa"; // Import Facebook icon from react-icons
-import { decodeToken , setupAutoRefreshToken} from "../../../services/authenticationService";
-export default function Login() {
-  const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [snackBarOpen, setSnackBarOpen] = useState(false);
-  const [snackBarMessage, setSnackBarMessage] = useState("");
-  const [snackBarSeverity, setSnackBarSeverity] = useState("success");
-  const [errorMessage, setErrorMessage] = useState("");
+    Box,
+    Button,
+    Card,
+    CardContent,
+    TextField,
+    Typography,
+    IconButton,
+    InputAdornment,
+    Divider,
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { FaFacebook, FaGoogle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import Notification from '../../../components/Notification';
+import { decodeToken, loginUser } from '../../../services/authenticationService';
+import { FacebookConfig, OAuthConfig } from '../../../config/configuration';
+import image from '../../../assets/images/login.png';
 
-  const handleCloseSnackBar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSnackBarOpen(false);
-  };
+const Login = () => {
+    const navigate = useNavigate();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
-  const validateForm = () => {
-    if (!username.trim()) {
-      setErrorMessage("Username không được để trống");
-      return false;
-    }
-    if (!password.trim()) {
-      setErrorMessage("Password không được để trống");
-      return false;
-    }
-    if (password.length < 6) {
-      setErrorMessage("Password phải có ít nhất 6 ký tự");
-      return false;
-    }
-    return true;
-  };
+    // Notification State
+    const [notificationOpen, setNotificationOpen] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState('');
+    const [notificationType, setNotificationType] = useState('success');
 
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  
-    const url = "http://localhost:8080/api/login";
-  
-    if (!validateForm()) return;
-  
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.code !== 1000) {
-          throw new Error(data.message);
+    const validateForm = () => {
+        if (!username.trim() || !password.trim()) {
+            setNotificationMessage('Username và Password không được để trống');
+            setNotificationType('error');
+            setNotificationOpen(true);
+            return false;
         }
-        const token = data.result?.token;
+        if (password.length < 6) {
+            setNotificationMessage('Password phải có ít nhất 6 ký tự');
+            setNotificationType('error');
+            setNotificationOpen(true);
+            return false;
+        }
+        return true;
+    };
 
-        setupAutoRefreshToken();
-        localStorage.setItem("userId", data.result?.userId);
-        localStorage.setItem("token", token);
-        localStorage.setItem("username", data.result?.userName);
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (!validateForm()) return;
 
-        // Show login success message
-        setSnackBarMessage("Đăng nhập thành công!");
-        setSnackBarSeverity("success");
-        setSnackBarOpen(true);
-  
-        // Decode token and get role
-        decodeToken(token)
-          .then((data) => {
-            const role = data.result?.role_name;
-            console.log(role);
-          if (role){
-            
-           setTimeout(() => {
-            if (role.trim() === "STAFF" || role.trim() === "ADMIN") {
-                navigate("/admin/dashboard");
-            } else if (role.trim() === "CUSTOMER" ) {
-              navigate("/");
- 
-           }
-           },1000)
-          }
+        try {
+            const data = await loginUser({ username, password });
+            const token = data.token;
 
-            
-          })
-          .catch((error) => {
-            setErrorMessage(error.message);
-            setSnackBarMessage(error.message);
-            setSnackBarSeverity("error");
-            setSnackBarOpen(true);
-          });
-      })
-      .catch((error) => {
-        setSnackBarMessage(error.message);
-        setSnackBarSeverity("error");
-        setSnackBarOpen(true);
-      });
-  };
+            localStorage.setItem('userId', data.userId);
+            localStorage.setItem('token', token);
+            localStorage.setItem('username', data.userName);
 
-  const handleGoogleLogin = () => {
-    const callbackUrl = OAuthConfig.redirectUri;
-    const authUrl = OAuthConfig.authUri;
-    const googleClientId = OAuthConfig.clientId;
+            setNotificationMessage('Đăng nhập thành công!');
+            setNotificationType('success');
+            setNotificationOpen(true);
 
-    const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
-      callbackUrl
-    )}&response_type=code&client_id=${googleClientId}&scope=openid%20email%20profile`;
+            decodeToken(token).then((decoded) => {
+                const role = decoded.result?.role_name;
+                setTimeout(() => {
+                    if (role === 'ROLE_STAFF' || role === 'ROLE_ADMIN') navigate('/admin/dashboard');
+                    else navigate('/');
+                }, 1000);
+            });
+        } catch (error) {
+            setNotificationMessage(error.message || 'Đăng nhập thất bại!');
+            setNotificationType('error');
+            setNotificationOpen(true);
+        }
+    };
 
-    // Uncomment this when you are ready for Google login flow
-    window.location.href = targetUrl;
-  };
+    const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
-  const handleNavigateToRegister = () => {
-    navigate("/register");
-  };
+    const handleGoogleLogin = () => {
+        const { clientId, authUri } = OAuthConfig;
+        const targetUrl = `${authUri}?redirect_uri=http://localhost:3000/oauth2/redirect&response_type=code&client_id=${clientId}&scope=openid%20email%20profile`;
+        window.location.href = targetUrl;
+    };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
+    const handleFacebookLogin = () => {
+        const { appId } = FacebookConfig;
+        const redirectUri = 'http://localhost:3000/oauth2/callback/facebook';
+        const facebookLoginUrl = `https://www.facebook.com/v12.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=public_profile,email`;
+        window.location.href = facebookLoginUrl;
+    };
 
-  const handleFacebookLogin = () => {
-    // Implement Facebook login here (using a service or SDK)
-  };
-  return (
-    <>
-      <Snackbar
-        open={snackBarOpen}
-        onClose={handleCloseSnackBar}
-        autoHideDuration={3000}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert
-          onClose={handleCloseSnackBar}
-          severity={snackBarSeverity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackBarMessage}
-        </Alert>
-      </Snackbar>
+    return (
+        <>
+            {/* Notification Component */}
+            <Notification
+                open={notificationOpen}
+                message={notificationMessage}
+                onClose={() => setNotificationOpen(false)}
+                type={notificationType}
+            />
 
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        height="100vh"
-        bgcolor={"#f0f2f5"}
-      >
-        <Card
-          sx={{
-            minWidth: 400,
-            maxWidth: 500,
-            boxShadow: 4,
-            borderRadius: 4,
-            padding: 4,
-          }}
-        >
-          <CardContent>
-            <Typography variant="h5" component="h1" gutterBottom>
-              Welcome
-            </Typography>
             <Box
-              component="form"
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="center"
-              width="100%"
-              onSubmit={handleSubmit}
-            >
-              <TextField
-                label="Username"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-              <TextField
-                label="Password"
-                type={showPassword ? "text" : "password"}
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={togglePasswordVisibility} edge="end">
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                size="large"
-                fullWidth
                 sx={{
-                  mt: "15px",
-                  mb: "25px",
+                    width: '100vw',
+                    height: '100vh',
+                    backgroundImage: `url(${image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundBlendMode: 'overlay',
+                    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Hiệu ứng mờ nền
                 }}
-              >
-                Login
-              </Button>
-              <Divider />
-            </Box>
-
-            <Box
-              display="flex"
-              flexDirection="row"
-              width="100%"
-              gap="15px"
-              justifyContent="space-between"
             >
-              <Button
-                type="button"
-                variant="contained"
-                color="secondary"
-                size="large"
-                onClick={handleGoogleLogin}
-                fullWidth
-                sx={{ gap: "10px" }}
-              >
-                <FaGoogle />
-                Google
-              </Button>
-              <Button
-                type="button"
-                variant="contained"
-                color="primary"
-                size="large"
-                onClick={handleFacebookLogin}
-                fullWidth
-                sx={{ gap: "10px" }}
-              >
-                <FaFacebook style={{ fontSize: "24px" }} />
-                Facebook
-              </Button>
-            </Box>
+                <Card
+                    sx={{
+                        maxWidth: 420,
+                        width: '100%',
+                        borderRadius: 4,
+                        boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)', // Tạo bóng mềm mại
+                        background: 'linear-gradient(to bottom right, #ffffffcc, #f0f0f0cc)', // Màu gradient mờ
+                        padding: 4,
+                    }}
+                >
+                    <CardContent>
+                        <Typography
+                            variant="h5"
+                            align="center"
+                            fontWeight="bold"
+                            mb={2}
+                            color="primary"
+                            sx={{ fontFamily: 'Roboto, sans-serif' }}
+                        >
+                            Welcome to Travel! 👋
+                        </Typography>
 
-            <Button
-              type="button"
-              variant="contained"
-              color="success"
-              size="large"
-              onClick={handleNavigateToRegister}
-              fullWidth
-              sx={{
-                mt: "20px",
-              }}
-            >
-              Create an account
-            </Button>
-          </CardContent>
-        </Card>
-      </Box>
-    </>
-  );
-}
+                        <Box component="form" onSubmit={handleSubmit}>
+                            <TextField
+                                fullWidth
+                                label="Username"
+                                variant="outlined"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                margin="normal"
+                                sx={{ borderRadius: 1 }}
+                            />
+                            <TextField
+                                fullWidth
+                                label="Password"
+                                type={showPassword ? 'text' : 'password'}
+                                variant="outlined"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                margin="normal"
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={togglePasswordVisibility}>
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                sx={{ borderRadius: 1 }}
+                            />
+                            <Box display="flex" justifyContent="center" alignItems="center" mt={1} mb={2}>
+                                <Typography
+                                    variant="body2"
+                                    color="primary"
+                                    sx={{ cursor: 'pointer' }}
+                                    onClick={() => navigate('/forgot-password')}
+                                >
+                                    Forgot Password?
+                                </Typography>
+                            </Box>
+
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                sx={{
+                                    mb: 2,
+                                    fontWeight: 'bold',
+                                    borderRadius: 2,
+                                    padding: '10px 0',
+                                    background: 'linear-gradient(to right, #0066ff, #0033cc)',
+                                    '&:hover': {
+                                        background: 'linear-gradient(to right, #0052cc, #002b99)',
+                                    },
+                                }}
+                            >
+                                Sign In
+                            </Button>
+                        </Box>
+
+                        <Divider sx={{ mb: 2 }}>OR</Divider>
+
+                        <Box display="flex" justifyContent="space-between" gap={1}>
+                            <Button
+                                onClick={handleGoogleLogin}
+                                fullWidth
+                                variant="outlined"
+                                sx={{
+                                    color: '#DB4437',
+                                    borderColor: '#DB4437',
+                                    fontWeight: 'bold',
+                                    '&:hover': { backgroundColor: '#FEECEB' },
+                                    borderRadius: 2,
+                                }}
+                                startIcon={<FaGoogle />}
+                            >
+                                Google
+                            </Button>
+                            <Button
+                                onClick={handleFacebookLogin}
+                                fullWidth
+                                variant="outlined"
+                                sx={{
+                                    color: '#4267B2',
+                                    borderColor: '#4267B2',
+                                    fontWeight: 'bold',
+                                    '&:hover': { backgroundColor: '#E7F3FF' },
+                                    borderRadius: 2,
+                                }}
+                                startIcon={<FaFacebook />}
+                            >
+                                Facebook
+                            </Button>
+                        </Box>
+
+                        <Typography variant="body2" align="center" mt={3} sx={{ color: '#666', fontSize: '14px' }}>
+                            New on our platform?{' '}
+                            <Typography
+                                variant="body2"
+                                color="primary"
+                                sx={{
+                                    cursor: 'pointer',
+                                    display: 'inline-block',
+                                    textDecoration: 'underline',
+                                    fontWeight: 'bold',
+                                }}
+                                onClick={() => navigate('/register')}
+                            >
+                                Create an account
+                            </Typography>
+                        </Typography>
+                    </CardContent>
+                </Card>
+            </Box>
+        </>
+    );
+};
+
+export default Login;

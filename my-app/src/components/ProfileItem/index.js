@@ -10,6 +10,7 @@ function ProfileItem({ isClass, width = "px" }) {
     useEffect(() => {
         // Tải username từ localStorage khi component được mount
         const storedUsername = localStorage.getItem("username");
+        console.log(storedUsername);
         if (storedUsername) {
             setUsername(storedUsername); // Cập nhật state với username từ localStorage
         }
@@ -31,6 +32,8 @@ function ProfileItem({ isClass, width = "px" }) {
         localStorage.removeItem("token");
         localStorage.removeItem("roleId");
         localStorage.removeItem("username");
+        localStorage.removeItem("userId")
+        localStorage.removeItem("email")
 
         // Điều hướng đến trang đăng nhập
         navigate("/login");
@@ -47,7 +50,7 @@ function ProfileItem({ isClass, width = "px" }) {
                     borderRadius: "4px 4px 0 0",
                 }}
             >
-                {username || "User"} {/* Hiển thị tên người dùng hoặc "User" nếu không có */}
+                {username || "User"} 
             </span>
             <ul className="list-unstyled">
                 {profile_items.map((item, index) => (

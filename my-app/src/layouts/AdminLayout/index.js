@@ -1,18 +1,40 @@
+import React, { useState } from 'react';
+import AdminSidebar from '../../components/AdminSidebar';
+import AdminHeader from '../../components/AdminHeader';
 
-import AdminSidebar from "../../components/AdminSidebar";
-import AdminHeader from "../../components/AdminHeader";
 function AdminLayout({ children }) {
-  return (
-    <div className="d-flex" style={{ height: "100vh" }}>
-      <div className="col-2" style={{ overflowY: "auto" }}>
-        <AdminSidebar />
-      </div>
-      <div className="col-md-10 ms-sm-auto col-lg-10">
-        <AdminHeader />
-        <main className="p-2">{children}</main>
-      </div>
-    </div>
-  );
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+    const toggleSidebar = () => {
+        setIsSidebarCollapsed(!isSidebarCollapsed);
+    };
+
+    return (
+        <div className="d-flex" style={{ height: '100vh' }}>
+            {/* Sidebar */}
+            <div
+                style={{
+                    flex: '0 0 auto', // Sidebar có kích thước cố định
+                    width: isSidebarCollapsed ? '60px' : '250px',
+                    transition: 'width 0.3s ease',
+                    overflowY: 'auto',
+                }}
+            >
+                <AdminSidebar isSidebarCollapsed={isSidebarCollapsed} />
+            </div>
+
+            {/* Main content */}
+            <div
+                style={{
+                    flex: '1', // Nội dung chính chiếm phần còn lại
+                    transition: 'margin-left 0.3s ease',
+                }}
+            >
+                <AdminHeader toggleSidebar={toggleSidebar} />
+                <main className="p-2">{children}</main>
+            </div>
+        </div>
+    );
 }
 
 export default AdminLayout;
