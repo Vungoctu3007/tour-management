@@ -1,5 +1,6 @@
 package com.example.tourmanagement.repository;
 
+import com.example.tourmanagement.dto.response.DepartureAndArrivalResponse;
 import com.example.tourmanagement.dto.response.ImageResponse;
 import com.example.tourmanagement.dto.response.RouteResponse;
 import com.example.tourmanagement.dto.response.RouteResponseDetail;
@@ -44,7 +45,8 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
             "JOIN Departure departure ON route.departure.id = departure.id " +
             "JOIN Image img ON de.id = img.detailRoute.id " +
             "LEFT JOIN Feedback fe ON de.id = fe.detailRoute.id " +
-            "WHERE img.isPrimary = 1 AND de.id = :id " +
+//            "WHERE img.isPrimary = 1 AND de.id = :id " +
+            "WHERE de.id = :id " +
             "GROUP BY de.id")
     RouteResponseDetail getDetailRouteById(@Param("id") Integer id);
 
@@ -97,4 +99,33 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
     // ngày trong tour phải lớn hơn ngày tìm kiếm
     Page<RouteResponse> findRoutesByArrival(String arrivalName,
                                             Pageable pageable,String sort);
+
+
+    @Query("select new com.example.tourmanagement.dto.response.DepartureAndArrivalResponse(" +
+            "route.id, de.departureName, ar.arrivalName ) " +
+            "from Route route " +
+            "join  Arrival ar on route.arrival.id = ar.id " +
+            "join  Departure  de on route.departure.id = de.id "
+    )
+    List<DepartureAndArrivalResponse> getAllDepartureAndArrivals();
+
+
+
+    @Query("SELECT new com.example.tourmanagement.dto.response.RouteResponse(" +
+            "de.id, de.route.id, de.detailRouteName, de.description, de.stock, " +
+            "de.timeToDeparture, de.timeToFinish, img.id, img.textImage, AVG(fe.rating), de.price) " +
+            "FROM Detailroute de " +
+            "JOIN Image img ON de.id = img.detailRoute.id " +
+            "LEFT JOIN Feedback fe ON de.id = fe.detailRoute.id " +
+            "WHERE img.isPrimary =1 AND de.timeToDeparture > CURRENT DATE AND de.id = :detailRouteId " +
+            "GROUP BY de.id " +
+            "ORDER BY CASE " +
+            "WHEN :sort = 'asc' THEN de.price END ASC, " +
+            "CASE " +
+            "WHEN :sort = 'desc' THEN de.price END DESC, " +
+            "CASE " +
+            "WHEN :sort = 'rating' THEN AVG(fe.rating) END DESC"
+    )
+    Page<RouteResponse> searchByDetailRouteId(Pageable pageable, String sort,Integer detailRouteId);
+
 }

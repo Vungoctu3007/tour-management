@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @Table(name = "detailroutes")
 public class Detailroute {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "detail_route_id", nullable = false)
     private Integer id;
 
@@ -40,5 +42,14 @@ public class Detailroute {
 
     @Column(name = "book_in_advance")
     private Integer bookInAdvance;
+
+
+
+
+    @OneToMany(mappedBy = "detailRoute", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images;
+
+    @OneToMany(mappedBy = "detailRoute", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Leg> legs;
 
 }

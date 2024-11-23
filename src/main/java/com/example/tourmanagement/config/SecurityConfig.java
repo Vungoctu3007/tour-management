@@ -32,7 +32,7 @@ public class SecurityConfig {
     @Autowired
     MyAuthorizationManager myAuthorizationManager;
 
-    private final String[] PUBLIC_ENDPOINT = {"/api/auth/**", "/api/route/**", "/api/admin/feedback/client", "/api/customer/**"};
+    private final String[] PUBLIC_ENDPOINT = {"/api/auth/**", "/api/route/**", "/api/admin/feedback/client", "/api/customer/**", "/api/booking/**"};
     private final String[] PRIVATE_ENDPOINT = {"/api/admin/user/**", "/api/admin/role/**", "/api/admin/decentralization/**", "/api/admin/feedback/admin"};
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MyAuthorizationManager myAuthorizationManager) throws Exception {

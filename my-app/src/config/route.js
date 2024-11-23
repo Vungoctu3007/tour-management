@@ -27,6 +27,7 @@ const routes = {
   // admin tour
   list_tour:"/admin/tour/list-tour",
   add_tour:"/admin/tour/add-tour",
+  update_tour:"/admin/tour/update-tour/:detailRouteId",
 
   // admin promotion
   list_promotion:"/admin/promotion/list-promotion",

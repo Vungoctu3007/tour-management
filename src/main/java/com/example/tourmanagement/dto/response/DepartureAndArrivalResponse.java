@@ -1,5 +1,6 @@
 package com.example.tourmanagement.dto.response;
 
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -8,9 +9,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ImageResponse {
-    Integer id;
-    String textImage;
-    Integer isPrimary;
-
+public class DepartureAndArrivalResponse {
+    Integer routeId;
+    String departureName;
+    String arrivalName;
 }

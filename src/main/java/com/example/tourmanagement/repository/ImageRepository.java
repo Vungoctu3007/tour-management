@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ImageRepository extends JpaRepository<Image, Integer> {
     //    get all image by detailId
-    @Query("SELECT new com.example.tourmanagement.dto.response.ImageResponse(img.id, img.textImage) " +
+    @Query("SELECT new com.example.tourmanagement.dto.response.ImageResponse(img.id, img.textImage,img.isPrimary ) " +
             "FROM Image img " +
             "WHERE img.detailRoute.id = :detailRouteId")
     List<ImageResponse> getImagesByDetailRouteId(Integer detailRouteId);

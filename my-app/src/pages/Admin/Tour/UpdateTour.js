@@ -1,18 +1,21 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Select from 'react-select';
 import UploadImage from './UploadImage';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import Leg from './Leg';
 import { getAllRouteRoad } from '../../../services/routeService';
-import { addTour } from '../../../services/routeService';
+// import { updateTour } from '../../../services/routeService';
 import { useNotification } from '../../../components/NotificationProvider';
-import { Link } from 'react-router-dom';
+import { getTourUpdate, updateTour } from '../../../services/routeService';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-function AddTour() {
+function UpdateTour() {
+    const [loading, setLoading] = useState(false);
+    const { detailRouteId } = useParams();
+    const navigate = useNavigate();
+    const [gettours, setGetTours] = useState([]);
     const notify = useNotification();
     const [roads, setRoads] = useState([]);
     const [errors, setErrors] = useState({});
-    const [resetFields, setResetFields] = useState(false);
-
     const [tour, setTour] = useState({
         detailRouteName: '',
         price: '',
@@ -24,6 +27,32 @@ function AddTour() {
         images: [],
         legs: [],
     });
+    useEffect(() => {
+        const fetchTour = async () => {
+            try {
+                const data = await getTourUpdate(detailRouteId);
+                if (data.result) {
+                    setTour({
+                        detailRouteName: data.result.detailRouteName || '',
+                        price: data.result.price || '',
+                        routeId: data.result.routeId || '',
+                        stock: data.result.stock || '',
+                        timeToDeparture: data.result.timeToDeparture || '',
+                        timeToFinish: data.result.timeToFinish || '',
+                        description: data.result.description || '',
+                        images: data.result.textImageList || [],
+                        legs: data.result.legs || [],
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching tour data:', error);
+                notify('Không thể tải dữ liệu tour', 'error');
+            }
+        };
+
+        fetchTour();
+    }, [detailRouteId, notify]);
+
     const handleChangeTour = (e) => {
         const { id, value } = e.target;
         setTour((prev) => ({
@@ -38,6 +67,7 @@ function AddTour() {
             images: selected,
         }));
     }, []);
+
     const handleLegSelected = useCallback((selected) => {
         setTour((prev) => ({
             ...prev,
@@ -45,7 +75,6 @@ function AddTour() {
         }));
     }, []);
 
-   
     useEffect(() => {
         const fetRoads = async () => {
             try {
@@ -56,8 +85,8 @@ function AddTour() {
             }
         };
         fetRoads();
-    },[]);
-    // route
+    }, []);
+
     const routeOptions = roads.map((item) => ({
         value: item.routeId,
         label: `${item.routeId} - ${item.departureName} - ${item.arrivalName}`,
@@ -69,6 +98,7 @@ function AddTour() {
             routeId: selectedOption ? selectedOption.value : '',
         }));
     };
+
     const validate = () => {
         const newErrors = {};
         if (!tour.detailRouteName) newErrors.detailRouteName = 'Tên tour không được để trống';
@@ -94,35 +124,29 @@ function AddTour() {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleAddTour = async (e) => {
+    const handleEditTour = async (e) => {
         e.preventDefault();
         if (!validate()) {
             notify('Vui lòng kiểm tra lại thông tin!', 'error');
             return;
         }
-        try {
-            const data = await addTour(tour);
-            notify(data);
-            setTour({
-                detailRouteName: '',
-                price: '',
-                routeId: '',
-                stock: '',
-                timeToDeparture: '',
-                timeToFinish: '',
-                description: '',
-                images: [],
-                legs: [],
-            });
-            setErrors({});
-            setResetFields(true);
-            setTimeout(() => {
-                setResetFields(false);
-            }, 100);
-        } catch (error) {
-            console.error('Error adding tour:', error);
-            notify('Failed to add tour: ' + (error.message || 'Unknown error'), 'error');
-        }
+
+        if (!window.confirm('Bạn có chắc muốn cập nhật tour này?')) return;
+
+        setLoading(true);
+        setTimeout(async () => {
+            let data;
+            try {
+                data = await updateTour(detailRouteId, tour);
+                notify(data, 'success');
+                // navigate('/admin/tour/list-tour');
+            } catch (error) {
+                console.error('Error updating tour:', error);
+                notify(data, 'error');
+            } finally {
+                setLoading(false);
+            }
+        }, 2000);
     };
 
     return (
@@ -134,12 +158,26 @@ function AddTour() {
                         <ArrowBackIcon /> Danh sách tour
                     </Link>
                 </h5>
-                <h5 className="mt-4">Thêm Tour</h5>
+                <h5 className="mt-4">sửa Tour</h5>
             </div>
             <div className="">
                 <span className="text-info d-flex  fs-5">Thông tin cơ bản</span>
                 <div className="p-2 border rounded mt-2">
                     <div>
+                        <div className="row mb-3">
+                            <div className="col-6">
+                                <label htmlFor="detailRouteId" className="form-label">
+                                    Mã tour:
+                                </label>
+                                <input
+                                    type="text"
+                                    id="detailRouteId"
+                                    className="form-control"
+                                    value={detailRouteId}
+                                    disabled
+                                />
+                            </div>
+                        </div>
                         <div className="row mb-3">
                             <div className="col-6">
                                 <label htmlFor="detailRouteName" className="form-label">
@@ -244,7 +282,7 @@ function AddTour() {
                                 Mô tả:
                             </label>
                             <textarea
-                            style={{height:"300px"}}
+                                style={{ height: '300px' }}
                                 id="description"
                                 className="form-control"
                                 value={tour.description}
@@ -257,22 +295,22 @@ function AddTour() {
                             <label htmlFor="description" className="form-label">
                                 Thêm ảnh:
                             </label>
-                            <UploadImage onImagesSelected={handleImagesSelected} reset={resetFields} />
+                            <UploadImage onImagesSelected={handleImagesSelected} initialImages={tour.images} />
                             {errors.images && <small className="text-danger">{errors.images}</small>}
                         </div>
                     </div>
                 </div>
             </div>
-            <Leg onLegSelected={handleLegSelected} reset={resetFields} />
+            <Leg onLegSelected={handleLegSelected} initialLegs={tour.legs} />
             {errors.legs && <small className="text-danger">{errors.legs}</small>}
 
             <div className="mt-2 d-flex justify-content-center">
-                <button type="submit" onClick={handleAddTour} className="btn btn-primary">
-                    Add Tour
+                <button type="submit" className="btn btn-primary" disabled={loading} onClick={handleEditTour}>
+                    {loading ? 'Đang cập nhật...' : 'Update Tour'}
                 </button>
             </div>
         </div>
     );
 }
 
-export default AddTour;
+export default UpdateTour;
