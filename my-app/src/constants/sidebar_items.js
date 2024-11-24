@@ -4,162 +4,77 @@ import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import DiscountIcon from '@mui/icons-material/Discount';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import BadgeIcon from '@mui/icons-material/Badge';
 const sidebar_items = [
   
     {
+      id: 1,
       icon: <DashboardCustomizeIcon />,
-      title: "Tổng Quan",
+      title: "DashBoard Management",
       to: "/admin/dashboard",
     },
     {
+      id: 2,
       icon: <AccountCircleIcon />,
-      title: "Tài Khoản",
+      title: "Account Management",
       iconUp: <KeyboardArrowDownIcon />,
       item: [
         { 
-          title: "Người Dùng",
+          title: "Account",
           to: "/admin/user/list-user",
         },
         {
-          title: "Phân Quyền",
+          title: "Decentrizilation",
           to: "/admin/decentralization",
         },
       ],
     },
     {
+      id: 3,
       icon: <ReceiptIcon />,
-      title: "Đơn Hàng",
+      title: "Receipt Management",
       to: "/admin/receipt",
     },
     {
       icon: <DashboardCustomizeIcon />,
-      title: "Phản Hồi",
+      title: "Feedback Management",
       to: "/admin/feedback/list-feedback",
     },
   
-   
     {
-      icon: <SupervisedUserCircleIcon />,
-      title: "Người Dùng",
-      iconUp: <KeyboardArrowDownIcon />,
-      item: [
-        {
-          title: "Danh Sách Người Dùng",
-          to: "/admin/user/list-user",
-        },
-        {
-          title: "Thêm Người Dùng",
-          to: "/admin/user/add-user",
-        },
-      ],
-    },
-    {
+      id: 4,
       icon: <TravelExploreIcon />,
-      title: "Tour",
+      title: "Tour Management",
       iconUp: <KeyboardArrowDownIcon />,
       item: [
         {
-          title: "Thêm Tour",
+          title:"Add Tour",
           to: "/admin/tour/add-tour",
         },
         {
-          title: "Danh Sách Tour",
-          to: "/admin/tour/list-tour",
+          title: "List Tour",
+          to: "/admin/tour/list-tour",  
         },
         {
-          title: "Cập nhật tour",
+          title: "Update Tour",
           to: "/admin/tour/update-tour",
         },
       ],
     },
+
+    
     {
-      icon: <DiscountIcon />,
-      title: "Khuyễn Mãi",
-      iconUp: <KeyboardArrowDownIcon />,
-      item: [
-        {
-          title: "Danh Sách Khuyễn Mãi",
-          to: "/admin/promotion/list-promotion",
-        },
-        {
-          title: "Thêm Khuyễn Mãi",
-          to: "/admin/tour/list-tour",
-        },
-      ],
+      id :5,
+      icon: <SupportAgentIcon />,
+      title: "Customer Management",
+      to: "/admin/customer",
     },
     {
-      icon: <TravelExploreIcon />,
-      title: "Tour",
-      iconUp: <KeyboardArrowDownIcon />,
-      item: [
-        {
-          title: "Thêm Tour",
-          to: "/admin/tour/add-tour",
-        },
-        {
-          title: "Danh Sách Tour",
-          to: "/admin/tour/list-tour",
-        },
-      ],
-    },
-    {
-      icon: <TravelExploreIcon />,
-      title: "Tour",
-      iconUp: <KeyboardArrowDownIcon />,
-      item: [
-        {
-          title: "Thêm Tour",
-          to: "/admin/tour/add-tour",
-        },
-        {
-          title: "Danh Sách Tour",
-          to: "/admin/tour/list-tour",
-        },
-      ],
-    },
-    {
-      icon: <TravelExploreIcon />,
-      title: "Tour",
-      iconUp: <KeyboardArrowDownIcon />,
-      item: [
-        {
-          title: "Thêm Tour",
-          to: "/admin/tour/add-tour",
-        },
-        {
-          title: "Danh Sách Tour",
-          to: "/admin/tour/list-tour",
-        },
-        {
-          title: "Danh Sách Tour",
-          to: "/admin/tour/list-tour",
-        },
-        {
-          title: "Danh Sách Tour",
-          to: "/admin/tour/list-tour",
-        },
-        {
-          title: "Danh Sách Tour",
-          to: "/admin/tour/list-tour",
-        },
-        {
-          title: "Danh Sách Tour",
-          to: "/admin/tour/list-tour",
-        },
-        {
-          title: "Danh Sách Tour",
-          to: "/admin/tour/list-tour",
-        },
-        {
-          title: "Danh Sách Tour",
-          to: "/admin/tour/list-tour",
-        },
-        {
-          title: "Danh Sách Tour",
-          to: "/admin/tour/list-tour",
-        },
-      ],
+      id:6,
+      icon: <BadgeIcon />,
+      title: "Employee Management",
+      to: "/admin/employee",
     },
     
   ];

@@ -33,6 +33,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         // Updated search method to exclude roleName
         @Query("SELECT u FROM User u WHERE (:username IS NULL OR u.username LIKE %:username%)")
         Page<User> searchUsers(@Param("username") String username, Pageable pageable);
-        
+
+        Optional<User> findByEmail(String email);
+        boolean existsByEmail(String email);
 
 }

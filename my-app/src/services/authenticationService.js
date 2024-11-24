@@ -18,29 +18,35 @@ import httpRequest from "../utils/httpRequest";
 //       throw error;
 //     }
 // }
+
+
 export const loginUser = async ({ username, password }) => {
-    try {
-      const response = await httpRequest.post('/auth/login', {
-        username,
-        password,
-      },{
+  try {
+    // Gửi yêu cầu đến endpoint /auth/login
+    const response = await httpRequest.post(
+      '/auth/login',
+      { username, password }, // Dữ liệu gửi trong body
+      {
         headers: {
           'Content-Type': 'application/json',
         },
-      });
-  
-      // Kiểm tra phản hồi
-      if (response.data.code !== 1000) {
-        throw new Error(response.data.message);
       }
-  
-      return response.data.result; // Trả về dữ liệu từ API
-    } catch (error) {
-    console.error("Error logging in:", error);
-      throw error.response?.data || error.message;
+    );
+
+    // Kiểm tra mã lỗi từ phản hồi
+    if (response.data?.code !== 1000) {
+      console.error("Login error:", response.data?.message);
+      throw new Error(response.data?.message || "Login failed");
     }
-  };
-  
+
+    return response.data.result; // Trả về dữ liệu nếu thành công
+  } catch (error) {
+    console.error("Error logging in:", error.message || error);
+    // Ném lỗi để xử lý bên ngoài
+    throw error.response?.data || error.message || "Network error";
+  }
+};
+
   export const handleOAuthCallback = async (provider, code) => {
     try {
       const response = await httpRequest.post(
@@ -101,7 +107,7 @@ export const refreshToken = async (currentToken) => {
 let refreshInterval;
 
 export const setupAutoRefreshToken = () => {
-    const refreshCycle = 60 * 60 * 1000; // 1 phút (ms)
+    const refreshCycle = 1 * 60 * 1000; // 1 phút (ms)
 
     const refreshFunction = async () => {
         const token = localStorage.getItem("token");

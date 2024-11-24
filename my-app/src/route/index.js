@@ -43,8 +43,8 @@ import GoogleCallback from "../pages/Client/Login/GoogleCallback";
 import WaitingLayout from "../layouts/WatingLayout";
 import LoginWithFacebook from "../pages/Client/Login/LoginWithFacebook";
 import FacebookCallback from "../pages/Client/Login/FacebookCallback";
-
-
+import ListCustomer from "../pages/Admin/Customer";
+import ListEmployee from "../pages/Admin/Employee";
 const publicRoutes = [
   // client routes
   { path: routes.home, component: Home, layout: DefaultLayout },
@@ -91,6 +91,12 @@ const publicRoutes = [
   //google 
   {path: routes.google_callback , component: GoogleCallback, layout : null} ,
   //facebook
-  {path: routes.facebook_callback , component: FacebookCallback, layout : null}
+  {path: routes.facebook_callback , component: FacebookCallback, layout : null},
+
+  //customer 
+  {path : routes.list_customer , component: ListCustomer , layout: AdminLayout},
+
+  //employee
+  {path: routes.list_employee, component: ListEmployee , layout: AdminLayout}
 ];
 export default publicRoutes;

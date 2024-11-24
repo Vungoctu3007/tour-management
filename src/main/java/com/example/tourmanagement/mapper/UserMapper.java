@@ -9,7 +9,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-
     @Mapping(target = "role", ignore = true) // Bỏ qua role khi ánh xạ từ request sang entity
     User toUser(UserCreateRequest request);
 

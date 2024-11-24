@@ -90,4 +90,12 @@ public class DecentralizationController {
                 .build();
     }
 
+    //phan quyen theo roleId
+    @GetMapping("/getRoleAndPermissionsByUserId")
+    public ApiResponse<RolePermissionResponse> getRoleAndPermissionsByUserId(@RequestParam int userId) {
+        return ApiResponse.<RolePermissionResponse>builder()
+            .result(decentralizationService.getRoleAndPermissionsByUserId(userId))
+            .build();
+    }
+
 }

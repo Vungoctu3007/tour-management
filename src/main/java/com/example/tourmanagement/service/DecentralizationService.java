@@ -153,4 +153,19 @@ public class DecentralizationService {
         return new ArrayList<>(permissionMap.values());
     }
 
+
+    public RolePermissionResponse getRoleAndPermissionsByUserId(int userId) {
+        List<Object[]> results = decentralizationRepository.findRoleAndPermissionsByUserId(userId);
+        RolePermissionResponse response = new RolePermissionResponse();
+
+        // Map results into response
+        if (!results.isEmpty()) {
+            response.setRoleName((String) results.get(0)[0]); // Role name
+            List<String> permissions = results.stream()
+                .map(result -> (String) result[1]) // Permission names
+                .collect(Collectors.toList());
+            response.setPermissions(permissions);
+        }
+        return response;
+    }
 }

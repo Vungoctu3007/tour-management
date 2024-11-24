@@ -1,5 +1,6 @@
 package com.example.tourmanagement.dto.response;
 
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,15 +9,12 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerResponse {
-    int id;
-    String name;
-    String email;
-    String phone;
-    String address;
-    int userId;
+public class CustomerResponseWrapper {
+  long totalPages;
+  long totalElements;
+  List<CustomerResponse> customers;
 }

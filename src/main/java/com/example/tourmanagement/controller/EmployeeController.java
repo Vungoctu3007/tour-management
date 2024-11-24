@@ -4,9 +4,11 @@ import com.example.tourmanagement.dto.request.ApiResponse;
 import com.example.tourmanagement.dto.request.CustomerRequest;
 import com.example.tourmanagement.dto.response.CustomerResponse;
 import com.example.tourmanagement.dto.response.CustomerResponseWrapper;
+import com.example.tourmanagement.dto.response.EmployeeResponseWrapper;
 import com.example.tourmanagement.dto.response.UserResponse;
 import com.example.tourmanagement.dto.response.UserResponseWrapper;
 import com.example.tourmanagement.service.CustomerService;
+import com.example.tourmanagement.service.EmployeeService;
 import com.example.tourmanagement.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,20 +27,20 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/admin/customer")
+@RequestMapping("/api/admin/employee")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CustomerController {
+public class EmployeeController {
 
   @Autowired
   UserService userService;
   @Autowired
-  CustomerService customerService;
+  EmployeeService employeeService;
 
   @GetMapping
-  public ApiResponse<CustomerResponseWrapper> getListCustomer(@RequestParam(defaultValue = "1") int page, @RequestParam int size) {
+  public ApiResponse<EmployeeResponseWrapper> getListEmployee(@RequestParam(defaultValue = "1") int page, @RequestParam int size) {
     Pageable pageable= PageRequest.of(page-1, size);
-    return ApiResponse.<CustomerResponseWrapper>builder()
-        .result(customerService.getCustomers(pageable))
+    return ApiResponse.<EmployeeResponseWrapper>builder()
+        .result(employeeService.getCustomers(pageable))
         .build();
   }
 
@@ -63,10 +65,10 @@ public class CustomerController {
 
 
   @GetMapping("/search")
-  ApiResponse<CustomerResponseWrapper> searchCustomer(@RequestParam String username, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
+  ApiResponse<EmployeeResponseWrapper> searchEmployee(@RequestParam String email, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
     Pageable pageable = PageRequest.of(page - 1, size);
-    CustomerResponseWrapper customerResponse = userService.searcCustomerByUsername(username, pageable);
-    return ApiResponse.<CustomerResponseWrapper>builder()
+    EmployeeResponseWrapper customerResponse = employeeService.searchEmployeeByEmail(email, pageable);
+    return ApiResponse.<EmployeeResponseWrapper>builder()
         .result(customerResponse)
         .build();
   }

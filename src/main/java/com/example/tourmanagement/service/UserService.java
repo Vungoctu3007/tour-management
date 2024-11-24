@@ -4,6 +4,7 @@ import com.example.tourmanagement.dto.request.CustomerRequest;
 import com.example.tourmanagement.dto.request.UserCreateRequest;
 import com.example.tourmanagement.dto.request.UserUpdateRequest;
 import com.example.tourmanagement.dto.response.CustomerResponse;
+import com.example.tourmanagement.dto.response.CustomerResponseWrapper;
 import com.example.tourmanagement.dto.response.UserResponse;
 import com.example.tourmanagement.dto.response.UserResponseWrapper;
 import com.example.tourmanagement.entity.Customer;
@@ -319,5 +320,21 @@ public class UserService {
             .phone(customer.getCustomerPhone())
             .address(customer.getCustomerAddress())
             .build();
+    }
+
+
+
+    @Transactional(readOnly = true)
+    public CustomerResponseWrapper searcCustomerByUsername(String username, Pageable pageable) {
+        Page<Customer> customerPage = customerRepository.searchCustomers(username, pageable);
+
+        // Check if the userPage has content and return the wrapper
+        return new CustomerResponseWrapper(
+            customerPage.getTotalPages(),
+            customerPage.getTotalElements(),
+            customerPage.map(customerMapper::toCustomerResponse).getContent());
+    }
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

@@ -136,5 +136,27 @@ export const getAssignedPermissions = async (roleId) => {
 };
 
 
+export const getRoleAndPermissionsByUserId = async (userId) => {
+  try {
+      const token = localStorage.getItem('token');
+      const response = await httpRequest.get('/admin/decentralization/getRoleAndPermissionsByUserId', {
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+          params: { userId },
+      });
 
+      // Loại bỏ ký tự thừa trong permissions
+      const result = response.data.result;
+      if (result && result.permissions) {
+          result.permissions = result.permissions.map((permission) =>
+              permission.trim() // Loại bỏ ký tự xuống dòng hoặc khoảng trắng
+          );
+      }
+      return result; // Trả về roleName và permissions đã xử lý
+  } catch (error) {
+      console.error('Error fetching role and permissions:', error);
+      return null;
+  }
+};
 

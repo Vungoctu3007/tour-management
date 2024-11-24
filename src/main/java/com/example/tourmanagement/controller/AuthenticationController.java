@@ -9,6 +9,7 @@ import com.example.tourmanagement.entity.Customer;
 import com.example.tourmanagement.entity.Role;
 import com.example.tourmanagement.entity.User;
 import com.example.tourmanagement.exception.AppException;
+import com.example.tourmanagement.exception.ErrorCode;
 import com.example.tourmanagement.repository.CustomerRepository;
 import com.example.tourmanagement.repository.RoleRepository;
 import com.example.tourmanagement.repository.UserRepository;
@@ -96,25 +97,40 @@ public class AuthenticationController {
       // 2. Lấy thông tin người dùng từ Google
       Map<String, Object> userInfo = getUserInfoFromGoogle(accessToken);
 
-      // 3. Tạo mới người dùng (bỏ qua kiểm tra tồn tại)
+      // 3. Lấy thông tin người dùng từ email
       String email = (String) userInfo.get("email");
       String name = (String) userInfo.get("name");
       String picture = (String) userInfo.get("picture");
-      String role = "ROLE_CUSTOMER"; // Gán role mặc định
 
-      // Tạo role mới (hoặc lấy từ enum/constant)
-      com.example.tourmanagement.entity.Role adminRole = roleRepository.findByRoleName(3)
-          .orElseThrow(
-              () -> new IllegalStateException("Role ROLE_CUSTOMER does not exist in the database"));
+      log.info("email :", email);
 
-      // Tạo đối tượng người dùng mới
+      // Kiểm tra xem người dùng đã tồn tại trong database chưa
+      Optional<User> existingUser = userRepository.findByEmail(email);
+
+      System.out.println(existingUser);
+
+      if (existingUser.isPresent()) {
+        // Nếu đã tồn tại, tạo token và trả về thông tin
+        AuthenticationService.TokenInfo tokenInfo = authenticationService.generateToken(existingUser.get());
+        return ResponseEntity.ok(Map.of(
+            "token", tokenInfo.token(),
+            "expiryTime", tokenInfo.expiryDate(),
+            "email", email,
+            "name", existingUser.get().getUsername(),
+            "picture", picture
+        ));
+      }
+
+      // 4. Nếu không tồn tại, tạo người dùng mới
+      Role customerRole = roleRepository.findByRoleId(3)
+          .orElseThrow(() -> new IllegalStateException("Role ROLE_CUSTOMER does not exist in the database"));
+
       User newUser = new User();
-      newUser.setUsername(name); // Đặt username từ Google
+      newUser.setUsername(name);
       newUser.setPassword("password account google");
-      newUser.setEmail(email); // Email từ Google
-      newUser.setRole(adminRole); // Gán vai trò mặc định
+      newUser.setEmail(email);
+      newUser.setRole(customerRole);
       newUser.setStatus(1);
-      // Lưu người dùng vào database
       User savedUser = userRepository.save(newUser);
 
       Customer customer = new Customer();
@@ -123,12 +139,12 @@ public class AuthenticationController {
       customer.setCustomerEmail(savedUser.getEmail());
       customer.setCustomerPhone("0827415586");
       customer.setCustomerAddress("119/30 Nguyen van Cu");
-      customerRepository.save(customer); // Lưu Customer vào DB
+      customerRepository.save(customer);
 
-      // 4. Gọi hàm generateToken để tạo token
+      // 5. Tạo token cho người dùng mới
       AuthenticationService.TokenInfo tokenInfo = authenticationService.generateToken(savedUser);
 
-      // 5. Trả về token và thông tin người dùng
+      // 6. Trả về token và thông tin người dùng
       return ResponseEntity.ok(Map.of(
           "token", tokenInfo.token(),
           "expiryTime", tokenInfo.expiryDate(),
@@ -177,37 +193,46 @@ public class AuthenticationController {
       // 2. Lấy thông tin người dùng từ Facebook
       Map<String, Object> userInfo = getUserInfoFromFacebook(accessToken);
 
-      // 3. Xử lý người dùng
+      // 3. Lấy thông tin người dùng từ email
       String email = (String) userInfo.get("email");
       String name = (String) userInfo.get("name");
-//      String picture = ((Map<String, Object>) userInfo.get("picture")).get("data").get("url").toString();
 
-      com.example.tourmanagement.entity.Role adminRole = roleRepository.findByRoleName(3)
-          .orElseThrow(
-              () -> new IllegalStateException("Role ROLE_CUSTOMER does not exist in the database"));
+      // Kiểm tra xem người dùng đã tồn tại trong database chưa
+      Optional<User> existingUser = userRepository.findByEmail(email);
+      System.out.println(existingUser);
+      if (existingUser.isPresent()) {
+        // Nếu đã tồn tại, tạo token và trả về thông tin
+        AuthenticationService.TokenInfo tokenInfo = authenticationService.generateToken(existingUser.get());
+        return ResponseEntity.ok(Map.of(
+            "token", tokenInfo.token(),
+            "email", email,
+            "name", existingUser.get().getUsername()
+        ));
+      }
 
-      // Tạo đối tượng User và lưu vào database
+      // 4. Nếu không tồn tại, tạo người dùng mới
+      com.example.tourmanagement.entity.Role customerRole = roleRepository.findByRoleId(3)
+          .orElseThrow(() -> new IllegalStateException("Role ROLE_CUSTOMER does not exist in the database"));
       User newUser = new User();
       newUser.setUsername(name);
       newUser.setEmail(email);
       newUser.setPassword("oauth2_default_password_facebook"); // Mật khẩu mặc định
-      newUser.setRole(adminRole); // Vai trò mặc
+      newUser.setRole(customerRole); // Vai trò mặc
       newUser.setStatus(1);
       userRepository.save(newUser);
 
-
       Customer customer = new Customer();
-      customer.setUserId(newUser.getId()); // Gán userId từ User vừa tạo
+      customer.setUserId(newUser.getId());
       customer.setCustomerName(newUser.getUsername());
       customer.setCustomerEmail(newUser.getEmail());
-      customer.setCustomerPhone("0827415586"); // Gán thông tin mặc định
+      customer.setCustomerPhone("0827415586");
       customer.setCustomerAddress("119/30 Nguyen van Cu");
       customerRepository.save(customer); // Lưu Customer vào DB
 
-      // Tạo token JWT
+      // 5. Tạo token JWT cho người dùng mới
       AuthenticationService.TokenInfo tokenInfo = authenticationService.generateToken(newUser);
 
-      // Trả về token và thông tin người dùng
+      // 6. Trả về token và thông tin người dùng
       return ResponseEntity.ok(Map.of(
           "token", tokenInfo.token(),
           "email", email,
@@ -217,6 +242,7 @@ public class AuthenticationController {
       return ResponseEntity.status(500).body("Error during Facebook login: " + e.getMessage());
     }
   }
+
 
   private String getAccessTokenFromCodeWithFacebook(String code) throws Exception {
     RestTemplate restTemplate = new RestTemplate();
@@ -368,11 +394,22 @@ public class AuthenticationController {
   }
 
   @PostMapping("/register")
-  ApiResponse<UserResponse> register(@RequestBody UserCreateRequest request) {
+  public ApiResponse<UserResponse> register(@RequestBody UserCreateRequest request) {
+    if (userService.existsByEmail(request.getEmail())) {
+      // Trả về phản hồi nếu email đã tồn tại
+      return ApiResponse.<UserResponse>builder()
+          .code(ErrorCode.EMAIL_IS_EXISTED.getCode()) // Mã lỗi
+          .message(ErrorCode.EMAIL_IS_EXISTED.getMessage()) // Thông báo lỗi
+          .result(null) // Không có kết quả trả về
+          .build();
+    }
+
+    // Tạo mới user nếu email chưa tồn tại
     return ApiResponse.<UserResponse>builder()
-        .result(userService.createUser(request))
+        .result(userService.createUser(request)) // Thông tin user được tạo
+        .code(1000) // Mã thành công
+        .message("Registration successful") // Thông báo thành công
         .build();
   }
-
 
 }

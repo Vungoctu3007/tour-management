@@ -12,6 +12,8 @@ function AdminHeader({ toggleSidebar }) {
     const handleLogout = () => {
         localStorage.removeItem('username');
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userName');
 
         window.location.href = '/login';
     };

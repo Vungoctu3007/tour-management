@@ -12,7 +12,8 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../../services/userService';
-import image from '../../../assets/images/login.png'; // Thay đường dẫn bằng ảnh bạn muốn
+import image from '../../../assets/images/login.png'; // Đường dẫn ảnh nền
+import Notification from '../../../components/Notification'; // Component thông báo
 
 export default function Register() {
     const navigate = useNavigate();
@@ -21,41 +22,43 @@ export default function Register() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [snackBarOpen, setSnackBarOpen] = useState(false);
-    const [snackBarMessage, setSnackBarMessage] = useState('');
-    const [snackBarSeverity, setSnackBarSeverity] = useState('success');
 
-    const handleCloseSnackBar = () => setSnackBarOpen(false);
+    // State cho thông báo
+    const [notificationOpen, setNotificationOpen] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState('');
+    const [notificationType, setNotificationType] = useState('success'); // 'success' hoặc 'error'
+
+    const handleCloseNotification = () => setNotificationOpen(false);
 
     const validateForm = () => {
         if (!username.trim()) {
-            setSnackBarMessage('Username không được để trống');
-            setSnackBarSeverity('error');
-            setSnackBarOpen(true);
+            setNotificationMessage('Username không được để trống');
+            setNotificationType('error');
+            setNotificationOpen(true);
             return false;
         }
         if (!email.trim()) {
-            setSnackBarMessage('Email không được để trống');
-            setSnackBarSeverity('error');
-            setSnackBarOpen(true);
+            setNotificationMessage('Email không được để trống');
+            setNotificationType('error');
+            setNotificationOpen(true);
             return false;
         }
         if (!password.trim()) {
-            setSnackBarMessage('Password không được để trống');
-            setSnackBarSeverity('error');
-            setSnackBarOpen(true);
+            setNotificationMessage('Password không được để trống');
+            setNotificationType('error');
+            setNotificationOpen(true);
             return false;
         }
         if (password.length < 6) {
-            setSnackBarMessage('Password phải có ít nhất 6 ký tự');
-            setSnackBarSeverity('error');
-            setSnackBarOpen(true);
+            setNotificationMessage('Password phải có ít nhất 6 ký tự');
+            setNotificationType('error');
+            setNotificationOpen(true);
             return false;
         }
         if (password !== confirmPassword) {
-            setSnackBarMessage('Mật khẩu xác nhận không khớp');
-            setSnackBarSeverity('error');
-            setSnackBarOpen(true);
+            setNotificationMessage('Mật khẩu xác nhận không khớp');
+            setNotificationType('error');
+            setNotificationOpen(true);
             return false;
         }
         return true;
@@ -68,24 +71,31 @@ export default function Register() {
         try {
             const data = await registerUser({ username, email, password });
 
-            if (data.code !== 1000) {
-                throw new Error(data.message);
+            // Kiểm tra mã thành công
+            if (data.code === 1000) {
+                // Đăng ký thành công
+                setNotificationMessage('Đăng ký thành công! Vui lòng kiểm tra gmail để xác thực.');
+                setNotificationType('success');
+                setNotificationOpen(true);
+
+                // Reset form và chuyển hướng sau 500ms
+                setTimeout(() => navigate('/login'), 500);
+                setUsername('');
+                setEmail('');
+                setPassword('');
+                setConfirmPassword('');
+            } else {
+                // Hiển thị thông báo lỗi từ server
+                setNotificationMessage(data.message || 'Đã xảy ra lỗi!');
+                setNotificationType('error');
+                setNotificationOpen(true);
             }
-
-            setSnackBarMessage('Đăng ký thành công! Bạn có thể đăng nhập.');
-            setSnackBarSeverity('success');
-            setSnackBarOpen(true);
-
-            setTimeout(() => navigate('/login'), 500);
-
-            setUsername('');
-            setEmail('');
-            setPassword('');
-            setConfirmPassword('');
         } catch (error) {
-            setSnackBarMessage(error.message || 'Đã xảy ra lỗi!');
-            setSnackBarSeverity('error');
-            setSnackBarOpen(true);
+            // Hiển thị thông báo lỗi từ server trong trường hợp ném ngoại lệ
+            const errorMessage = error.message || 'Đã xảy ra lỗi!';
+            setNotificationMessage(errorMessage);
+            setNotificationType('error');
+            setNotificationOpen(true);
         }
     };
 
@@ -104,6 +114,14 @@ export default function Register() {
                 backgroundColor: 'rgba(0, 0, 0, 0.6)', // Hiệu ứng mờ nền
             }}
         >
+            {/* Component Notification */}
+            <Notification
+                open={notificationOpen}
+                message={notificationMessage}
+                onClose={handleCloseNotification}
+                type={notificationType}
+            />
+
             <Card
                 sx={{
                     maxWidth: 420,

@@ -136,7 +136,7 @@ public class AuthenticationService {
 
         Date issueTime = new Date();
         Date expiryTime = new Date(Instant.ofEpochMilli(issueTime.getTime())
-                .plus(1, ChronoUnit.HOURS)
+                .plus(2, ChronoUnit.HOURS)
                 .toEpochMilli());
 
 
@@ -149,7 +149,7 @@ public class AuthenticationService {
                 .claim("user_id", user.getId()) // Add user_id claim here
                 .claim("scope",user.getRole().getRoleName().trim())
                 .claim("username", user.getUsername())
-                .claim("email:",user.getEmail())
+                .claim("email",user.getEmail())
                 .build();
 
 

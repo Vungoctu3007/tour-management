@@ -18,6 +18,7 @@ public enum ErrorCode {
     USER_ALREADY_VERIFIED(1008, "User already verified", HttpStatus.BAD_REQUEST),
     INVALID_TOKEN(1009, "Invalid token", HttpStatus.BAD_REQUEST),
     USER_IS_BLOCKED(1010, "User blocked", HttpStatus.BAD_REQUEST),
+    EMAIL_IS_EXISTED(1011, "Email already existed", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

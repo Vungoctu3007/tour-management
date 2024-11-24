@@ -26,7 +26,7 @@ httpRequest.interceptors.request.use(
         try {
           const tokenData = JSON.parse(atob(token.split(".")[1])); // Decode payload của token
           const expTime = tokenData.exp * 1000; // Thời gian hết hạn tính bằng milliseconds
-          return expTime - Date.now() < 5 * 60 * 1000; // Token còn dưới 5 phút sẽ làm mới
+          return expTime - Date.now() < 1 * 60 * 1000; // Token còn dưới 5 phút sẽ làm mới
         } catch (error) {
           console.error("Error decoding token:", error);
           return false;
@@ -37,6 +37,7 @@ httpRequest.interceptors.request.use(
         if (!isRefreshing) {
           isRefreshing = true;
           try {
+            console.log("Refreshing token")
             const newToken = await refreshToken(token); // Gọi API refresh token
             localStorage.setItem("token", newToken); // Lưu token mới
             isRefreshing = false;

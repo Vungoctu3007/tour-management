@@ -32,7 +32,7 @@ function ListUser() {
     const pageSize = 5;
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-    const [searchUser, setSearchUser] = useState('');
+   
     const [openDialog, setOpenDialog] = useState(false);
     const [addUserOpen, setAddUserOpen] = useState(false);
     const [updateUserOpen, setUpdateUserOpen] = useState(false); // State for the update dialog
@@ -43,6 +43,7 @@ function ListUser() {
     const [roles, setRoles] = useState([]);
 
     // Debounced search state
+    const [searchUser, setSearchUser] = useState('');
     const [debouncedSearchUser, setDebouncedSearchUser] = useState(searchUser);
 
     useEffect(() => {

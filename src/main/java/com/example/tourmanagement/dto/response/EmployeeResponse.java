@@ -12,11 +12,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerResponse {
-    int id;
-    String name;
-    String email;
-    String phone;
-    String address;
-    int userId;
+public class EmployeeResponse {
+  String id;
+  String email;
+  int userId;
 }

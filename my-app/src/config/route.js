@@ -47,6 +47,11 @@ const routes = {
   google_callback: "/oauth2/redirect",
   
   // facebook oauth callback
-  facebook_callback: "/oauth2/callback/facebook"
+  facebook_callback: "/oauth2/callback/facebook" ,
+
+  //customer 
+  list_customer : "/admin/customer",
+  //employee
+  list_employee : "/admin/employee"
 };
 export default routes;

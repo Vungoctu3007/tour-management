@@ -6,6 +6,8 @@ import com.example.tourmanagement.dto.request.UserUpdateRequest;
 import com.example.tourmanagement.dto.response.UserCreateResponse;
 import com.example.tourmanagement.dto.response.UserResponse;
 import com.example.tourmanagement.dto.response.UserResponseWrapper;
+import com.example.tourmanagement.exception.AppException;
+import com.example.tourmanagement.exception.ErrorCode;
 import com.example.tourmanagement.service.UserService;
 
 import lombok.AccessLevel;
@@ -32,7 +34,7 @@ public class UserController {
     UserService userService;
 
     @GetMapping
-    public ApiResponse<UserResponseWrapper> getAllRoutes(@RequestParam(defaultValue = "1") int page, @RequestParam int size) {
+    public ApiResponse<UserResponseWrapper> getAllUsers(@RequestParam(defaultValue = "1") int page, @RequestParam int size) {
         Pageable pageable= PageRequest.of(page-1, size);
         return ApiResponse.<UserResponseWrapper>builder()
                 .result(userService.getUsers(pageable))
@@ -42,6 +44,9 @@ public class UserController {
     //create-user
     @PostMapping("/create")
     ApiResponse<UserResponse> createUser(@RequestBody UserCreateRequest request) {
+        if (userService.existsByEmail(request.getEmail())) {
+            throw new AppException(ErrorCode.EMAIL_IS_EXISTED);
+        }
         return ApiResponse.<UserResponse>builder()
                 .result(userService.newUser(request))
                 .build();

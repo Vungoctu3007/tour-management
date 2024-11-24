@@ -83,4 +83,12 @@ public interface DecentralizationRepository extends JpaRepository<Roleoperation,
                                                         @Param("permissionId") int permissionId,
                                                         @Param("operationId") int operationId);
 
+
+    @Query("SELECT r.roleName AS roleName, p.permissionName AS permissionName " +
+        "FROM User u " +
+        "JOIN Role r ON u.role.id = r.id " +
+        "JOIN Roleoperation rp ON r.id = rp.role.id " +
+        "JOIN Permission p ON rp.permission.id = p.id " +
+        "WHERE u.id = :userId")
+    List<Object[]> findRoleAndPermissionsByUserId(@Param("userId") int userId);
 }

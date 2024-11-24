@@ -45,7 +45,7 @@ public class AppConfig {
         return args -> {
             if (userRepository.findByUsername(ADMIN_USER_NAME).isEmpty()) {
                 // Lấy vai trò ROLE_ADMIN từ database
-                com.example.tourmanagement.entity.Role adminRole = roleRepository.findByRoleName(1)
+                com.example.tourmanagement.entity.Role adminRole = roleRepository.findByRoleId(1)
                         .orElseThrow(() -> new IllegalStateException("Role ROLE_ADMIN does not exist in the database"));
 
                 // Tạo tài khoản ADMIN
