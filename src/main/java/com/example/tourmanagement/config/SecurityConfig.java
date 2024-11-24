@@ -32,10 +32,22 @@ public class SecurityConfig {
   @Autowired
   MyAuthorizationManager myAuthorizationManager;
 
+<<<<<<< HEAD
   private final String[] PUBLIC_ENDPOINT = {"/api/auth/**", "/api/route/**",
       "/api/admin/feedback/client", "/api/booking/**"};
   private final String[] PRIVATE_ENDPOINT = {"/api/admin/user/**", "/api/admin/role/**",
       "/api/admin/decentralization/**", "/api/admin/feedback/admin", "/api/admin/customer/**"};
+=======
+    private final String[] PUBLIC_ENDPOINT = {"/api/auth/**", "/api/route/**", "/api/admin/feedback/client", "/api/customer/**", "/api/booking/**", "/api/vnpay/**"};
+    private final String[] PRIVATE_ENDPOINT = {"/api/admin/user/**", "/api/admin/role/**", "/api/admin/decentralization/**", "/api/admin/feedback/admin"};
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MyAuthorizationManager myAuthorizationManager) throws Exception {
+        httpSecurity
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Thêm CORS vào HttpSecurity
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers(HttpMethod.OPTIONS, PUBLIC_ENDPOINT).permitAll()
+                        .requestMatchers(PUBLIC_ENDPOINT).permitAll()
+>>>>>>> 62ccf8ebdee9280cf08a67da72582d52697910a8
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity,

@@ -63,6 +63,7 @@ const Login = () => {
 
             decodeToken(token).then((decoded) => {
                 const role = decoded.result?.role_name;
+                console.log(role)
                 setTimeout(() => {
                     if (role === 'ROLE_STAFF' || role === 'ROLE_ADMIN') navigate('/admin/dashboard');
                     else navigate('/');

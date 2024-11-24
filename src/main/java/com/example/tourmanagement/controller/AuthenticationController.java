@@ -68,9 +68,7 @@ public class AuthenticationController {
   @Value("${spring.security.oauth2.client.registration.google.client-secret}")
   protected String GOOGLE_CLIENT_SECRET;
 
-  @NonFinal
-  @Value("${outbound.identity.redirect-uri}")
-  protected String REDIRECT_URI;
+
   @Autowired
   private RoleRepository roleRepository;
 
