@@ -5,6 +5,7 @@ import Login from "../pages/Client/Login";
 import Register from "../pages/Client/Register";
 import About from "../pages/Client/AboutUs";
 import Payment from "../pages/Client/Payment";
+import VNPayPayment from "../pages/Client/Payment/VNPayPayment";
 import DetailTour from "../pages/Client/DetailTour"
 import Tour from "../pages/Client/Tour"
 // client profile
@@ -53,7 +54,7 @@ const publicRoutes = [
   { path: routes.detail_route, component: DetailTour, layout: DefaultLayout },
   { path: routes.login, component: Login, layout: null },
   { path: routes.register, component: Register, layout: null },
-  { path: routes.payment, component: Payment, layout: null },
+  { path: routes.payment, component: VNPayPayment, layout: null },
   { path: routes.booking_tour, component: BookingTour, layout: DefaultLayout },
   { path: routes.booking_tour, component: BookingTour, layout: DefaultLayout },
   // profile

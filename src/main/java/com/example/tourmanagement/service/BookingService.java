@@ -2,6 +2,7 @@ package com.example.tourmanagement.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import com.example.tourmanagement.dto.response.AvailableQuantityDetailRouteResponse;
 import com.example.tourmanagement.dto.response.BookingDetailResponse;
@@ -122,6 +123,17 @@ public class BookingService {
         } catch (Exception e) {
             log.error("Error updating booking status", e);
             return false;
+        }
+    }
+
+    public void updateBookingStatus(String bookingId, Integer status) {
+        Optional<Booking> optionalBooking = bookingRepository.findById(Integer.parseInt(bookingId));
+        if (optionalBooking.isPresent()) {
+            Booking booking = optionalBooking.get();
+            booking.setPaymentStatusId(status);
+            bookingRepository.save(booking);
+        } else {
+            throw new RuntimeException("Booking not found with id: " + bookingId);
         }
     }
 

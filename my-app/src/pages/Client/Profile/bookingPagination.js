@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {getAllBookingsInformationByUserId} from "../../../services/bookingService";
 import {getBookingDetailById} from "../../../services/bookingService";
 import "./modalDetailBooking.css";
+import {Link, useLocation} from "react-router-dom";
+import Notification from "../../../components/Notification";
 
 const BookingPagination = ({ userId, itemsPerPage }) => {
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationType, setNotificationType] = useState("success");
+
   const [data, setData] = useState({
     bookings: [],
     totalPages: 0,
@@ -36,6 +43,57 @@ const BookingPagination = ({ userId, itemsPerPage }) => {
     }
   };
 
+  const handlePaymentNow = async (amount, bookingId) => {
+    try {
+      // Gửi yêu cầu đến API để tạo URL thanh toán
+      const response = await axios.post(
+        "http://localhost:8080/api/vnpay/payment",
+        null,
+        {
+          params: {
+            amount,
+            bookingId,
+          },
+        }
+      );
+      // Lấy URL thanh toán từ API
+      const paymentUrl = response.data.url;
+      // Chuyển hướng người dùng tới URL thanh toán
+      window.location.href = paymentUrl;
+    } catch (error) {
+      console.error("Error during payment creation:", error);
+    }
+  };
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const status = queryParams.get("status");
+    const message = queryParams.get("message");
+
+    if (status === "success") {
+      setNotificationMessage(
+        "Thanh toán thành công!"
+      );
+      setNotificationType("success"); // Set to "error" if the user hasn't booked the tour
+      setNotificationOpen(true);
+    } else if (status === "failed") {
+      setNotificationMessage(
+        "Đã có lỗi xảy ra"
+      );
+      setNotificationType("error"); // Set to "error" if the user hasn't booked the tour
+      setNotificationOpen(true);
+    } else if (status === "error") {
+      setNotificationMessage(
+        "Đã có lỗi xảy ra"
+      );
+      setNotificationType("error"); // Set to "error" if the user hasn't booked the tour
+      setNotificationOpen(true);
+    }
+  }, [location]);
+
+
   useEffect(() => {
     fetchBookings(0); // Lấy dữ liệu khi component được render lần đầu
   }, [userId, itemsPerPage]);
@@ -48,7 +106,7 @@ const BookingPagination = ({ userId, itemsPerPage }) => {
     setShowModal(false);
     setSelectedBooking(null);
   };
-
+  const handleCloseNotification = () => setNotificationOpen(false);
   return (
     <div className="container">
       <h5 className="mt-2">Lịch Sử Đặt Chỗ</h5>
@@ -56,9 +114,9 @@ const BookingPagination = ({ userId, itemsPerPage }) => {
         <div key={booking.bookingId} className="card mb-4 shadow-sm border-0">
           <div className="card-header bg-light d-flex justify-content-between align-items-center">
             <span className="text-primary fw-bold">Mã đơn hàng: {booking.bookingId}</span>
-            <span className={`badge text-bg-${booking.statusName.trim() === 'chờ thanh toán' ? 'success' : 'danger'}`}>
-        Trạng thái: {booking.statusName.trim()}
-      </span>
+            <span className={`badge text-bg-${booking.statusName.trim() === 'Chờ thanh toán' ? 'danger' : 'success'}`}>
+              Trạng thái: {booking.statusName.trim()}
+            </span>
           </div>
           <div className="card-body">
             <div className="d-flex justify-content-between">
@@ -186,18 +244,28 @@ const BookingPagination = ({ userId, itemsPerPage }) => {
                 <button type="button" className="btn btn-outline-success" onClick={closeModal}>
                   Trở về
                 </button>
-                <button type="button"
-                        className={`btn ${selectedBooking.statusId === 1 ? "btn-success" : "btn-secondary"}`}>
-                  {selectedBooking.statusId === 1 ? "Thanh toán ngay" : "Đã thanh toán"}
-                </button>
+                {selectedBooking.statusId === 1 && (
+                  <button
+                    className="btn btn-success btn-sm mb-2"
+                    onClick={() => handlePaymentNow(selectedBooking.totalPrice, selectedBooking.bookingId)}
+                  >
+                    Thanh toán ngay
+                  </button>
+                )}
 
               </div>
             </div>
           </div>
         </div>
+
       )}
 
-
+      <Notification
+        open={notificationOpen}
+        message={notificationMessage}
+        onClose={handleCloseNotification}
+        type={notificationType} // Passing notification type (error or success)
+      />
     </div>
   );
 };

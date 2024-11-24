@@ -59,6 +59,11 @@ spring:
             token-uri: https://graph.facebook.com/v12.0/oauth/access_token
             user-info-uri: https://graph.facebook.com/me?fields=id,name,email,picture
             user-name-attribute: id
+vnpay:
+  tmncode: OM9LMLGS
+  hashsecret: OYQDPQUV6NOCS5OW6RSN8J2BPJBDUXME
+  payurl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+  returnurl: http://localhost:8080/api/vnpay/return
 
 outbound:
   identity:
