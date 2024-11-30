@@ -32,7 +32,7 @@ function ListUser() {
     const pageSize = 5;
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-   
+
     const [openDialog, setOpenDialog] = useState(false);
     const [addUserOpen, setAddUserOpen] = useState(false);
     const [updateUserOpen, setUpdateUserOpen] = useState(false); // State for the update dialog
@@ -61,28 +61,30 @@ function ListUser() {
             try {
                 let response;
                 if (debouncedSearchUser) {
+                    // Tìm kiếm người dùng theo từ khóa
                     response = await getUserByAllSearch(debouncedSearchUser);
                 } else {
+                    // Lấy danh sách người dùng theo trang hiện tại và kích thước trang
                     response = await getListUser(currentPage, pageSize);
                 }
-
+    
                 if (response && response.code === 1000) {
                     setUsers(response.result.users || []);
                     setTotalPages(response.result.totalPages || 1);
                     setAccessError(''); // Xóa lỗi nếu truy cập thành công
                 } else {
-                    setUsers([]);
+                    setUsers([]); // Nếu không có kết quả, trả về danh sách rỗng
                 }
             } catch (error) {
                 console.error('Error fetching users:', error);
                 if (error.response?.status === 403) {
-                    setAccessError('You do not have permission to access this resource.'); // Cập nhật thông báo lỗi 403
+                    setAccessError('You do not have permission to access this resource.'); // Lỗi 403
                 } else {
-                    setAccessError('An error occurred while fetching users.'); // Thông báo lỗi khác
+                    setAccessError('An error occurred while fetching users.'); // Các lỗi khác
                 }
             }
         };
-
+    
         const fetchRoles = async () => {
             try {
                 const response = await getAllRole();
@@ -91,11 +93,12 @@ function ListUser() {
                 console.error('Error fetching roles:', error);
             }
         };
-
+    
+        // Gọi hàm để lấy người dùng và vai trò
         fetchUsers();
         fetchRoles();
-    }, [currentPage, debouncedSearchUser]);
-
+    }, [currentPage, debouncedSearchUser, updateUserOpen , selectedUser]); // Chạy lại mỗi khi currentPage hoặc debouncedSearchUser thay đổi
+    
     const handleSearchChange = (event) => {
         setSearchUser(event.target.value);
         setCurrentPage(1);
@@ -126,8 +129,20 @@ function ListUser() {
 
     const handleUpdateUser = async (updatedUser) => {
         try {
+            // Cập nhật người dùng trên server
             await updateUser(updatedUser.id, updatedUser);
-            setUsers((prevUsers) => prevUsers.map((user) => (user.id === updatedUser.id ? updatedUser : user)));
+
+            // Cập nhật người dùng trong state ngay lập tức
+            setUsers((prevUsers) =>
+                prevUsers.map((user) => (user.id === updatedUser.id ? { ...user, ...updatedUser } : user)),
+            );
+
+            // Nếu người dùng đang được chọn, cập nhật `selectedUser`
+            if (selectedUser && selectedUser.id === updatedUser.id) {
+                setSelectedUser(updatedUser);
+            }
+
+
             setNotificationMessage(`User ${updatedUser.username} updated successfully.`);
             setNotificationOpen(true);
         } catch (error) {
@@ -158,6 +173,7 @@ function ListUser() {
         }
     };
 
+    
     const handleCloseDialog = () => {
         setOpenDialog(false);
         setSelectedUser(null);
@@ -170,6 +186,7 @@ function ListUser() {
     const handleNotificationClose = () => {
         setNotificationOpen(false);
     };
+    
 
     const handleAddUserOpen = () => {
         setAddUserOpen(true);

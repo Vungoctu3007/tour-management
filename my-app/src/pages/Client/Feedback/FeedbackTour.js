@@ -109,7 +109,7 @@ function FeedbackTour({ detailRouteId, customerId }) {
 
       try {
         await axios.post(
-          "http://localhost:8080/api/feedback/comment",
+          "http://localhost:8080/api/admin/feedback/comment",
           newComment
         );
         setNewFeedback("");

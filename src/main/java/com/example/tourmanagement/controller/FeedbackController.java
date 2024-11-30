@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("/api/admin/feedback")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class FeedbackController {
+public class    FeedbackController {
     @Autowired
     FeedbackService feedbackService;
     @Autowired

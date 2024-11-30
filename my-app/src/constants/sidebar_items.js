@@ -6,6 +6,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import BadgeIcon from '@mui/icons-material/Badge';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 const sidebar_items = [
   
     {
@@ -21,6 +22,7 @@ const sidebar_items = [
       iconUp: <KeyboardArrowDownIcon />,
       item: [
         { 
+          icon: <ManageAccountsIcon/>,
           title: "Account",
           to: "/admin/user/list-user",
         },

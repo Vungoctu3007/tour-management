@@ -37,12 +37,21 @@ export default function Register() {
             setNotificationOpen(true);
             return false;
         }
+
+        // Kiểm tra định dạng email
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
         if (!email.trim()) {
             setNotificationMessage('Email không được để trống');
             setNotificationType('error');
             setNotificationOpen(true);
             return false;
+        } else if (!emailRegex.test(email)) {
+            setNotificationMessage('Email không đúng định dạng');
+            setNotificationType('error');
+            setNotificationOpen(true);
+            return false;
         }
+
         if (!password.trim()) {
             setNotificationMessage('Password không được để trống');
             setNotificationType('error');
@@ -79,7 +88,7 @@ export default function Register() {
                 setNotificationOpen(true);
 
                 // Reset form và chuyển hướng sau 500ms
-                setTimeout(() => navigate('/login'), 500);
+                setTimeout(() => navigate('/login'), 2000);
                 setUsername('');
                 setEmail('');
                 setPassword('');

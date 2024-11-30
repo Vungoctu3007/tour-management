@@ -40,7 +40,7 @@ export const createFeedback = async () => {
 export const checkCustomerOrderTour = async (userId, detailRouteId) => {
     try {
         const response = await httpRequest.get(
-            `/feedback/checkBooking?userId=${userId}&detailRouteId=${detailRouteId}`,
+            `/admin/feedback/checkBooking?userId=${userId}&detailRouteId=${detailRouteId}`,
         );
         return response.data;
     } catch (error) {

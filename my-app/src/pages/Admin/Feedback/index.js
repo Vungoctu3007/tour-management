@@ -146,7 +146,6 @@ function ListFeedback() {
                 <TableCell>DetailRouteName</TableCell>
                 <TableCell>Text</TableCell>
                 <TableCell>Rating</TableCell>
-                <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -159,16 +158,7 @@ function ListFeedback() {
                   <TableCell>{feedback.detailRouteName}</TableCell>
                   <TableCell>{feedback.text}</TableCell>
                   <TableCell>{feedback.rating}</TableCell>
-                  <TableCell>
-                    <Box display="flex" alignItems="center">
-                      <div onClick={() => alert(`Edit feedback with ID: ${feedback.id}`)} style={{ marginRight: 8, cursor: "pointer", padding: "8px", textAlign: "center" }}>
-                        <EditIcon />
-                      </div>
-                      <div onClick={() => handleOpenDialog(feedback)} style={{ cursor: "pointer", padding: "8px", textAlign: "center" }}>
-                        <DeleteIcon />
-                      </div>
-                    </Box>
-                  </TableCell>
+                 
                 </TableRow>
               ))}
             </TableBody>

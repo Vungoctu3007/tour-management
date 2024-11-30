@@ -33,7 +33,7 @@ public class SecurityConfig {
   MyAuthorizationManager myAuthorizationManager;
 
 
-  private final String[] PUBLIC_ENDPOINT = {"/api/auth/**", "/api/route/**", "/api/admin/feedback/client", "/api/customer/**", "/api/booking/**", "/api/vnpay/**"};
+  private final String[] PUBLIC_ENDPOINT = {"/api/auth/**", "/api/route/**", "/api/admin/feedback/client", "/api/admin/feedback/comment", "/api/admin/feedback/checkBooking", "/api/customer/**", "/api/booking/**", "/api/vnpay/**"};
   private final String[] PRIVATE_ENDPOINT = {"/api/admin/user/**", "/api/admin/role/**", "/api/admin/decentralization/**", "/api/admin/feedback/admin"};
 
     @Bean
