@@ -102,7 +102,7 @@ function ListTour() {
                             <span className="input-group-text">
                                 <Search />
                             </span>
-                            <input type="text" className="form-control" placeholder="Search"   onChange={(e) => setSearchKeyword(e.target.value)} />
+                            <input type="text" className="form-control" placeholder="Search Tour By ID"   onChange={(e) => setSearchKeyword(e.target.value)} />
                             <button className="btn btn-primary"  onClick={handleSearch}>Tìm kiếm</button>
                         </div>
 
@@ -145,7 +145,7 @@ function ListTour() {
                                     <td>
                                         <div className="d-flex align-items-center justify-content-center gap-2">
                                             {/* View Icon */}
-                                            <IconButton
+                                            {/* <IconButton
                                                 style={{
                                                     backgroundColor: 'rgba(0, 123, 255, 0.2)',
                                                     borderRadius: '50%',
@@ -153,7 +153,7 @@ function ListTour() {
                                                 // onClick={() => handleView(route.detailRouteId)}
                                             >
                                                 <Visibility style={{ color: '#007bff' }} />
-                                            </IconButton>
+                                            </IconButton> */}
                                             {/* Edit Icon */}
                                             <IconButton
                                                 style={{

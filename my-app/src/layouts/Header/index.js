@@ -24,7 +24,7 @@ function Header() {
                 <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
                     <Nav className="me-auto">
                         {pages_items.map((page, index) => (
-                            <Nav.Link key={index} href={page.to} className="text-white fw-bold">
+                            <Nav.Link key={index} to={page.to} as={Link} href={page.to} className="text-white fw-bold">
                                 {page.title}
                             </Nav.Link>
                         ))}

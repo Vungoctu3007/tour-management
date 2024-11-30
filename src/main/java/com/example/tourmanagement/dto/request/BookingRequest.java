@@ -20,7 +20,6 @@ public class BookingRequest {
     String customerName;
     @NotBlank(message = "Vui lòng nhập Email")
     @Email(message = "Email không đúng định dạng")
-    @UniqueEmail(message = "Email đã tồn tại")
     String customerEmail;
     @NotBlank(message = "Vui lòng nhập địa chỉ")
     String customerAddress;

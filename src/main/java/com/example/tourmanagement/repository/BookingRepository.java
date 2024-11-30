@@ -55,6 +55,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Modifying
     @Query("UPDATE Booking b SET b.paymentStatus.id = :statusId WHERE b.id = :bookingId")
     int updateBookingStatus(Integer bookingId, Integer statusId);
+
     boolean existsBookingsByDetailRoute_Id(Integer detailRouteId);
 
 }

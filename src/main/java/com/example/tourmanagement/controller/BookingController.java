@@ -4,6 +4,7 @@ import com.example.tourmanagement.dto.response.*;
 import com.example.tourmanagement.repository.BookingRepository;
 import com.example.tourmanagement.repository.CustomerRepository;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import lombok.experimental.FieldDefaults;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/booking")
 @RequiredArgsConstructor
@@ -39,8 +41,11 @@ public class BookingController {
     @PostMapping("/handle-booking")
     public ApiResponse<BookingResponse> handleBooking(@RequestBody @Valid BookingRequest request) {
         int customerId = bookingService.createCustomer(request);
+        int passengerCount = request.getPassengerRequestList().size();
         List<Integer> passengerIds = bookingService.createPassengers(request);
-        int bookingId = bookingService.createBooking(request, customerId);
+        int bookingId = bookingService.createBooking(request, customerId , passengerCount);
+
+
         boolean status = bookingService.createTickets(passengerIds, bookingId);
         // Prepare the ApiResponse based on the status
         if (status == true) {

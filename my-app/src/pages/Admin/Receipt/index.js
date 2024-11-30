@@ -41,22 +41,6 @@ const Receipt = () => {
         fetchOrders();
     }, [page]);
 
-    // Fetch payment statuses
-    useEffect(() => {
-        const fetchPaymentStatuses = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/api/payment-status/get-payment-statuses`);
-                const data = await response.json();
-                if (data.code === 1000) {
-                    setPaymentStatuses(data.result);
-                }
-            } catch (error) {
-                console.error("Error fetching payment statuses:", error);
-            }
-        };
-        fetchPaymentStatuses();
-    }, []);
-
     // Fetch order details and open modal
     const handleEdit = async (bookingId) => {
         try {
@@ -80,41 +64,6 @@ const Receipt = () => {
         setSelectedOrder(null);
     };
 
-    // Update payment status
-    const handleUpdateStatus = async () => {
-        if (!selectedOrder || newStatusId === null) return;
-
-        try {
-            const response = await fetch(`http://localhost:8080/api/booking/update-status?bookingId=${selectedOrder.bookingId}&statusId=${newStatusId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-
-                }),
-            });
-
-            const data = await response.json();
-            if (data.code === 1000) {
-                setNotificationMessage(
-                  "Cập nhật trạng thái thanh toán thành công!"
-                );
-                setNotificationType("success"); // Set to "error" if the user hasn't booked the tour
-                setNotificationOpen(true);
-                setShowModal(false);
-                setPage(0);
-            } else {
-                setNotificationMessage(
-                  "Đã có lỗi xảy ra khi cập nhật."
-                );
-                setNotificationType("error"); // Set to "error" if the user hasn't booked the tour
-                setNotificationOpen(true);
-            }
-        } catch (error) {
-            console.error("Error updating payment status:", error);
-        }
-    };
 
     // Handle search
     const handleSearch = (e) => {
@@ -206,7 +155,7 @@ const Receipt = () => {
                               className="btn btn-warning btn-sm"
                               onClick={() => handleEdit(order.bookingId)}
                             >
-                                Edit
+                                View
                             </button>
                         </td>
                     </tr>
@@ -243,19 +192,9 @@ const Receipt = () => {
                         </div>
                         <div className="modal-body">
                             <h6 className="text-primary">Thông tin đơn hàng</h6>
-                            <p><strong>Tổng tiền:</strong> {selectedOrder.totalPrice.toLocaleString()} VND</p>
-                            <p><strong>Trạng thái:</strong>
-                                <select
-                                  className="form-select mt-2"
-                                  value={newStatusId}
-                                  onChange={(e) => setNewStatusId(parseInt(e.target.value))}
-                                >
-                                    {paymentStatuses.map((status) => (
-                                      <option key={status.paymentStatusId} value={status.paymentStatusId}>
-                                          {status.paymentStatusName}
-                                      </option>
-                                    ))}
-                                </select>
+                            <p><strong>Tổng tiền: </strong> {selectedOrder.totalPrice.toLocaleString()} VND</p>
+                            <p><strong>Trạng thái: </strong> 
+                            {selectedOrder.statusName}
                             </p>
                             <p><strong>Số lượng vé:</strong> {selectedOrder.quantity}</p>
                             <p><strong>Thời gian đặt:</strong> {new Date(selectedOrder.timeToOrder).toLocaleString()}</p>
@@ -280,9 +219,6 @@ const Receipt = () => {
                             ))}
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-success" onClick={handleUpdateStatus}>
-                                Cập nhật
-                            </button>
                             <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>
                                 Đóng
                             </button>

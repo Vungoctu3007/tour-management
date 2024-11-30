@@ -11,21 +11,21 @@ const profile_items = [
     title: "Hồ Sơ",
     to: "/profile",
   },
-  {
-    icon: <LoyaltyIcon />, 
-    title: "0 Điểm",
-    to: "/profile/score",
-  },
-  {
-    icon: <DiscountIcon />, 
-    title: "Khuyễn Mãi",
-    to: "/profile/discount",
-  },
-  {
-    icon: <MonetizationOnIcon />, 
-    title: "Hoàn Tiền",
-    to: "/profile/refund",
-  },
+  // {
+  //   icon: <LoyaltyIcon />, 
+  //   title: "0 Điểm",
+  //   to: "/profile/score",
+  // },
+  // {
+  //   icon: <DiscountIcon />, 
+  //   title: "Khuyễn Mãi",
+  //   to: "/profile/discount",
+  // },
+  // {
+  //   icon: <MonetizationOnIcon />, 
+  //   title: "Hoàn Tiền",
+  //   to: "/profile/refund",
+  // },
   {
     icon: <AssignmentIcon />, 
     title: "Đặt Chỗ",

@@ -131,13 +131,13 @@ public class AuthenticationController {
       newUser.setStatus(1);
       User savedUser = userRepository.save(newUser);
 
-      Customer customer = new Customer();
-      customer.setUserId(savedUser.getId());
-      customer.setCustomerName(savedUser.getUsername());
-      customer.setCustomerEmail(savedUser.getEmail());
-      customer.setCustomerPhone("0827415586");
-      customer.setCustomerAddress("119/30 Nguyen van Cu");
-      customerRepository.save(customer);
+//      Customer customer = new Customer();
+//      customer.setUserId(savedUser.getId());
+//      customer.setCustomerName(savedUser.getUsername());
+//      customer.setCustomerEmail(savedUser.getEmail());
+//      customer.setCustomerPhone("0827415586");
+//      customer.setCustomerAddress("119/30 Nguyen van Cu");
+//      customerRepository.save(customer);
 
       // 5. Tạo token cho người dùng mới
       AuthenticationService.TokenInfo tokenInfo = authenticationService.generateToken(savedUser);
@@ -219,13 +219,13 @@ public class AuthenticationController {
       newUser.setStatus(1);
       userRepository.save(newUser);
 
-      Customer customer = new Customer();
-      customer.setUserId(newUser.getId());
-      customer.setCustomerName(newUser.getUsername());
-      customer.setCustomerEmail(newUser.getEmail());
-      customer.setCustomerPhone("0827415586");
-      customer.setCustomerAddress("119/30 Nguyen van Cu");
-      customerRepository.save(customer); // Lưu Customer vào DB
+//      Customer customer = new Customer();
+//      customer.setUserId(newUser.getId());
+//      customer.setCustomerName(newUser.getUsername());
+//      customer.setCustomerEmail(newUser.getEmail());
+//      customer.setCustomerPhone("0827415586");
+//      customer.setCustomerAddress("119/30 Nguyen van Cu");
+//      customerRepository.save(customer); // Lưu Customer vào DB
 
       // 5. Tạo token JWT cho người dùng mới
       AuthenticationService.TokenInfo tokenInfo = authenticationService.generateToken(newUser);

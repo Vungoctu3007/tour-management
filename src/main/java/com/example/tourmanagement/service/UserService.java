@@ -119,7 +119,8 @@ public class UserService {
             employee.setEmployeeEmail(user.getUsername() + "@gmail.com");
             employee.setUser(user);
             employeeRepository.save(employee);
-        } else {
+        }
+        else {
             role = roleRepository.findById(3)
                     .orElseThrow(() -> new RuntimeException("Default role does not exist"));
             user.setRole(role);

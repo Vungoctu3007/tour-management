@@ -194,7 +194,6 @@ export const registerUser = async ({ username, email, password }) => {
           { 
               headers: {
                   'Content-Type': 'application/json', // Chỉ thêm Content-Type,
-                  'Authorization' : 'No Authorization'
               },
           },
       );

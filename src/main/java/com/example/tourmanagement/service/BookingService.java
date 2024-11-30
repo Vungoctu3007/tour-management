@@ -66,7 +66,10 @@ public class BookingService {
         return passengerIds;  
     }
 
-    public int createBooking(BookingRequest request, Integer customerId) {
+    public void updateBookingInAdvanceBasedOnPassengerCount(Integer detailRouteId, int countPassenger) {
+        detailRouteRepository.updateBookingInAdvance(detailRouteId, countPassenger);
+    }
+    public int createBooking(BookingRequest request, Integer customerId ,Integer passengerCount) {
         Booking booking = new Booking();
 
         booking.setCustomerId(customerId);
@@ -76,7 +79,7 @@ public class BookingService {
         booking.setPaymentStatusId(1);
         booking.setStatusBooking(1);
         booking.setDetailRouteId(request.getDetailRouteId());
-
+        updateBookingInAdvanceBasedOnPassengerCount(request.getDetailRouteId(), passengerCount);
         Booking savedBooking = bookingRepository.save(booking);
         return savedBooking.getId();
     }
